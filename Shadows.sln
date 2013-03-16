@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shadows", "Shadows\Shadows\Shadows.csproj", "{23F5D144-C72F-49B9-9C45-E2FC6933A29E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShadowsContent", "Shadows\ShadowsContent\ShadowsContent.contentproj", "{0A2B6284-2966-4C62-876F-79A10F5AED95}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23F5D144-C72F-49B9-9C45-E2FC6933A29E}.Debug|x86.ActiveCfg = Debug|x86
+		{23F5D144-C72F-49B9-9C45-E2FC6933A29E}.Debug|x86.Build.0 = Debug|x86
+		{23F5D144-C72F-49B9-9C45-E2FC6933A29E}.Release|x86.ActiveCfg = Release|x86
+		{23F5D144-C72F-49B9-9C45-E2FC6933A29E}.Release|x86.Build.0 = Release|x86
+		{0A2B6284-2966-4C62-876F-79A10F5AED95}.Debug|x86.ActiveCfg = Debug|x86
+		{0A2B6284-2966-4C62-876F-79A10F5AED95}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
