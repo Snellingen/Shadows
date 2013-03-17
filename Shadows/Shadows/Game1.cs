@@ -19,18 +19,22 @@ namespace Shadows
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         FpsViewer fps;
-        SpriteManager spritemanager; 
+        SpriteManager spritemanager;
+        InputManager inputManager; 
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-            // Unlimited FPS :) 
-            /*this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 100.0f);
+
+            //AA 
+            graphics.PreferMultiSampling = true;
+            //IsMouseVisible = true;
+            /* Unlimited FPS :) 
+            this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 100.0f);
             this.IsFixedTimeStep = false;
             graphics.SynchronizeWithVerticalRetrace = false;*/
-            
+
         }
 
         protected override void Initialize()
@@ -40,6 +44,8 @@ namespace Shadows
             Components.Add(fps);
             spritemanager = new SpriteManager(this);
             Components.Add(spritemanager);
+            inputManager = new InputManager(this);
+            Components.Add(inputManager);
             base.Initialize();
 
             // ONLY REMOVE THIS IF YOU HAVE A MULTIPLE MONITOR SETUP!! ( DRAWS THE GAME ON THE SECOND MONITOR IF IN DEBUG MODE ) 

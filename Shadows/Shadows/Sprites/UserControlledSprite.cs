@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
@@ -37,8 +31,8 @@ namespace Shadows
         {
             // Moves the sprite based on direction
             MovementUpdate(gameTime);
-            //rotation = MouseRotation();
-            rotation = GamepadRotation();
+            rotation = MouseRotation();
+            //rotation = GamepadRotation();
             
 
             // If sprite is of the screen, move it back within the game window
@@ -87,7 +81,7 @@ namespace Shadows
         {
             Vector2 pos = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             pos -= position;
-            return (float)Math.Atan2(pos.X, pos.Y); 
+            return (float)Math.Atan2(pos.Y, pos.X); 
         }
 
         public float GamepadRotation()

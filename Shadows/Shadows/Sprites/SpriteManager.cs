@@ -18,7 +18,6 @@ namespace Shadows
     {
         SpriteBatch spriteBatch;
         UserControlledSprite player;
-        Vector2 mousePosition;
         Texture2D line;
        
         
@@ -76,7 +75,7 @@ namespace Shadows
 
             // Draw player
             player.Draw(gameTime, spriteBatch);
-            DrawLine(spriteBatch, line, 1, Color.White, player.GetPostion, 1000f);
+            //DrawLine(spriteBatch, line, 1, Color.Red, player.GetPostion, 1000f);
             spriteBatch.End();
 
             base.Draw(gameTime);
