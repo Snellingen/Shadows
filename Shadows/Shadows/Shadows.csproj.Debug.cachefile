@@ -5,3 +5,6 @@ Content\resolveShadowsEffect.xnb
 Content\Sprites\guard_death.xnb
 Content\Sprites\soldier_spritesheet.xnb
 Content\Sprites\MouseTexture.xnb
+Content\World\House.xnb
+Content\World\ShadowHouse.xnb
+Content\World\tile.xnb

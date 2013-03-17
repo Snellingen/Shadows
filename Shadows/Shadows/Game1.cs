@@ -20,20 +20,40 @@ namespace Shadows
         SpriteBatch spriteBatch;
         FpsViewer fps;
         SpriteManager spritemanager;
-        InputManager inputManager; 
+        InputManager inputManager;
+        Texture2D tileTexture;
+        Texture2D shadowHouseTexture; 
+
+        //LIGHT 
+        Vector2 lightPosition;
+        LightSource light;
+        ShadowMapResolver shadowmapResolver; // Processes the lightmap with the lights
+        ShadowCasterMap shadowMap; // for shadowmap 
+        LightsFX lightsFX; // For different light effects
+
+        RenderTarget2D screenLights; 
+        RenderTarget2D screenGround; 
+
+        int screenWidth = 1440;
+        int screenHeight = 900;
+        
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
+            graphics.PreferredBackBufferWidth = screenWidth;
+            graphics.PreferredBackBufferHeight = screenHeight;
+            graphics.IsFullScreen = false;
+
             //AA 
             graphics.PreferMultiSampling = true;
             //IsMouseVisible = true;
-            /* Unlimited FPS :) 
+            /*Unlimited FPS :) */
             this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 100.0f);
             this.IsFixedTimeStep = false;
-            graphics.SynchronizeWithVerticalRetrace = false;*/
+            graphics.SynchronizeWithVerticalRetrace = false;
 
         }
 
@@ -47,6 +67,7 @@ namespace Shadows
             inputManager = new InputManager(this);
             Components.Add(inputManager);
             base.Initialize();
+            
 
             // ONLY REMOVE THIS IF YOU HAVE A MULTIPLE MONITOR SETUP!! ( DRAWS THE GAME ON THE SECOND MONITOR IF IN DEBUG MODE ) 
 /* #if DEBUG
@@ -57,15 +78,32 @@ namespace Shadows
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            tileTexture = Content.Load<Texture2D>(@"World\tile");
+            shadowHouseTexture = Content.Load<Texture2D>(@"World\ShadowHouse");
 
-            // TODO: use this.Content to load your game content here
+            // Lights: 
+            // Load lightFx with effects
+            lightsFX = new LightsFX(
+               Content.Load<Effect>("resolveShadowsEffect"),
+               Content.Load<Effect>("reductionEffect"),
+               Content.Load<Effect>("2xMultiBlend"));
+            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 400);
+            light = new LightSource(graphics, 400, LightAreaQuality.VeryHigh, Color.White);
+            shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
+            lightPosition = spritemanager.GetPlayerPosition(); // light positon = player positon 
+            screenLights = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            screenGround = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+            // Generating shadow map, only added the wall texture. 
+            shadowMap.StartGeneratingShadowCasteMap(false);
+            shadowMap.AddShadowCaster(shadowHouseTexture, Vector2.Zero, screenWidth, screenHeight);
+            shadowMap.EndGeneratingShadowCasterMap();
+            
         }
 
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -73,8 +111,7 @@ namespace Shadows
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            // TODO: Add your update logic here
+            lightPosition = spritemanager.GetPlayerPosition(); 
 
             base.Update(gameTime);
         }
@@ -84,9 +121,37 @@ namespace Shadows
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            // Process the light mape with the shadowmap, light, effect and position ( saves to lightsource.printedlight) 
+            shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
+
+            // Draw lightmap to rendertarget screeLight
+            GraphicsDevice.SetRenderTarget(screenLights);
+            {
+                GraphicsDevice.Clear(Color.Black);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+                {
+                    light.Draw(spriteBatch);
+                }
+                spriteBatch.End();
+            }
+
+            // Draw ground to rendertarger ground
+            GraphicsDevice.SetRenderTarget(screenGround);
+            GraphicsDevice.Clear(Color.Black);
+            DrawGround();
+
+            // Combine light and ground render target and blend them.
+            this.lightsFX.PrintLightsOverTexture(null, spriteBatch, graphics, screenLights, screenGround, 0.90f);
 
             base.Draw(gameTime);
+        }
+
+        public void DrawGround()
+        {
+            Rectangle source = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Draw(tileTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
+            spriteBatch.End(); 
         }
     }
 }
