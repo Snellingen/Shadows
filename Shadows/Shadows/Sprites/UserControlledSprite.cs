@@ -21,6 +21,7 @@ namespace Shadows
         public Keys keyDown = Keys.S;
         public Keys keyRoll = Keys.LeftControl;
         public Keys keyJump = Keys.Space;
+        float oldroation = 0;  
 
         public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed)
             : base (textureImage, position, frameSize, collisionOffset, currentFrame, sheetSize, speed)
@@ -36,7 +37,10 @@ namespace Shadows
         {
             // Moves the sprite based on direction
             MovementUpdate(gameTime);
-            rotation = Rotation(new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+            //rotation = MouseRotation();
+            rotation = GamepadRotation();
+            
+
             // If sprite is of the screen, move it back within the game window
             if (position.X < 0 + frameSize.X)
                 position.X = 0 + frameSize.X;
@@ -79,10 +83,25 @@ namespace Shadows
             }
         }
 
-        public float Rotation(Vector2 pos)
+        public float MouseRotation()
         {
+            Vector2 pos = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             pos -= position;
-            return (float)Math.Atan2(pos.Y, pos.X); 
+            return (float)Math.Atan2(pos.X, pos.Y); 
+        }
+
+        public float GamepadRotation()
+        {;
+            GamePadState gamepadState = GamePad.GetState( PlayerIndex.One, GamePadDeadZone.Circular);
+            if (gamepadState.ThumbSticks.Right.X >= .10 || gamepadState.ThumbSticks.Right.X <= -.10 ||
+                 gamepadState.ThumbSticks.Right.Y >= .10 || gamepadState.ThumbSticks.Right.Y <= -.10)
+            {
+                oldroation = (float)Math.Atan2(gamepadState.ThumbSticks.Right.X, gamepadState.ThumbSticks.Right.Y) -89.5f;
+                return oldroation;
+            }
+
+            return oldroation;
+              
         }
 
         // Animation logic
