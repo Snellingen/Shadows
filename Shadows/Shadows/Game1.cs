@@ -27,6 +27,9 @@ namespace Shadows
         //LIGHT 
         Vector2 lightPosition;
         LightSource light;
+        LightSource light2;
+        LightSource light3;
+        LightSource light4;
         ShadowMapResolver shadowmapResolver; // Processes the lightmap with the lights
         ShadowCasterMap shadowMap; // for shadowmap 
         LightsFX lightsFX; // For different light effects
@@ -88,8 +91,11 @@ namespace Shadows
                Content.Load<Effect>("resolveShadowsEffect"),
                Content.Load<Effect>("reductionEffect"),
                Content.Load<Effect>("2xMultiBlend"));
-            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 400);
-            light = new LightSource(graphics, 400, LightAreaQuality.VeryHigh, Color.White);
+            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 800);
+            light = new LightSource(graphics, 600, LightAreaQuality.VeryHigh, Color.White);
+            light2 = new LightSource(graphics, 800, LightAreaQuality.VeryHigh, Color.Red);
+            light3 = new LightSource(graphics, 800, LightAreaQuality.VeryHigh, Color.Orange);
+            light4 = new LightSource(graphics, 800, LightAreaQuality.VeryHigh, Color.Red);
             shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
             lightPosition = spritemanager.GetPlayerPosition(); // light positon = player positon 
             screenLights = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
@@ -111,8 +117,10 @@ namespace Shadows
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-            lightPosition = spritemanager.GetPlayerPosition(); 
-
+            lightPosition = spritemanager.GetPlayerPosition();
+            shadowMap.StartGeneratingShadowCasteMap(false);
+            shadowMap.AddShadowCaster(shadowHouseTexture, Vector2.Zero, screenWidth, screenHeight);
+            shadowMap.EndGeneratingShadowCasterMap();
             base.Update(gameTime);
         }
 
@@ -120,17 +128,20 @@ namespace Shadows
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // Process the light mape with the shadowmap, light, effect and position ( saves to lightsource.printedlight) 
             shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
-
+            shadowmapResolver.ResolveShadows(shadowMap, light2, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
+            shadowmapResolver.ResolveShadows(shadowMap, light3, PostEffect.LinearAttenuation_BlurHigh, new Vector2(700, 783));
+            //shadowmapResolver.ResolveShadows(shadowMap, light4, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
             // Draw lightmap to rendertarget screeLight
             GraphicsDevice.SetRenderTarget(screenLights);
             {
                 GraphicsDevice.Clear(Color.Black);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
                 {
-                    light.Draw(spriteBatch);
+                    light.Draw(spriteBatch, 90);
+                    light2.Draw(spriteBatch);
+                    light3.Draw(spriteBatch); 
                 }
                 spriteBatch.End();
             }

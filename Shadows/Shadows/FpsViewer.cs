@@ -19,6 +19,7 @@ namespace Shadows
         int _total_frames = 0;
         float _elapsed_time = 0.0f;
         int _fps = 0;
+        Vector2 mousepos; 
 
         public FpsViewer(Game game)
             : base(game)
@@ -37,7 +38,8 @@ namespace Shadows
         {
             // Update
             _elapsed_time += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-
+            mousepos.X = Mouse.GetState().X;
+            mousepos.Y = Mouse.GetState().Y;
             // 1 Second has passed
             if (_elapsed_time > 1000.0f)
             {
@@ -53,7 +55,7 @@ namespace Shadows
             // Only update total frames when drawing
             _total_frames++;
             spriteBatch.Begin();
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0}", _fps), new Vector2(10.0f, 20.0f), Color.White);
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0} Pos= X {1} Y {2}", _fps, mousepos.X, mousepos.Y), new Vector2(10.0f, 20.0f), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }

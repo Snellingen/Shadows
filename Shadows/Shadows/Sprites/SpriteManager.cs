@@ -33,6 +33,11 @@ namespace Shadows
             return player.GetPostion;
         }
 
+        public Texture2D GetPlayerTexture()
+        {
+            return player.textureImage; 
+        }
+
         public override void Initialize()
         {
             ResetSpawnTime();
@@ -75,18 +80,17 @@ namespace Shadows
 
             // Draw player
             player.Draw(gameTime, spriteBatch);
-            //DrawLine(spriteBatch, line, 1, Color.Red, player.GetPostion, 1000f);
+            DrawLine(line, 1, Color.Red, player.GetPostion , 1900f);
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
 
-        void DrawLine(SpriteBatch batch, Texture2D blank,
+        void DrawLine(Texture2D blank,
               float width, Color color, Vector2 point1, float length)
         {
             float angle = player.rotation;
-
-            batch.Draw(blank, point1, null, color,
+            spriteBatch.Draw(blank, point1, null, color,
                        angle, Vector2.Zero, new Vector2(length, width),
                        SpriteEffects.None, 0);
         }
