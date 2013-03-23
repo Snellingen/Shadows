@@ -139,19 +139,11 @@ namespace Shadows
             GraphicsDevice.SetRenderTarget(screenGround);
             GraphicsDevice.Clear(Color.Black);
             DrawGround();
-            DrawOther();
 
             // Combine light and ground render target and blend them.
             this.lightsFX.PrintLightsOverTexture(null, spriteBatch, graphics, screenLights, screenGround, 0.90f);
 
             base.Draw(gameTime);
-        }
-
-        public void DrawOther()
-        {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone); ;
-            spriteBatch.Draw(shadowHouseTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-            spriteBatch.End(); 
         }
 
         public void DrawGround()
