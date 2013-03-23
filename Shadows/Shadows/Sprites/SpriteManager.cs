@@ -75,7 +75,7 @@ namespace Shadows
 
             // Draw player
             player.Draw(gameTime, spriteBatch);
-            //DrawLine(spriteBatch, line, 1, Color.Red, player.GetPostion, 1000f);
+            DrawLine(spriteBatch, line, 1, Color.Red, player.GetPostion, 1000f);
             spriteBatch.End();
 
             base.Draw(gameTime);
