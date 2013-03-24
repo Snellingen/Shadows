@@ -22,7 +22,10 @@ namespace Shadows
         SpriteManager spriteManager;
         LightManager lightManager; 
         InputManager inputManager;
-        
+
+        Texture2D floorTexture; 
+
+        RenderTarget2D toApplyLight;
 
         int screenWidth = 1440;
         int screenHeight = 900;
@@ -49,6 +52,9 @@ namespace Shadows
 
         protected override void Initialize()
         {
+
+            floorTexture = Content.Load<Texture2D>(@"World\house");
+
             // TODO: Add your initialization logic here
             fps = new FpsViewer(this);
             spriteManager = new SpriteManager(this);
@@ -80,7 +86,7 @@ namespace Shadows
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+            toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         protected override void UnloadContent()
@@ -100,6 +106,15 @@ namespace Shadows
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            //set render target to toApplyLight which will be used to blend together with the screenLight render target
+            GraphicsDevice.SetRenderTarget(toApplyLight);
+            spriteBatch.Begin();
+            spriteBatch.Draw(floorTexture, new Rectangle(screenWidth, screenHeight, 0, 0), Color.White);
+            spriteBatch.End();
+            
+            // sends the rendertarget to the light manager; 
+            lightManager.setRendertarget(toApplyLight); 
 
             base.Draw(gameTime);
         }

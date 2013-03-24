@@ -34,7 +34,7 @@ namespace Shadows
         LightsFX lightsFX; // For different light effects
 
         RenderTarget2D screenLights;
-        RenderTarget2D screenGround; 
+        RenderTarget2D toApplyLigth;
 
         public LightManager(Game game, GraphicsDeviceManager graphics)
             : base(game)
@@ -63,7 +63,7 @@ namespace Shadows
             shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
             lightPosition = spriteManager.GetPlayerPosition(); // light positon = player positon 
             screenLights = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            screenGround = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            //screenGround = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
             // Generating shadow map, only added the wall texture. 
             shadowMap.StartGeneratingShadowCasteMap(false);
@@ -80,12 +80,17 @@ namespace Shadows
             base.Update(gameTime);
         }
 
+        public void setRendertarget(RenderTarget2D rt){
+            toApplyLigth = rt; 
+        }
+
         public override void Draw(GameTime gameTime)
         {
             // Process the light mape with the shadowmap, light, effect and position ( saves to lightsource.printedlight) 
             shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
             shadowmapResolver.ResolveShadows(shadowMap, light2, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
             shadowmapResolver.ResolveShadows(shadowMap, light3, PostEffect.LinearAttenuation_BlurHigh, new Vector2(700, 783));
+           
             //shadowmapResolver.ResolveShadows(shadowMap, light4, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
             // Draw lightmap to rendertarget screeLight
             GraphicsDevice.SetRenderTarget(screenLights);
@@ -100,13 +105,13 @@ namespace Shadows
                 spriteBatch.End();
             }
 
-            // Draw ground to rendertarger ground
+            /* Draw ground to rendertarger ground
             GraphicsDevice.SetRenderTarget(screenGround);
             GraphicsDevice.Clear(Color.Black);
-            DrawGround();
+            DrawGround();*/
 
             // Combine light and ground render target and blend them.
-            this.lightsFX.PrintLightsOverTexture(null, spriteBatch, graphics, screenLights, screenGround, 0.90f);
+            this.lightsFX.PrintLightsOverTexture(null, spriteBatch, graphics, screenLights, toApplyLigth, 0.90f);
 
             base.Draw(gameTime);
         }
