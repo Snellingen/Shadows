@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="FpsViewer.cs" />
     <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Light\LightManager.cs" />
     <Compile Include="Light\LightsFX.cs" />
     <Compile Include="Light\LightSource.cs" />
     <Compile Include="Light\QuadRenderComponent.cs" />
