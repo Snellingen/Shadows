@@ -110,7 +110,7 @@ namespace Shadows
             //set render target to toApplyLight which will be used to blend together with the screenLight render target
             GraphicsDevice.SetRenderTarget(toApplyLight);
             spriteBatch.Begin();
-            spriteBatch.Draw(floorTexture, new Rectangle(screenWidth, screenHeight, 0, 0), Color.White);
+            spriteBatch.Draw(floorTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             spriteBatch.End();
             
             // sends the rendertarget to the light manager; 

@@ -34,7 +34,7 @@ namespace Shadows
         LightsFX lightsFX; // For different light effects
 
         RenderTarget2D screenLights;
-        RenderTarget2D toApplyLigth;
+        Texture2D toApplyLigth;
 
         public LightManager(Game game, GraphicsDeviceManager graphics)
             : base(game)
@@ -80,7 +80,7 @@ namespace Shadows
             base.Update(gameTime);
         }
 
-        public void setRendertarget(RenderTarget2D rt){
+        public void setRendertarget(Texture2D rt){
             toApplyLigth = rt; 
         }
 
@@ -109,15 +109,11 @@ namespace Shadows
             GraphicsDevice.SetRenderTarget(screenGround);
             GraphicsDevice.Clear(Color.Black);
             DrawGround();*/
-
+           
             // Combine light and ground render target and blend them.
             this.lightsFX.PrintLightsOverTexture(null, spriteBatch, graphics, screenLights, toApplyLigth, 0.90f);
 
             base.Draw(gameTime);
-        }
-
-        public void DrawGround()
-        {
         }
     }
 }
