@@ -61,16 +61,23 @@ namespace Shadows
             inputManager = new InputManager(this);
             lightManager = new LightManager(this, graphics);
 
+            // Add Component
             Components.Add(fps);
             Components.Add(spriteManager);
             Components.Add(inputManager);
             Components.Add(lightManager);
 
+            // AddService
             Services.AddService(typeof(GraphicsDeviceManager), graphics);
             Services.AddService(typeof(SpriteManager), spriteManager);
             Services.AddService(typeof(LightManager), lightManager);
             Services.AddService(typeof(InputManager), inputManager); 
 
+            // draworder 
+            fps.DrawOrder = 10;
+            spriteManager.DrawOrder = 9;
+            inputManager.DrawOrder = 8;
+            lightManager.DrawOrder = 7; 
             base.Initialize();
           
 
@@ -112,7 +119,7 @@ namespace Shadows
             spriteBatch.Begin();
             spriteBatch.Draw(floorTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
             spriteBatch.End();
-            
+            GraphicsDevice.SetRenderTarget(null); 
             // sends the rendertarget to the light manager; 
             lightManager.setRendertarget(toApplyLight); 
 
