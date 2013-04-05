@@ -19,7 +19,7 @@ namespace Shadows
         SpriteBatch spriteBatch;
         UserControlledSprite player;
         Texture2D line;
-       
+        Texture2D walls; 
         
         float timer;
 
@@ -50,6 +50,7 @@ namespace Shadows
             line = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             line.SetData(new[] { Color.White });
             player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), Vector2.Zero, new Point(67, 90), 0, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
+            walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             base.LoadContent();
         }
 
@@ -85,6 +86,9 @@ namespace Shadows
 
             DrawLine(line, 1, Color.Red, player.GetPostion, 1000f);
 
+            spriteBatch.Draw(walls, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

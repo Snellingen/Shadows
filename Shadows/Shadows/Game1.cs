@@ -53,7 +53,7 @@ namespace Shadows
         protected override void Initialize()
         {
 
-            floorTexture = Content.Load<Texture2D>(@"World\house");
+            floorTexture = Content.Load<Texture2D>(@"World\tile");
 
             // TODO: Add your initialization logic here
             fps = new FpsViewer(this);
@@ -114,16 +114,25 @@ namespace Shadows
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+    
+
             //set render target to toApplyLight which will be used to blend together with the screenLight render target
             GraphicsDevice.SetRenderTarget(toApplyLight);
-            spriteBatch.Begin();
-            spriteBatch.Draw(floorTexture, new Rectangle(0, 0, screenWidth, screenHeight), Color.White);
-            spriteBatch.End();
+            GraphicsDevice.Clear(Color.Black);
+            drawFloor();
             GraphicsDevice.SetRenderTarget(null); 
             // sends the rendertarget to the light manager; 
             lightManager.setRendertarget(toApplyLight); 
 
             base.Draw(gameTime);
+        }
+
+        public void drawFloor()
+        {
+            Rectangle source = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Draw(floorTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
+            spriteBatch.End();
         }
     }
 }

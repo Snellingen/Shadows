@@ -55,12 +55,11 @@ namespace Shadows
                Game.Content.Load<Effect>("resolveShadowsEffect"),
                Game.Content.Load<Effect>("reductionEffect"),
                Game.Content.Load<Effect>("2xMultiBlend"));
-            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 800);
-            light = new LightSource(graphics, 600, LightAreaQuality.VeryHigh, Color.White);
-            light2 = new LightSource(graphics, 800, LightAreaQuality.VeryHigh, Color.Red);
-            light3 = new LightSource(graphics, 800, LightAreaQuality.VeryHigh, Color.Orange);
-            light4 = new LightSource(graphics, 800, LightAreaQuality.VeryHigh, Color.Red);
-            shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
+            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 600);
+            light = new LightSource(graphics, 600, LightAreaQuality.Low, Color.White);
+            light2 = new LightSource(graphics, 800, LightAreaQuality.Low, Color.Red);
+            light3 = new LightSource(graphics, 800, LightAreaQuality.Low, Color.Orange);
+            shadowMap = new ShadowCasterMap(PrecisionSettings.Low, graphics, this.spriteBatch);
             lightPosition = spriteManager.GetPlayerPosition(); // light positon = player positon 
             screenLights = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             //screenGround = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
@@ -88,7 +87,7 @@ namespace Shadows
         {
             // Process the light mape with the shadowmap, light, effect and position ( saves to lightsource.printedlight) 
             shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
-            shadowmapResolver.ResolveShadows(shadowMap, light2, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
+            shadowmapResolver.ResolveShadows(shadowMap, light2, PostEffect.LinearAttenuation_BlurHigh, new Vector2(1000, 200));
             shadowmapResolver.ResolveShadows(shadowMap, light3, PostEffect.LinearAttenuation_BlurHigh, new Vector2(700, 783));
            
             //shadowmapResolver.ResolveShadows(shadowMap, light4, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);

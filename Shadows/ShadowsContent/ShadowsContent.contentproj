@@ -93,7 +93,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="World\tile.JPG">
+    <Compile Include="World\tile.jpg">
       <Name>tile</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
