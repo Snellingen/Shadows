@@ -20,6 +20,8 @@ namespace Shadows
         UserControlledSprite player;
         Texture2D line;
         Texture2D walls;
+
+        CollisionManager collisionManager; 
         
 
         Matrix viewMatrix;
@@ -44,6 +46,8 @@ namespace Shadows
 
         public override void Initialize()
         {
+            collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
+
             ResetSpawnTime();
             base.Initialize();
         }
@@ -63,7 +67,10 @@ namespace Shadows
         {
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            // Update Player
+            // Update Play
+
+            player.collision(collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize), collisionManager.clientRectangle.Width, collisionManager.clientRectangle.Height); 
+                
             player.setInverseMatrixMouse(inverseMatrixMosue);
             player.Update(gameTime, Game.Window.ClientBounds);
             base.Update(gameTime);

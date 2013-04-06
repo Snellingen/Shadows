@@ -64,7 +64,7 @@ namespace Shadows
             spriteManager = new SpriteManager(this);
             inputManager = new InputManager(this);
             lightManager = new LightManager(this, graphics);
-            collisionManager = new CollisionManager(this); 
+            collisionManager = new CollisionManager(this, new Rectangle(0, 0, screenWidth, screenHeight)); 
 
             camera = new Camera(new Vector2(screenWidth, screenHeight), 1.5f); 
 

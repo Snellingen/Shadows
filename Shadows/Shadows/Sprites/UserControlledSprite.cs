@@ -44,17 +44,6 @@ namespace Shadows
             rotation = MouseRotation();
             //rotation = GamepadRotation();
 
-            /* If sprite is of the screen, move it back within the game window
-           if (position.X < 0 + frameSize.X)
-               position.X = 0 + frameSize.X;
-           if (position.Y < 0 + frameSize.Y)
-               position.Y = 0 + frameSize.Y;
-           if (position.X > clientBounds.Width - frameSize.X)
-               position.X = clientBounds.Width - frameSize.X;
-           if (position.Y > clientBounds.Height - frameSize.Y)
-               position.Y = clientBounds.Height - frameSize.Y;
-            */ 
-
             base.Update(gameTime, clientBounds);
             if ((Direction.X > 0) || Direction.X < 0)
                 lastDirection = Direction;
@@ -138,6 +127,20 @@ namespace Shadows
                 idle();
                 Animate(gameTime);
             }
+        }
+
+        public void collision(edge edge, int width, int height)
+        {
+            //If sprite is of the screen, move it back within the game window
+            if (edge == edge.left)
+                position.X = 0 + frameSize.X;
+            if (edge == edge.top)
+                position.Y = 0 + frameSize.Y;
+            if (edge == edge.right)
+                position.X = width - frameSize.X;
+            if (edge == edge.bottom)
+                position.Y = height - frameSize.Y;
+            Console.Write(edge);
         }
 
         public float speedFromLoopTime(float speed)

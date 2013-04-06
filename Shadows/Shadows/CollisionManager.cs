@@ -9,20 +9,25 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-
 namespace Shadows
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
+    public enum edge
+    {
+        top,
+        bottom,
+        left,
+        right,
+        none
+    }
+
     public class CollisionManager : Microsoft.Xna.Framework.GameComponent
     {
-        public Rectangle bounds; 
+        public Rectangle clientRectangle;
 
-        public CollisionManager(Game game)
+        public CollisionManager(Game game, Rectangle clientRectangle)
             : base(game)
         {
-            // TODO: Construct any child components here
+            this.clientRectangle = clientRectangle; 
         }
 
         public override void Initialize()
@@ -33,17 +38,18 @@ namespace Shadows
         }
 
         // Checks if sprite is out of bounds, returns true if it is.  
-        public bool IsOutOfBounds(Rectangle clientRectangle, Vector2 position, Point frameSize)
+        public edge IsOutOfBounds(Vector2 position, Point frameSize)
         {
-            if (position.X < -frameSize.X ||
-                position.X > clientRectangle.Width ||
-                position.Y < -frameSize.Y ||
-                position.Y > clientRectangle.Height)
-            {
-                return true;
-            }
+            if (position.X < 0 + frameSize.X)
+                return edge.left;
+            if (position.Y < 0 + frameSize.Y)
+                return edge.top;
+            if (position.X > clientRectangle.Width - frameSize.X)
+                return edge.right;
+            if (position.Y > clientRectangle.Height - frameSize.Y)
+                return edge.bottom;
 
-            return false;
+            return edge.none;
         } 
 
         public override void Update(GameTime gameTime)
