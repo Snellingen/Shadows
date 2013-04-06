@@ -27,11 +27,12 @@ namespace Shadows
         Texture2D floorTexture; 
 
         RenderTarget2D toApplyLight;
-
-    Camera camera = new Camera();
-
         int screenWidth = 1440;
         int screenHeight = 900;
+
+        Camera camera;
+
+        
         
 
         public Game1()
@@ -64,6 +65,8 @@ namespace Shadows
             inputManager = new InputManager(this);
             lightManager = new LightManager(this, graphics);
 
+            camera = new Camera(new Vector2(screenWidth, screenHeight), 1.5f); 
+
             // Add Component
             Components.Add(fps);
             Components.Add(spriteManager);
@@ -78,8 +81,8 @@ namespace Shadows
 
             // draworder 
             fps.DrawOrder = 10;
-            spriteManager.DrawOrder = 9;
-            inputManager.DrawOrder = 8;
+            inputManager.DrawOrder = 9;
+            spriteManager.DrawOrder = 8;
             lightManager.DrawOrder = 7; 
             base.Initialize();
           

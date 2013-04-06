@@ -44,7 +44,7 @@ namespace Shadows
             //rotation = GamepadRotation();
             
 
-            // If sprite is of the screen, move it back within the game window
+            /* If sprite is of the screen, move it back within the game window
             if (position.X < 0 + frameSize.X)
                 position.X = 0 + frameSize.X;
             if (position.Y < 0 + frameSize.Y)
@@ -54,6 +54,7 @@ namespace Shadows
             if (position.Y > clientBounds.Height - frameSize.Y)
                 position.Y = clientBounds.Height - frameSize.Y;
 
+             */ 
             base.Update(gameTime, clientBounds);
             if ((Direction.X > 0) || Direction.X < 0)
                 lastDirection = Direction;
