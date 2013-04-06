@@ -22,18 +22,18 @@ namespace Shadows
         SpriteManager spriteManager;
         LightManager lightManager; 
         InputManager inputManager;
+        CollisionManager collisionManager; 
+
         Vector2 inverseMatrixPostion;
 
-        Texture2D floorTexture; 
-
+        Texture2D floorTexture;
+        Texture2D blood; 
         RenderTarget2D toApplyLight;
+
         int screenWidth = 1440;
         int screenHeight = 900;
 
         Camera camera;
-
-        
-        
 
         public Game1()
         {
@@ -64,6 +64,7 @@ namespace Shadows
             spriteManager = new SpriteManager(this);
             inputManager = new InputManager(this);
             lightManager = new LightManager(this, graphics);
+            collisionManager = new CollisionManager(this); 
 
             camera = new Camera(new Vector2(screenWidth, screenHeight), 1.5f); 
 
@@ -72,12 +73,14 @@ namespace Shadows
             Components.Add(spriteManager);
             Components.Add(inputManager);
             Components.Add(lightManager);
+            Components.Add(collisionManager); 
 
             // AddService
             Services.AddService(typeof(GraphicsDeviceManager), graphics);
             Services.AddService(typeof(SpriteManager), spriteManager);
             Services.AddService(typeof(LightManager), lightManager);
-            Services.AddService(typeof(InputManager), inputManager); 
+            Services.AddService(typeof(InputManager), inputManager);
+            Services.AddService(typeof(CollisionManager), collisionManager); 
 
             // draworder 
             fps.DrawOrder = 10;
@@ -100,6 +103,7 @@ namespace Shadows
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            blood = Content.Load<Texture2D>(@"World\blood");
         }
 
         protected override void UnloadContent()
@@ -134,6 +138,9 @@ namespace Shadows
             GraphicsDevice.SetRenderTarget(toApplyLight);
             GraphicsDevice.Clear(Color.Black);
             drawFloor();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, camera.ViewMatrix);
+            spriteBatch.Draw(blood, Vector2.Zero, Color.White);
+            spriteBatch.End(); 
             GraphicsDevice.SetRenderTarget(null); 
             // sends the rendertarget to the light manager; 
             lightManager.setRendertarget(toApplyLight); 
@@ -144,8 +151,8 @@ namespace Shadows
         public void drawFloor()
         {
             Rectangle source = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, camera.ViewMatrix);
-            spriteBatch.Draw(floorTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, camera.ViewMatrix);
+            spriteBatch.Draw(floorTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f); 
             spriteBatch.End();
         }
     }

@@ -20,6 +20,8 @@ namespace Shadows
         UserControlledSprite player;
         Texture2D line;
         Texture2D walls;
+        
+
         Matrix viewMatrix;
         Vector2 inverseMatrixMosue; 
 
@@ -53,6 +55,7 @@ namespace Shadows
             line.SetData(new[] { Color.White });
             player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), Vector2.Zero, new Point(67, 90), 0, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
+            
             base.LoadContent();
         }
 
@@ -70,8 +73,18 @@ namespace Shadows
         {
         }
 
+        public void worldCollision()
+        {
+            
+        }
+
+
         public void SpawnEnemy()
         { 
+        }
+
+        public void ResetSpawnTime()
+        {
         }
 
         public void setViewMatrix(Matrix viewMatrix)
@@ -82,10 +95,6 @@ namespace Shadows
         public void setInverseMatrixMosue( Vector2 pos)
         {
             this.inverseMatrixMosue = pos; 
-        }
-
-        public void ResetSpawnTime()
-        {    
         }
 
         public override void Draw(GameTime gameTime)
@@ -99,6 +108,7 @@ namespace Shadows
 
             DrawLine(line, 1, Color.Red, player.GetPostion, 1000f);
 
+            
             spriteBatch.Draw(walls, Vector2.Zero, Color.White);
 
             spriteBatch.End();

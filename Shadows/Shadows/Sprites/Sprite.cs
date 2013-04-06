@@ -11,66 +11,70 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
-   abstract class Sprite
+    abstract class Sprite
     {
+        // atributes 
         public Texture2D textureImage { get; set; }
 
         public Point frameSize { get; set; }
         protected Point currentFrame;
         public Point sheetSize { get; set; }
-        public Point startFrame = new Point( 0, 0);
+        public Point startFrame = new Point(0, 0);
 
         private int timeSinceLastFrame = 0;
         private const int defaultMillisecondsPerFrame = 90;
         public int millisecondsPerFrame { get; set; }
         public int collisionOffset { get; set; }
-        public Vector2 speed { get;  set; }
+        public Vector2 speed { get; set; }
         protected Vector2 position;
         public Vector2 origin = new Vector2(34, 57);
         public float scale = 1;
         public float rotation = 0;
-        
-        
 
-        public Rectangle collisionRect {
+
+        // The collision rectangle for the sprite. 
+        public Rectangle collisionRect
+        {
             get
             {
                 return new Rectangle(
                     (int)position.X + collisionOffset,
                     (int)position.Y + collisionOffset,
-                    (frameSize.X - (collisionOffset * 2))*(int)scale,
-                    (frameSize.Y - (collisionOffset * 2))* (int)scale);
+                    (frameSize.X - (collisionOffset * 2)) * (int)scale,
+                    (frameSize.Y - (collisionOffset * 2)) * (int)scale);
             }
         }
 
-       public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-           int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed)    
-           : this(textureImage, position, frameSize, collisionOffset, currentFrame,
-           sheetSize, speed, defaultMillisecondsPerFrame)
+        // Constructors
+        public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
+            int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed)
+            : this(textureImage, position, frameSize, collisionOffset, currentFrame,
+            sheetSize, speed, defaultMillisecondsPerFrame)
         {
         }
 
-       public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-        int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed, float scale)
-           : this(textureImage, position, frameSize, collisionOffset, currentFrame,
-           sheetSize, speed, defaultMillisecondsPerFrame)
-       {
-           this.scale = scale;
-       }
+        public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
+         int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed, float scale)
+            : this(textureImage, position, frameSize, collisionOffset, currentFrame,
+            sheetSize, speed, defaultMillisecondsPerFrame)
+        {
+            this.scale = scale;
+        }
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
             int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed,
-            int millisecondsPerFrame) 
+            int millisecondsPerFrame)
         {
             this.textureImage = textureImage;
             this.position = position;
             this.frameSize = frameSize;
-            this.collisionOffset = collisionOffset; 
-            this.currentFrame = currentFrame; 
+            this.collisionOffset = collisionOffset;
+            this.currentFrame = currentFrame;
             this.sheetSize = sheetSize;
             this.speed = speed;
             this.millisecondsPerFrame = millisecondsPerFrame;
         }
+
 
         public Vector2 GetPostion { get { return position; } }
 
@@ -79,25 +83,13 @@ namespace Shadows
 
         }
 
-        public bool IsOutOfBounds(Rectangle clientRectangle)
-        {
-            if (position.X < -frameSize.X ||
-                position.X > clientRectangle.Width ||
-                position.Y < -frameSize.Y ||
-                position.Y > clientRectangle.Height)
-            {
-                return true;
-            }
-
-            return false; 
-        }
-
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(textureImage, position, new Rectangle((currentFrame.X * frameSize.X)+startFrame.X, (currentFrame.Y * frameSize.Y) + startFrame.Y, frameSize.X, frameSize.Y),
-            Color.White, rotation +89.5f, new Vector2((origin.X + 20), (origin.Y)), scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureImage, position, new Rectangle((currentFrame.X * frameSize.X) + startFrame.X, (currentFrame.Y * frameSize.Y) + startFrame.Y, frameSize.X, frameSize.Y),
+            Color.White, rotation + 89.5f, new Vector2((origin.X + 20), (origin.Y)), scale, SpriteEffects.None, 0);
         }
 
+        // Handles the anmiation logic by going through the spritesheet
         public void Animate(GameTime gameTime)
         {
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;

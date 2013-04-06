@@ -9,6 +9,7 @@ namespace Shadows
     class UserControlledSprite : Sprite
     {
         Vector2 lastDirection = Vector2.Zero;
+
         public Keys keyRight = Keys.D;
         public Keys keyLeft = Keys.A;
         public Keys keyUp = Keys.W;
@@ -42,19 +43,18 @@ namespace Shadows
             MovementUpdate(gameTime);
             rotation = MouseRotation();
             //rotation = GamepadRotation();
-            
 
             /* If sprite is of the screen, move it back within the game window
-            if (position.X < 0 + frameSize.X)
-                position.X = 0 + frameSize.X;
-            if (position.Y < 0 + frameSize.Y)
-                position.Y = 0 + frameSize.Y;
-            if (position.X > clientBounds.Width - frameSize.X)
-                position.X = clientBounds.Width - frameSize.X;
-            if (position.Y > clientBounds.Height - frameSize.Y)
-                position.Y = clientBounds.Height - frameSize.Y;
+           if (position.X < 0 + frameSize.X)
+               position.X = 0 + frameSize.X;
+           if (position.Y < 0 + frameSize.Y)
+               position.Y = 0 + frameSize.Y;
+           if (position.X > clientBounds.Width - frameSize.X)
+               position.X = clientBounds.Width - frameSize.X;
+           if (position.Y > clientBounds.Height - frameSize.Y)
+               position.Y = clientBounds.Height - frameSize.Y;
+            */ 
 
-             */ 
             base.Update(gameTime, clientBounds);
             if ((Direction.X > 0) || Direction.X < 0)
                 lastDirection = Direction;
