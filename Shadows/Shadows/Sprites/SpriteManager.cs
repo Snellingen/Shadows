@@ -19,8 +19,10 @@ namespace Shadows
         SpriteBatch spriteBatch;
         UserControlledSprite player;
         Texture2D line;
-        Texture2D walls; 
-        
+        Texture2D walls;
+        Matrix viewMatrix;
+        Vector2 inverseMatrixMosue; 
+
         float timer;
 
         public SpriteManager(Game game)
@@ -59,6 +61,7 @@ namespace Shadows
             timer += gameTime.ElapsedGameTime.Milliseconds;
 
             // Update Player
+            player.setInverseMatrixMouse(inverseMatrixMosue);
             player.Update(gameTime, Game.Window.ClientBounds);
             base.Update(gameTime);
         }
@@ -71,13 +74,23 @@ namespace Shadows
         { 
         }
 
+        public void setViewMatrix(Matrix viewMatrix)
+        {
+            this.viewMatrix = viewMatrix;
+        }
+
+        public void setInverseMatrixMosue( Vector2 pos)
+        {
+            this.inverseMatrixMosue = pos; 
+        }
+
         public void ResetSpawnTime()
         {    
         }
 
         public override void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
 
             // Draw player
             player.Draw(gameTime, spriteBatch);
@@ -86,9 +99,8 @@ namespace Shadows
 
             DrawLine(line, 1, Color.Red, player.GetPostion, 1000f);
 
-            spriteBatch.Draw(walls, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White);
+            spriteBatch.Draw(walls, Vector2.Zero, Color.White);
 
-            
             spriteBatch.End();
 
             base.Draw(gameTime);

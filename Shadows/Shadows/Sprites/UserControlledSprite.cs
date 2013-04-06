@@ -16,6 +16,8 @@ namespace Shadows
         public Keys keyRoll = Keys.LeftControl;
         public Keys keyJump = Keys.Space;
 
+        Vector2 inverseMatrixMouse; 
+
         // Used for gamepad to store last roatation
         float oldroation = 0;  
 
@@ -27,6 +29,11 @@ namespace Shadows
         public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed, int millisecondsPerFrame)
             : base(textureImage, position, frameSize, collisionOffset, currentFrame, sheetSize, speed, millisecondsPerFrame)
         {
+        }
+
+        public void setInverseMatrixMouse(Vector2 pos)
+        {
+            this.inverseMatrixMouse = pos; 
         }
 
         public override void Update(GameTime gameTime, Rectangle clientBounds)
@@ -82,14 +89,14 @@ namespace Shadows
 
         public float MouseRotation()
         {
-            Vector2 pos = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
+            Vector2 pos = inverseMatrixMouse;
             
             // substracts the position of the player so that the rotation will be correct according to the player position. 
             pos -= position;
             // return the rotation value based on the mouse position. 
             return (float)Math.Atan2(pos.Y, pos.X); 
         }
-
+        
         public float GamepadRotation()
         {;
             // Doing basically the same thing as for MouseRotation() but now with gamepad. We also need to store the rotation from last update

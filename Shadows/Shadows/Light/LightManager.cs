@@ -20,7 +20,7 @@ namespace Shadows
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteManager spriteManager;
-        
+        Matrix viewMatrix; 
 
         //LIGHT 
         Texture2D shadowHouseTexture; 
@@ -79,6 +79,11 @@ namespace Shadows
             base.Update(gameTime);
         }
 
+        public void setViewMatrix(Matrix viewMatrix)
+        {
+            this.viewMatrix = viewMatrix;
+        }
+
         public void setRendertarget(Texture2D rt){
             toApplyLigth = rt; 
         }
@@ -95,7 +100,7 @@ namespace Shadows
             GraphicsDevice.SetRenderTarget(screenLights);
             {
                 GraphicsDevice.Clear(Color.Black);
-                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive);
+                spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, null, viewMatrix);
                 {
                     light.Draw(spriteBatch, 90);
                     light2.Draw(spriteBatch);

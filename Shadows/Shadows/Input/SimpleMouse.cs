@@ -76,9 +76,13 @@ namespace Shadows
 
             // store position
             Position = new Vector2(currentState.X, currentState.Y);
+
             // create rectangele for the mouse. 
             Rectange = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height); 
         }
+
+       
+
 
         public void Draw(SpriteBatch spriteBatch)
         {

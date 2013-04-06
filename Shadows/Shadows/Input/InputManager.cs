@@ -18,7 +18,11 @@ namespace Shadows
     public class InputManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         SpriteBatch spriteBatch;
-        SimpleMouse mouse; 
+        
+        SimpleMouse sMouse;
+        
+        Matrix viewMatrix; 
+
         public InputManager(Game game)
             : base(game)
         {
@@ -33,20 +37,25 @@ namespace Shadows
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            mouse = new SimpleMouse(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"));
+            sMouse = new SimpleMouse(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"));
             base.LoadContent();
+        }
+
+        public void setViewMatrix(Matrix viewMatrix)
+        {
+            this.viewMatrix = viewMatrix; 
         }
 
         public override void Update(GameTime gameTime)
         {
-            mouse.Update();
+            sMouse.Update();
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            mouse.Draw(spriteBatch);
+            sMouse.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
         }

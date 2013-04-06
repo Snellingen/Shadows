@@ -22,10 +22,13 @@ namespace Shadows
         SpriteManager spriteManager;
         LightManager lightManager; 
         InputManager inputManager;
+        Vector2 inverseMatrixPostion;
 
         Texture2D floorTexture; 
 
         RenderTarget2D toApplyLight;
+
+    Camera camera = new Camera();
 
         int screenWidth = 1440;
         int screenHeight = 900;
@@ -105,7 +108,15 @@ namespace Shadows
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-           
+
+            camera.Update(spriteManager.GetPlayerPosition());
+            spriteManager.setViewMatrix(camera.ViewMatrix);
+            lightManager.setViewMatrix(camera.ViewMatrix);
+            inputManager.setViewMatrix(camera.ViewMatrix);
+
+            inverseMatrixPostion = Vector2.Transform(new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Matrix.Invert(camera.ViewMatrix));
+            spriteManager.setInverseMatrixMosue(inverseMatrixPostion);
+
             base.Update(gameTime);
         }
 
@@ -130,7 +141,7 @@ namespace Shadows
         public void drawFloor()
         {
             Rectangle source = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Opaque, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, camera.ViewMatrix);
             spriteBatch.Draw(floorTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
             spriteBatch.End();
         }
