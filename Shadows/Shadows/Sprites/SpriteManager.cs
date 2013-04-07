@@ -72,7 +72,7 @@ namespace Shadows
             if(collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
                 player.Collision();
 
-            Console.WriteLine(player.collisionRect); 
+
             if (collisionManager.pixelPerfectCollision(player.collisionRect, walls))
             {
                 player.Collision();

@@ -22,7 +22,8 @@ namespace Shadows
         SpriteManager spriteManager;
         LightManager lightManager; 
         InputManager inputManager;
-        CollisionManager collisionManager; 
+        CollisionManager collisionManager;
+        SoundManager soundManager; 
 
         Vector2 inverseMatrixPostion;
 
@@ -35,7 +36,7 @@ namespace Shadows
 
         Camera camera;
 
-        Song song;
+        
 
         public Game1()
         {
@@ -66,7 +67,8 @@ namespace Shadows
             spriteManager = new SpriteManager(this);
             inputManager = new InputManager(this);
             lightManager = new LightManager(this, graphics);
-            collisionManager = new CollisionManager(this, new Rectangle(0, 0, screenWidth, screenHeight)); 
+            collisionManager = new CollisionManager(this, new Rectangle(0, 0, screenWidth, screenHeight));
+            soundManager = new SoundManager(this); 
 
             camera = new Camera(new Vector2(screenWidth, screenHeight), 1.5f); 
 
@@ -75,14 +77,16 @@ namespace Shadows
             Components.Add(spriteManager);
             Components.Add(inputManager);
             Components.Add(lightManager);
-            Components.Add(collisionManager); 
+            Components.Add(collisionManager);
+            Components.Add(soundManager); 
 
             // AddService
             Services.AddService(typeof(GraphicsDeviceManager), graphics);
             Services.AddService(typeof(SpriteManager), spriteManager);
             Services.AddService(typeof(LightManager), lightManager);
             Services.AddService(typeof(InputManager), inputManager);
-            Services.AddService(typeof(CollisionManager), collisionManager); 
+            Services.AddService(typeof(CollisionManager), collisionManager);
+            Services.AddService(typeof(SoundManager), soundManager); 
 
             // draworder 
             fps.DrawOrder = 10;
@@ -106,10 +110,9 @@ namespace Shadows
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             blood = Content.Load<Texture2D>(@"World\blood");
-            song = Content.Load<Song>("Ambient horror track");
-
-            MediaPlayer.Play(song);
-            MediaPlayer.IsRepeating = true;
+            
+            // LYDMANAGER
+            soundManager.LoadSound("zombie-1"); 
 
         }
 
@@ -130,6 +133,11 @@ namespace Shadows
 
             inverseMatrixPostion = Vector2.Transform(new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Matrix.Invert(camera.ViewMatrix));
             spriteManager.setInverseMatrixMosue(inverseMatrixPostion);
+
+            // BRUK AV LYDMANAGER: (LOADER I LOADCONTENT"!) 
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                soundManager.PlaySound("zombie-1");
 
             base.Update(gameTime);
         }
