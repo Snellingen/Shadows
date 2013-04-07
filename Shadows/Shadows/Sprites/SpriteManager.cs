@@ -57,7 +57,7 @@ namespace Shadows
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             line = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             line.SetData(new[] { Color.White });
-            player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), Vector2.Zero, new Point(67, 90), 0, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
+            player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), 0, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             
             base.LoadContent();
@@ -69,8 +69,9 @@ namespace Shadows
 
             // Update Play
 
-            player.collision(collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize), collisionManager.clientRectangle.Width, collisionManager.clientRectangle.Height); 
-                
+            if(collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
+                player.Collision(); 
+
             player.setInverseMatrixMouse(inverseMatrixMosue);
             player.Update(gameTime, Game.Window.ClientBounds);
             base.Update(gameTime);

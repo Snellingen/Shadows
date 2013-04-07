@@ -17,6 +17,8 @@ namespace Shadows
         public Keys keyRoll = Keys.LeftControl;
         public Keys keyJump = Keys.Space;
 
+        bool collision = false; 
+
         Vector2 inverseMatrixMouse; 
 
         // Used for gamepad to store last roatation
@@ -45,18 +47,25 @@ namespace Shadows
             //rotation = GamepadRotation();
 
             base.Update(gameTime, clientBounds);
-            if ((Direction.X > 0) || Direction.X < 0)
+            if ((Direction.X > 0) || Direction.X < 0 && !collision)
                 lastDirection = Direction;
         }
 
         // Basic input logic
         public override Vector2 Direction
         {
-            get 
+            get
             {
                 // Stores the vector direction
                 Vector2 inputDirection = Vector2.Zero;
 
+                if (collision)
+                {
+                    Console.Write("active");
+                    collision = false; 
+                    return Vector2.Negate(lastDirection); 
+                }
+                else
                 if (Keyboard.GetState().IsKeyDown(keyLeft))
                     inputDirection.X -= 1;
                 if (Keyboard.GetState().IsKeyDown(keyRight))
@@ -71,6 +80,8 @@ namespace Shadows
                     inputDirection.X += gamepadState.ThumbSticks.Left.X;
                 if (gamepadState.ThumbSticks.Left.Y != 0)
                     inputDirection.Y -= gamepadState.ThumbSticks.Left.Y;
+
+
 
                 return Vector2.Multiply(inputDirection, speedFromLoopTime(5)); // reutrn direction + speed
 
@@ -129,18 +140,9 @@ namespace Shadows
             }
         }
 
-        public void collision(edge edge, int width, int height)
+        public void Collision()
         {
-            //If sprite is of the screen, move it back within the game window
-            if (edge == edge.left)
-                position.X = 0 + frameSize.X;
-            if (edge == edge.top)
-                position.Y = 0 + frameSize.Y;
-            if (edge == edge.right)
-                position.X = width - frameSize.X;
-            if (edge == edge.bottom)
-                position.Y = height - frameSize.Y;
-            Console.Write(edge);
+            collision = true; 
         }
 
         public float speedFromLoopTime(float speed)

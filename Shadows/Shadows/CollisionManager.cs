@@ -11,14 +11,6 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
-    public enum edge
-    {
-        top,
-        bottom,
-        left,
-        right,
-        none
-    }
 
     public class CollisionManager : Microsoft.Xna.Framework.GameComponent
     {
@@ -38,18 +30,18 @@ namespace Shadows
         }
 
         // Checks if sprite is out of bounds, returns true if it is.  
-        public edge IsOutOfBounds(Vector2 position, Point frameSize)
+        public bool IsOutOfBounds(Vector2 position, Point frameSize)
         {
-            if (position.X < 0 + frameSize.X)
-                return edge.left;
-            if (position.Y < 0 + frameSize.Y)
-                return edge.top;
-            if (position.X > clientRectangle.Width - frameSize.X)
-                return edge.right;
-            if (position.Y > clientRectangle.Height - frameSize.Y)
-                return edge.bottom;
+            if (position.X < 0 - frameSize.X)
+                return true;
+            if (position.Y < 0 - frameSize.Y)
+                return true;
+            if (position.X > clientRectangle.Width + frameSize.X)
+                return true;
+            if (position.Y > clientRectangle.Height + frameSize.Y)
+                return true;
 
-            return edge.none;
+            return false;
         } 
 
         public override void Update(GameTime gameTime)
