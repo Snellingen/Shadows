@@ -27,9 +27,10 @@ namespace Shadows
 
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            spriteBatch = new SpriteBatch(Game.GraphicsDevice); 
             base.Initialize();
         }
+
 
         // Checks if sprite is out of bounds, returns true if it is.  
         public bool IsOutOfBounds(Vector2 position, Point frameSize)
@@ -70,14 +71,18 @@ namespace Shadows
 
         public Texture2D CreateCollisionTexture(Rectangle o, Texture2D collisionMap)
         {
-            collisionRender = new RenderTarget2D(Game.GraphicsDevice, o.Width, o.Height, true, SurfaceFormat.Color, DepthFormat.None);
+            collisionRender = new RenderTarget2D(Game.GraphicsDevice, o.Width, o.Height, false, SurfaceFormat.Color, DepthFormat.None);
             Game.GraphicsDevice.SetRenderTarget(collisionRender);
             Game.GraphicsDevice.Clear(ClearOptions.Target, Color.Red, 0, 0);
 
             spriteBatch.Begin();
             spriteBatch.Draw(collisionMap, new Rectangle(0, 0, o.Width, o.Height), o, Color.White);
             spriteBatch.End();
-            return collisionRender; 
+            Texture2D texture = (Texture2D) collisionRender;
+            Game.GraphicsDevice.SetRenderTarget(null); 
+            return texture; 
+
+
         }
 
         public override void Update(GameTime gameTime)

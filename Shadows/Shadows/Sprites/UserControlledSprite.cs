@@ -61,7 +61,6 @@ namespace Shadows
 
                 if (collision)
                 {
-                    Console.Write("active");
                     collision = false; 
                     return Vector2.Negate(lastDirection); 
                 }

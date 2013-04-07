@@ -86,7 +86,7 @@ namespace Shadows
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureImage, position, new Rectangle((currentFrame.X * frameSize.X) + startFrame.X, (currentFrame.Y * frameSize.Y) + startFrame.Y, frameSize.X, frameSize.Y),
-            Color.White, rotation + 89.5f, new Vector2((origin.X + 20), (origin.Y)), scale, SpriteEffects.None, 0);
+            Color.White, rotation + 89.5f, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
         }
 
         // Handles the anmiation logic by going through the spritesheet
