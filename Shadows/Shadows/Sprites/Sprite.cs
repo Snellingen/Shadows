@@ -24,7 +24,7 @@ namespace Shadows
         private int timeSinceLastFrame = 0;
         private const int defaultMillisecondsPerFrame = 90;
         public int millisecondsPerFrame { get; set; }
-        public int collisionOffset { get; set; }
+        public float collisionScale { get; set; }
         public Vector2 speed { get; set; }
         protected Vector2 position;
         public Vector2 origin = new Vector2(34, 57);
@@ -33,46 +33,39 @@ namespace Shadows
 
 
         // The collision rectangle for the sprite. 
-        public Rectangle collisionRect
-        {
-            get
-            {
-                return new Rectangle(
-                    (int)position.X + collisionOffset,
-                    (int)position.Y + collisionOffset,
-                    (frameSize.X - (collisionOffset * 2)) * (int)scale,
-                    (frameSize.Y - (collisionOffset * 2)) * (int)scale);
-            }
-        }
+        public Rectangle collisionRect;
+        
 
         // Constructors
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-            int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed)
-            : this(textureImage, position, frameSize, collisionOffset, currentFrame,
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
+            : this(textureImage, position, frameSize, collisionScale, currentFrame,
             sheetSize, speed, defaultMillisecondsPerFrame)
         {
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-         int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed, float scale)
-            : this(textureImage, position, frameSize, collisionOffset, currentFrame,
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float scale)
+            : this(textureImage, position, frameSize, collisionScale, currentFrame,
             sheetSize, speed, defaultMillisecondsPerFrame)
         {
             this.scale = scale;
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-            int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed,
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed,
             int millisecondsPerFrame)
         {
             this.textureImage = textureImage;
             this.position = position;
             this.frameSize = frameSize;
-            this.collisionOffset = collisionOffset;
             this.currentFrame = currentFrame;
             this.sheetSize = sheetSize;
             this.speed = speed;
             this.millisecondsPerFrame = millisecondsPerFrame;
+            this.collisionScale = collisionScale;
+
+            collisionRect = new Rectangle((int)position.X, (int)position.Y, (int)(frameSize.X * collisionScale), (int)(frameSize.Y * collisionScale));
         }
 
 

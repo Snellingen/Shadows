@@ -22,15 +22,15 @@ namespace Shadows
         Vector2 inverseMatrixMouse; 
 
         // Used for gamepad to store last roatation
-        float oldroation = 0;  
+        float oldroation = 0;
 
-        public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed)
-            : base (textureImage, position, frameSize, collisionOffset, currentFrame, sheetSize, speed)
+        public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
+            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed)
         {
         }
 
-        public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, int collisionOffset, Point currentFrame, Point sheetSize, Vector2 speed, int millisecondsPerFrame)
-            : base(textureImage, position, frameSize, collisionOffset, currentFrame, sheetSize, speed, millisecondsPerFrame)
+        public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, int millisecondsPerFrame)
+            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, millisecondsPerFrame)
         {
         }
 
@@ -43,6 +43,10 @@ namespace Shadows
         {
             // Moves the sprite based on direction
             MovementUpdate(gameTime);
+            collisionRect.X = (int)(position.X - (frameSize.X * collisionScale));
+            collisionRect.Y = (int)(position.Y );
+            collisionRect.Height = collisionRect.Width; 
+
             rotation = MouseRotation();
             //rotation = GamepadRotation();
 

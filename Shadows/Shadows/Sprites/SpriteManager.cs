@@ -57,7 +57,7 @@ namespace Shadows
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             line = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             line.SetData(new[] { Color.White });
-            player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), -10, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
+            player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             
             base.LoadContent();
@@ -72,9 +72,11 @@ namespace Shadows
             if(collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
                 player.Collision();
 
-            if (collisionManager.pixelPerfectCollision(new Rectangle((int)player.GetPostion.X, (int)player.GetPostion.Y, 10, 10), walls))
+            Console.WriteLine(player.collisionRect); 
+            if (collisionManager.pixelPerfectCollision(player.collisionRect, walls))
             {
-                player.Collision(); 
+                player.Collision();
+                
             }
                 
 
@@ -118,12 +120,9 @@ namespace Shadows
             // Draw player
             player.Draw(gameTime, spriteBatch);
 
-            DrawLine(line, 1, Color.Red, player.GetPostion , 1900f);
-
-            DrawLine(line, 1, Color.Red, player.GetPostion, 1000f);
-
-            
             spriteBatch.Draw(walls, Vector2.Zero, Color.White);
+
+            DrawLine(line, 1, Color.Red, player.GetPostion, 1900f);
 
             spriteBatch.End();
 
@@ -134,7 +133,7 @@ namespace Shadows
               float width, Color color, Vector2 point1, float length)
         {
             float angle = player.rotation;
-            spriteBatch.Draw(blank, point1, null, color,
+            spriteBatch.Draw(blank, point1, null, color * 0.2f,
                        angle, Vector2.Zero, new Vector2(length, width),
                        SpriteEffects.None, 0);
         }
