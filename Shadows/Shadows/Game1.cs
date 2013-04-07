@@ -35,6 +35,8 @@ namespace Shadows
 
         Camera camera;
 
+        Song song;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -104,6 +106,7 @@ namespace Shadows
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             blood = Content.Load<Texture2D>(@"World\blood");
+            song = Content.Load<Song>(@"Sound\Music\song");
         }
 
         protected override void UnloadContent()
