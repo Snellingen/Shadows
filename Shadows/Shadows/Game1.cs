@@ -106,7 +106,11 @@ namespace Shadows
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             blood = Content.Load<Texture2D>(@"World\blood");
-            song = Content.Load<Song>(@"Sound\Music\song");
+            song = Content.Load<Song>("Ambient horror track");
+
+            MediaPlayer.Play(song);
+            MediaPlayer.IsRepeating = true;
+
         }
 
         protected override void UnloadContent()

@@ -142,7 +142,7 @@
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
-    <Compile Include="Sound\Music\Ambient horror track.mp3">
+    <Compile Include="Ambient horror track.mp3">
       <Name>Ambient horror track</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
