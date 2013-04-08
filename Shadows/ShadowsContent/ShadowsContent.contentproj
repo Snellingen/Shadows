@@ -149,12 +149,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Sound\Music\song.mp3">
-      <Name>song</Name>
+    <Content Include="Sound\Music\bgMusic.mp3">
+      <Name>bgMusic</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

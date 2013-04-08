@@ -21,12 +21,27 @@ namespace Shadows
         public Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
         public float soundVolume = 1f; 
         public Song currentSong;
+        public Song bgMusic;
+        public SoundEffect zombie1;
+        public SoundEffect zombie2;
+        public SoundEffect zombie3;
+        public SoundEffect zombie4;
+        public SoundEffect zombie5;
+        public SoundEffect zombieBrain;
+        public SoundEffect zombieHit;
 
-
+        //constructor   
         public SoundManager(Game game)
             : base(game)
         {
-           
+            zombie1 = null;
+            zombie2 = null;
+            zombie3 = null;
+            zombie4 = null;
+            zombie5 = null;
+            zombieBrain = null;
+            zombieHit = null;
+            bgMusic = null;
         }
 
         public override void Initialize()
@@ -39,6 +54,7 @@ namespace Shadows
         {
             //loader lyder (soundeffects) inn i dictionaryen 
             sounds.Add(assetName, Game.Content.Load<SoundEffect>(@"Sound/Effects/"+ assetName)); 
+            
         } 
 
         // denne vil spille av en lydeffect etter hva den heter. f.eks om du har en lydeffekt i dictionaryen som heter "growl" så kan man skrive PlaySound("growl"); 

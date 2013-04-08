@@ -112,8 +112,14 @@ namespace Shadows
             blood = Content.Load<Texture2D>(@"World\blood");
             
             // LYDMANAGER
-            soundManager.LoadSound("zombie-1"); 
-
+            soundManager.LoadSound("zombie-1");
+            soundManager.LoadSound("zombie-2");
+            soundManager.LoadSound("zombie-3");
+            soundManager.LoadSound("zombie-4");
+            soundManager.LoadSound("zombie-5");
+            soundManager.LoadSound("zombie-brains");
+            soundManager.LoadSound("zombie-hit");
+            //soundManager.LoadSound("bgMusic");
         }
 
         protected override void UnloadContent()
