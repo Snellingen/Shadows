@@ -78,8 +78,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Menu\PauseScreen.cs" />
     <Compile Include="FpsViewer.cs" />
     <Compile Include="CollisionManager.cs" />
+    <Compile Include="Menu\GameScreen.cs" />
+    <Compile Include="Menu\MenuComponent.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Light\LightManager.cs" />
@@ -96,6 +99,7 @@
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteManager.cs" />
     <Compile Include="Sprites\UserControlledSprite.cs" />
+    <Compile Include="Menu\StartScreen.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

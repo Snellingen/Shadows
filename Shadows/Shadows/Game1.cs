@@ -11,19 +11,34 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
+    public enum GameState
+    {
+        Menu,
+        Playing,
+        Pause,
+        GameOver,
+        GameWin,
+    }
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        // Components
         FpsViewer fps;
+        GraphicsDeviceManager graphics;
         SpriteManager spriteManager;
         LightManager lightManager; 
         InputManager inputManager;
         CollisionManager collisionManager;
-        SoundManager soundManager; 
+        SoundManager soundManager;
+        GameScreen activeScreen;
+        StartScreen startScreen;
+        PauseScreen pauseScreen; 
+
 
         Vector2 inverseMatrixPostion;
 
@@ -35,8 +50,9 @@ namespace Shadows
         int screenHeight = 900;
 
         Camera camera;
-
-        
+        GameState gameState;
+        bool disabled;
+        bool paused; 
 
         public Game1()
         {
@@ -80,6 +96,13 @@ namespace Shadows
             Components.Add(collisionManager);
             Components.Add(soundManager); 
 
+            // Disable Components
+            spriteManager.Enabled = false;
+            lightManager.Enabled = false;
+            collisionManager.Enabled = false;
+
+            disabled = true; 
+
             // AddService
             Services.AddService(typeof(GraphicsDeviceManager), graphics);
             Services.AddService(typeof(SpriteManager), spriteManager);
@@ -89,8 +112,8 @@ namespace Shadows
             Services.AddService(typeof(SoundManager), soundManager); 
 
             // draworder 
-            fps.DrawOrder = 10;
-            inputManager.DrawOrder = 9;
+            fps.DrawOrder = 11;
+            inputManager.DrawOrder = 10;
             spriteManager.DrawOrder = 8;
             lightManager.DrawOrder = 7; 
             base.Initialize();
@@ -119,7 +142,22 @@ namespace Shadows
             soundManager.LoadSound("zombie-5");
             soundManager.LoadSound("zombie-brains");
             soundManager.LoadSound("zombie-hit");
-            //soundManager.LoadSound("bgMusic");
+            //soundManager.LoadSound("bgMusic");  // kan bare loade soundEffect, om du vil loade song så må du lag egen dictionary for songs. 
+
+            // SCREENS 
+            startScreen = new StartScreen(this, spriteBatch,  Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
+            pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
+
+            Components.Add(startScreen);
+            Components.Add(pauseScreen);
+
+            pauseScreen.DrawOrder = 9;
+            startScreen.DrawOrder = 9;
+
+            pauseScreen.Hide(); 
+            startScreen.Hide();
+            gameState = GameState.Menu; 
+            activeScreen = startScreen; 
         }
 
         protected override void UnloadContent()
@@ -132,6 +170,20 @@ namespace Shadows
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                if (!paused)
+                {
+                    gameState = GameState.Pause;
+                    paused = true; 
+                }
+                else
+                {
+                    gameState = GameState.Playing;
+                    paused = false; 
+                }
+            }
+
             camera.Update(spriteManager.GetPlayerPosition());
             spriteManager.setViewMatrix(camera.ViewMatrix);
             lightManager.setViewMatrix(camera.ViewMatrix);
@@ -140,10 +192,44 @@ namespace Shadows
             inverseMatrixPostion = Vector2.Transform(new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Matrix.Invert(camera.ViewMatrix));
             spriteManager.setInverseMatrixMosue(inverseMatrixPostion);
 
-            // BRUK AV LYDMANAGER: (LOADER I LOADCONTENT"!) 
+            // GameState Logic
+            switch (gameState)
+            {
+                case GameState.Menu:
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
-                soundManager.PlaySound("zombie-1");
+                    lightManager.Enabled = false;
+                    lightManager.Visible = false;
+                    pauseScreen.Hide();
+                    startScreen.Show(); 
+                    break; 
+
+                case GameState.Playing:
+                    if (disabled)
+                    {
+                        lightManager.Enabled = true;
+                        lightManager.Visible = true;
+                        spriteManager.Enabled = true;
+                        disabled = false;
+                    }
+
+                    pauseScreen.Hide();
+                    startScreen.Hide(); 
+
+                    break;
+
+                case GameState.Pause:
+                        startScreen.Hide();
+                        pauseScreen.Show();
+                        activeScreen = pauseScreen;
+
+                    break; 
+
+                case GameState.GameOver:
+                    break;
+ 
+                case GameState.GameWin:
+                    break; 
+            }
 
             base.Update(gameTime);
         }
