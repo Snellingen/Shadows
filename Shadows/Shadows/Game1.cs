@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
+
     public enum GameState
     {
         Menu,
@@ -19,6 +20,15 @@ namespace Shadows
         GameOver,
         GameWin,
     }
+
+    public enum Selected
+    {
+        PlayGame,
+        Continue,
+        ExitGame
+    }
+
+    public delegate void MyEventHandler(Selected selected);
 
     /// <summary>
     /// This is the main type for your game
@@ -118,9 +128,9 @@ namespace Shadows
             lightManager.DrawOrder = 7; 
             base.Initialize();
           
-
+            // Events
+            Events.MyEvent += MenuHandler;
             
-
             // ONLY REMOVE THIS IF YOU HAVE A MULTIPLE MONITOR SETUP!! ( DRAWS THE GAME ON THE SECOND MONITOR IF IN DEBUG MODE ) 
 /* #if DEBUG
             var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
@@ -162,6 +172,20 @@ namespace Shadows
 
         protected override void UnloadContent()
         {
+        }
+
+        public void MenuHandler(Selected selected)
+        {
+            switch (selected)
+            {
+                case Selected.ExitGame:
+                    this.Exit();
+                    break; 
+                case Selected.PlayGame:
+                    break;
+                case Selected.Continue:
+                    break; 
+            }
         }
 
         protected override void Update(GameTime gameTime)

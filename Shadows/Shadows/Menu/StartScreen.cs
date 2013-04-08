@@ -1,9 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+
+
+
 namespace Shadows
 {
     class StartScreen : GameScreen
@@ -37,6 +44,18 @@ namespace Shadows
         }
         public override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                if (menuComponent.SelectedIndex == 0)
+                {
+                    
+                }
+
+                else if (menuComponent.SelectedIndex == 1)
+                {
+                    Events.FireMyEvent(Selected.ExitGame);
+                }
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)

@@ -27,7 +27,6 @@ namespace Shadows
         float width = 0f;
         float height = 0f;
 
-
         public int SelectedIndex
         {
 
@@ -107,7 +106,7 @@ namespace Shadows
 
             if (CheckKey(Keys.Enter))
             {
-
+                
             }
 
             base.Update(gameTime);

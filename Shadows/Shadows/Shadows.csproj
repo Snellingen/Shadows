@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
+    <Compile Include="Events.cs" />
     <Compile Include="Menu\PauseScreen.cs" />
     <Compile Include="FpsViewer.cs" />
     <Compile Include="CollisionManager.cs" />
