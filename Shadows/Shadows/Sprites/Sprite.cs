@@ -31,6 +31,8 @@ namespace Shadows
         public float scale = 1;
         public float rotation = 0;
 
+        public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
+
 
         // The collision rectangle for the sprite. 
         public Rectangle collisionRect;
@@ -100,6 +102,24 @@ namespace Shadows
                     currentFrame.Y = 0;
                 }
             }
+        }
+
+        public void addAnimation(string name, Point startFrame, Point frameSize, Point sheetSize)
+        {
+            Point[] animation = new Point[3] { startFrame, frameSize, sheetSize };
+            animationList.Add(name, animation); 
+        }
+
+        public void playAnimation(string name, bool play, GameTime gameTime)
+        {
+            Point[] animation; 
+            animationList.TryGetValue(name, out animation);
+            this.startFrame = animation[0];
+            this.frameSize = animation[1];
+            this.sheetSize = animation[2];
+
+            if (play)
+                Animate(gameTime); 
         }
 
         public abstract Vector2 Direction
