@@ -130,16 +130,14 @@ namespace Shadows
                 Direction.Y > 1 ||
                 Direction.Y < -1)
             {
-                walk();
-                Animate(gameTime);
+                playAnimation("walk", true, gameTime); 
             }
             
             // if standing still
             if (Direction.X == 0 &&
                 Direction.Y == 0 )
             {
-                idle();
-                Animate(gameTime);
+                playAnimation("idle", true, gameTime); 
             }
         }
 
@@ -151,22 +149,6 @@ namespace Shadows
         public float speedFromLoopTime(float speed)
         {
             return speed * 60; 
-        }
-
-        // Aniamtions 
-        // Going to replace these with dictonaries, they store the animation values. 
-        public void idle()
-        {
-            startFrame = new Point(0, 0);
-            frameSize = new Point(67, 90);
-            sheetSize = new Point(1, 1);
-        }
-
-        public void walk()
-        {
-            startFrame = new Point(0, 0);
-            frameSize = new Point(67, 90);
-            sheetSize = new Point(8, 1);
         }
 
         // Set input

@@ -58,6 +58,10 @@ namespace Shadows
             line = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             line.SetData(new[] { Color.White });
             player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
+            // add player animation 
+            player.addAnimation("walk", new Point(0,0), new Point(67, 90), new Point(8, 1));
+            player.addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
+
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             
             base.LoadContent();
