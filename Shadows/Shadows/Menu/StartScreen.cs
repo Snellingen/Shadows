@@ -48,7 +48,7 @@ namespace Shadows
             {
                 if (menuComponent.SelectedIndex == 0)
                 {
-                    
+                    Events.FireMyEvent(Selected.PlayGame);
                 }
 
                 else if (menuComponent.SelectedIndex == 1)
