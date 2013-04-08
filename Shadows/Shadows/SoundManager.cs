@@ -22,18 +22,25 @@ namespace Shadows
         public float soundVolume = 1f; 
         public Song currentSong;
         public Song bgMusic;
-        public SoundEffect zombie1;
+
+        // Why? Du har jo sounds for dette? Når du brukder LoadSound(navn) largrer du sangene i song dictionary. 
+        //Skal ikke lage egne variabler for hver lyd! dobbelt lagring og det gjør at componenten ikke er dynamisk. 
+        // SLETT
+
+        /*public SoundEffect zombie1;
         public SoundEffect zombie2;
         public SoundEffect zombie3;
         public SoundEffect zombie4;
         public SoundEffect zombie5;
         public SoundEffect zombieBrain;
-        public SoundEffect zombieHit;
+        public SoundEffect zombieHit;*/
 
         //constructor   
         public SoundManager(Game game)
             : base(game)
         {
+            // SLETT
+            /*
             zombie1 = null;
             zombie2 = null;
             zombie3 = null;
@@ -41,7 +48,7 @@ namespace Shadows
             zombie5 = null;
             zombieBrain = null;
             zombieHit = null;
-            bgMusic = null;
+            bgMusic = null;*/ 
         }
 
         public override void Initialize()
