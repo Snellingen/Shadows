@@ -1,4 +1,5 @@
 Content\SpriteFont1.xnb
+Content\menuFont.xnb
 Content\2xMultiBlend.xnb
 Content\reductionEffect.xnb
 Content\resolveShadowsEffect.xnb
@@ -9,6 +10,8 @@ Content\World\House.xnb
 Content\World\ShadowHouse.xnb
 Content\World\tile.xnb
 Content\World\blood.xnb
+Content\image.xnb
+Content\Sprites\projectile.xnb
 Content\Sound\Effects\zombie-1.xnb
 Content\Sound\Effects\zombie-2.xnb
 Content\Sound\Effects\zombie-3.xnb
@@ -17,7 +20,4 @@ Content\Sound\Effects\zombie-5.xnb
 Content\Sound\Effects\zombie-brains.xnb
 Content\Sound\Effects\zombie-hit.xnb
 Content\Ambient horror track.xnb
-Content\menuFont.xnb
-Content\image.xnb
-Content\Sprites\projectile.xnb
 Content\Ambient horror track.wma
