@@ -20,6 +20,7 @@ namespace Shadows
         UserControlledSprite player;
         Texture2D line;
         Texture2D walls;
+        Texture2D block; 
         Projectile bullet; 
 
         CollisionManager collisionManager; 
@@ -59,7 +60,8 @@ namespace Shadows
 
             player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
             player.origin = new Vector2(34, 57);
-            bullet = new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, 0, new Vector2(8, 8), Color.White); 
+            bullet = new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, 0, new Vector2(8, 8), Color.White);
+            
 
 
             // add player animation 
@@ -67,6 +69,7 @@ namespace Shadows
             player.addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
 
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
+            block = Game.Content.Load<Texture2D>(@"block");
             
             base.LoadContent();
         }
@@ -111,6 +114,8 @@ namespace Shadows
 
             // Draw player
             player.Draw(spriteBatch);
+
+            spriteBatch.Draw(block, player.collisionRect, Color.White * 0.5f); 
 
             // Draw projectile
             bullet.Draw(spriteBatch);

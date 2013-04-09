@@ -43,8 +43,8 @@ namespace Shadows
         {
             // Moves the sprite based on direction
             MovementUpdate(gameTime);
-            collisionRect.X = (int)(position.X - (frameSize.X * collisionScale));
-            collisionRect.Y = (int)(position.Y );
+            collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
+            collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
             collisionRect.Height = collisionRect.Width; 
 
             rotation = MouseRotation();
