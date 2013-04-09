@@ -19,7 +19,14 @@ namespace Shadows
     {
         SpriteBatch spriteBatch;
         
-        SimpleMouse sMouse;
+        //Mouse
+        MouseState currentState, previousState;
+        public Vector2 Position { get; protected set; }
+        Texture2D pointerTexture;
+        public Rectangle Rectange { get; protected set; }
+
+        // Keyboard
+        KeyboardState oldKeyboardState;
         
         Matrix viewMatrix; 
 
@@ -37,10 +44,70 @@ namespace Shadows
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            sMouse = new SimpleMouse(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"));
+            pointerTexture = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
             base.LoadContent();
         }
 
+        // Mouse events
+        # region MouseEvents
+        // Left button pressed? 
+        public bool leftClick
+        {
+            get { return currentState.LeftButton == ButtonState.Pressed; }
+        }
+
+        // Left button pressed but now last frame? 
+        public bool NewLeftClick
+        {
+            get
+            {
+                return currentState.LeftButton == ButtonState.Pressed &&
+                    previousState.LeftButton == ButtonState.Released;
+            }
+        }
+
+        // Is the left button released? 
+        public bool ReleaseLeft
+        {
+            get { return !leftClick && previousState.LeftButton == ButtonState.Pressed; }
+        }
+
+        // Right button pressed? 
+        public bool rightClick
+        {
+            get { return currentState.RightButton == ButtonState.Pressed; }
+        }
+
+        // Right button pressed but now last frame? 
+        public bool NewRightClick
+        {
+            get
+            {
+                return currentState.RightButton == ButtonState.Pressed &&
+                    previousState.RightButton == ButtonState.Released;
+            }
+        }
+
+        // Is the Right button released? 
+        public bool ReleaseRight
+        {
+            get { return !rightClick && previousState.RightButton == ButtonState.Pressed; }
+        }
+        #endregion
+        // Keyboard events
+        #region KeyboardEvents
+
+        public bool isKeyPressed(Keys key)
+        {
+            if (Keyboard.GetState().IsKeyUp(key) && oldKeyboardState.IsKeyDown(key))
+            {
+                return true; 
+            }
+
+            return false; 
+        }
+        #endregion
+        // Camera matrice
         public void setViewMatrix(Matrix viewMatrix)
         {
             this.viewMatrix = viewMatrix; 
@@ -48,14 +115,29 @@ namespace Shadows
 
         public override void Update(GameTime gameTime)
         {
-            sMouse.Update();
+            // Mouse
+            // set both sates
+            previousState = currentState;
+            currentState = Mouse.GetState();
+
+            // store position
+            Position = new Vector2(currentState.X, currentState.Y);
+
+            // create rectangele for the mouse. 
+            Rectange = new Rectangle((int)Position.X, (int)Position.Y, pointerTexture.Width, pointerTexture.Height); 
+
             base.Update(gameTime);
+            oldKeyboardState = Keyboard.GetState(); 
         }
 
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
-            sMouse.Draw(spriteBatch);
+            //mouse
+            if (pointerTexture != null)
+            {
+                spriteBatch.Draw(pointerTexture, Position, new Rectangle(0, 0, pointerTexture.Width, pointerTexture.Height), Color.White, 0, new Vector2(pointerTexture.Width / 2, pointerTexture.Height / 2), 1f, SpriteEffects.None, 0f);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }

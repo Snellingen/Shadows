@@ -152,7 +152,8 @@ namespace Shadows
             soundManager.LoadSound("zombie-5");
             soundManager.LoadSound("zombie-brains");
             soundManager.LoadSound("zombie-hit");
-            //soundManager.LoadSound("bgMusic");  // kan bare loade soundEffect, om du vil loade song så må du lag egen dictionary for songs. 
+
+            soundManager.LoadSong("Ambient"); 
 
             // SCREENS 
             startScreen = new StartScreen(this, spriteBatch,  Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
@@ -196,12 +197,13 @@ namespace Shadows
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            if (inputManager.isKeyPressed(Keys.P))
             {
                 if (!paused)
                 {
                     gameState = GameState.Pause;
                     paused = true; 
+                    
                 }
                 else
                 {

@@ -19,36 +19,15 @@ namespace Shadows
     {
         // Her putter du atributtene (alle lydeffektene og sangene) 
         public Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
+        public Dictionary<string, Song> songs = new Dictionary<string, Song>();
         public float soundVolume = 1f; 
         public Song currentSong;
         public Song bgMusic;
-
-        // Why? Du har jo sounds for dette? Når du brukder LoadSound(navn) largrer du sangene i song dictionary. 
-        //Skal ikke lage egne variabler for hver lyd! dobbelt lagring og det gjør at componenten ikke er dynamisk. 
-        // SLETT
-
-        /*public SoundEffect zombie1;
-        public SoundEffect zombie2;
-        public SoundEffect zombie3;
-        public SoundEffect zombie4;
-        public SoundEffect zombie5;
-        public SoundEffect zombieBrain;
-        public SoundEffect zombieHit;*/
 
         //constructor   
         public SoundManager(Game game)
             : base(game)
         {
-            // SLETT
-            /*
-            zombie1 = null;
-            zombie2 = null;
-            zombie3 = null;
-            zombie4 = null;
-            zombie5 = null;
-            zombieBrain = null;
-            zombieHit = null;
-            bgMusic = null;*/ 
         }
 
         public override void Initialize()
@@ -62,14 +41,52 @@ namespace Shadows
             //loader lyder (soundeffects) inn i dictionaryen 
             sounds.Add(assetName, Game.Content.Load<SoundEffect>(@"Sound/Effects/"+ assetName)); 
             
-        } 
+        }
+
+        public void LoadSong(string assetName)
+        {
+            songs.Add(assetName, Game.Content.Load<Song>(@"Sound/Music/" + assetName)); 
+        }
+
 
         // denne vil spille av en lydeffect etter hva den heter. f.eks om du har en lydeffekt i dictionaryen som heter "growl" så kan man skrive PlaySound("growl"); 
         public void PlaySound(string name)
         {
              SoundEffect effect; 
-            if (sounds.TryGetValue(name, out effect)); // Henter verdien fra dictonary ut i fra navnet på lyden som er lagret
+            if (sounds.TryGetValue(name, out effect)) // Henter verdien fra dictonary ut i fra navnet på lyden som er lagret
                 effect.Play(soundVolume,  0f, 0f); // soundvolme sier seg selv, 0f la være(pitch), 0f la være(pan)
+        }
+
+        public void PlaySong(string name)
+        {
+            Song song;
+            if (songs.TryGetValue(name, out song))
+            {
+                MediaPlayer.Play(song);
+                currentSong = song; 
+            }
+        }
+
+        public void PauseSong()
+        {
+            if (currentSong != null)
+                MediaPlayer.Pause();
+        }
+
+        public void StopSong()
+        {
+            if (currentSong != null)
+                MediaPlayer.Stop(); 
+        }
+        
+        public void setVolumeEffects(float volume)
+        {
+            soundVolume = volume; 
+        }
+
+        public void setVolumeMediaPlayer(float volume)
+        {
+            MediaPlayer.Volume = volume; 
         }
 
         public override void Update(GameTime gameTime)

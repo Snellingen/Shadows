@@ -28,7 +28,6 @@ namespace Shadows
         LightSource light;
         LightSource light2;
         LightSource light3;
-        LightSource light4;
         ShadowMapResolver shadowmapResolver; // Processes the lightmap with the lights
         ShadowCasterMap shadowMap; // for shadowmap 
         LightsFX lightsFX; // For different light effects

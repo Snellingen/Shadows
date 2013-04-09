@@ -16,6 +16,7 @@ namespace Shadows
     class StartScreen : GameScreen
     {
         MenuComponent menuComponent;
+
         Texture2D image;
         Rectangle imageRectangle;
         public int SelectedIndex
