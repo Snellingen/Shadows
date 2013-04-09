@@ -47,6 +47,12 @@ namespace Shadows
             collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
             collisionRect.Height = collisionRect.Width; 
 
+            // collision ahead
+
+            collisionRect.X += (int) ((Direction.X / (speed.X * 2)) * collisionScale);
+            collisionRect.Y += (int) ((Direction.Y / (speed.Y * 2)) * collisionScale);
+
+
             rotation = MouseRotation();
             //rotation = GamepadRotation();
 
@@ -66,7 +72,7 @@ namespace Shadows
                 if (collision)
                 {
                     collision = false; 
-                    return Vector2.Negate(lastDirection); 
+                    return Vector2.Zero; 
                 }
                 else
                 if (Keyboard.GetState().IsKeyDown(keyLeft))
