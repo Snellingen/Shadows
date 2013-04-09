@@ -182,8 +182,10 @@ namespace Shadows
                     this.Exit();
                     break; 
                 case Selected.PlayGame:
+                    gameState = GameState.Playing; 
                     break;
                 case Selected.Continue:
+                    gameState = GameState.Playing;
                     break; 
             }
         }

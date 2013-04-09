@@ -20,6 +20,7 @@ namespace Shadows
         UserControlledSprite player;
         Texture2D line;
         Texture2D walls;
+        Projectile bullet; 
 
         CollisionManager collisionManager; 
         
@@ -47,8 +48,6 @@ namespace Shadows
         public override void Initialize()
         {
             collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
-
-            ResetSpawnTime();
             base.Initialize();
         }
 
@@ -57,7 +56,12 @@ namespace Shadows
             spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             line = new Texture2D(GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             line.SetData(new[] { Color.White });
+
             player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
+            player.origin = new Vector2(34, 57);
+            bullet = new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, 0, new Vector2(8, 8), Color.White); 
+
+
             // add player animation 
             player.addAnimation("walk", new Point(0,0), new Point(67, 90), new Point(8, 1));
             player.addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
@@ -82,29 +86,13 @@ namespace Shadows
                 player.Collision();
                 
             }
+
+            bullet.Update(gameTime, collisionManager.clientRectangle);
                 
 
             player.setInverseMatrixMouse(inverseMatrixMosue);
             player.Update(gameTime, Game.Window.ClientBounds);
             base.Update(gameTime);
-        }
-
-        public void UpdateSprites(GameTime gameTime)
-        {
-        }
-
-        public void worldCollision()
-        {
-            
-        }
-
-
-        public void SpawnEnemy()
-        { 
-        }
-
-        public void ResetSpawnTime()
-        {
         }
 
         public void setViewMatrix(Matrix viewMatrix)
@@ -122,7 +110,10 @@ namespace Shadows
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
 
             // Draw player
-            player.Draw(gameTime, spriteBatch);
+            player.Draw(spriteBatch);
+
+            // Draw projectile
+            bullet.Draw(spriteBatch);
 
             spriteBatch.Draw(walls, Vector2.Zero, Color.White);
 

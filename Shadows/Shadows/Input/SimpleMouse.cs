@@ -81,9 +81,6 @@ namespace Shadows
             Rectange = new Rectangle((int)Position.X, (int)Position.Y, texture.Width, texture.Height); 
         }
 
-       
-
-
         public void Draw(SpriteBatch spriteBatch)
         {
             // only draw if texture is not empty.

@@ -27,7 +27,7 @@ namespace Shadows
         public float collisionScale { get; set; }
         public Vector2 speed { get; set; }
         protected Vector2 position;
-        public Vector2 origin = new Vector2(34, 57);
+        public Vector2 origin = Vector2.Zero;
         public float scale = 1;
         public float rotation = 0;
 
@@ -75,10 +75,24 @@ namespace Shadows
 
         public virtual void Update(GameTime gameTime, Rectangle clientBounds)
         {
-
+            
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        // Simple out of bound check ( not collision based )
+        public bool IsOutOfBounds(Rectangle clientRectangle)
+        {
+            if (position.X < -frameSize.X ||
+                position.X > clientRectangle.Width ||
+                position.Y < -frameSize.Y ||
+                position.Y > clientRectangle.Height)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureImage, position, new Rectangle((currentFrame.X * frameSize.X) + startFrame.X, (currentFrame.Y * frameSize.Y) + startFrame.Y, frameSize.X, frameSize.Y),
             Color.White, rotation + 89.5f, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
