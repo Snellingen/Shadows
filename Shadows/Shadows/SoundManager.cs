@@ -22,7 +22,6 @@ namespace Shadows
         public Dictionary<string, Song> songs = new Dictionary<string, Song>();
         public float soundVolume = 1f; 
         public Song currentSong;
-        public Song bgMusic;
 
         //constructor   
         public SoundManager(Game game)
