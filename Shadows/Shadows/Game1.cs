@@ -74,7 +74,7 @@ namespace Shadows
             graphics.IsFullScreen = false;
 
             //AA 
-            graphics.PreferMultiSampling = true;
+            graphics.PreferMultiSampling = false;
             //IsMouseVisible = true;
             /*Unlimited FPS :) */
             this.TargetElapsedTime = TimeSpan.FromSeconds(1.0f / 100.0f);

@@ -30,6 +30,7 @@ namespace Shadows
         public Vector2 origin = Vector2.Zero;
         public float scale = 1;
         public float rotation = 0;
+        public float rotationOffset = 0;
 
         public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
 
@@ -95,7 +96,7 @@ namespace Shadows
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureImage, position, new Rectangle((currentFrame.X * frameSize.X) + startFrame.X, (currentFrame.Y * frameSize.Y) + startFrame.Y, frameSize.X, frameSize.Y),
-            Color.White, rotation + 89.5f, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
+            Color.White, rotation + rotationOffset, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
         }
 
         // Handles the anmiation logic by going through the spritesheet

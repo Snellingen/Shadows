@@ -21,7 +21,8 @@ namespace Shadows
         Texture2D line;
         Texture2D walls;
         Texture2D block; 
-        Projectile bullet;
+        
+        List<Projectile> bullets = new List<Projectile>();
 
 
         SoundManager sound; 
@@ -66,13 +67,11 @@ namespace Shadows
 
             player = new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), new Vector2(100, 100), new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6));
             player.origin = new Vector2(34, 57);
-            bullet = new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, 0, new Vector2(8, 8), Color.White);
             
-
-
             // add player animation 
             player.addAnimation("walk", new Point(0,0), new Point(67, 90), new Point(8, 1));
-            player.addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
+            player.addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1));
+            player.rotationOffset = 89.5f;
 
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             block = Game.Content.Load<Texture2D>(@"block");
@@ -98,8 +97,15 @@ namespace Shadows
 
             PlayerSound();
 
-            bullet.Update(gameTime, collisionManager.clientRectangle);
-                
+            if(input.leftClick)
+               bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, new Vector2(1000, 1000), player.rotation));
+
+            foreach (Projectile bullet in bullets)
+            {
+               
+                bullet.Update(gameTime, collisionManager.clientRectangle);
+            }
+            
 
             player.setInverseMatrixMouse(inverseMatrixMosue);
             player.Update(gameTime, Game.Window.ClientBounds);
@@ -144,7 +150,9 @@ namespace Shadows
             spriteBatch.Draw(block, player.collisionRect, Color.White * 0.5f); 
 
             // Draw projectile
-            bullet.Draw(spriteBatch);
+            foreach (Projectile bullet in bullets){ 
+                  bullet.Draw(spriteBatch);
+            }
 
             spriteBatch.Draw(walls, Vector2.Zero, Color.White);
 

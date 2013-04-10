@@ -12,6 +12,8 @@ Content\World\tile.xnb
 Content\World\blood.xnb
 Content\image.xnb
 Content\Sprites\projectile.xnb
+Content\Sprites\green.xnb
+Content\block.xnb
 Content\Sound\Effects\zombie-1.xnb
 Content\Sound\Effects\zombie-2.xnb
 Content\Sound\Effects\zombie-3.xnb
@@ -19,9 +21,7 @@ Content\Sound\Effects\zombie-4.xnb
 Content\Sound\Effects\zombie-5.xnb
 Content\Sound\Effects\zombie-brains.xnb
 Content\Sound\Effects\zombie-hit.xnb
-Content\Sprites\green.xnb
-Content\Sound\Music\Ambient.xnb
-Content\block.xnb
 Content\Sound\Effects\run-loop.xnb
 Content\Sound\Effects\shot.xnb
+Content\Sound\Music\Ambient.xnb
 Content\Sound\Music\Ambient.wma
