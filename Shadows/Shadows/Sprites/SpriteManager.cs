@@ -20,10 +20,10 @@ namespace Shadows
         UserControlledSprite player;
         Texture2D line;
         Texture2D walls;
-        Texture2D block; 
+        Texture2D block;
         
         List<Projectile> bullets = new List<Projectile>();
-
+        float time; 
 
         SoundManager sound; 
         CollisionManager collisionManager;
@@ -97,8 +97,15 @@ namespace Shadows
 
             PlayerSound();
 
-            if(input.leftClick)
-               bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, new Vector2(1000, 1000), player.rotation));
+            if (input.leftClick)
+            {
+                time -= gameTime.ElapsedGameTime.Milliseconds;
+                if (time < 0)
+                {
+                    bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, new Vector2(400, 400), player.rotation));
+                    time = 100f;
+                }
+            }
 
             for (int i = 0; i < bullets.Count; i++)
             {
@@ -151,7 +158,12 @@ namespace Shadows
             // Draw player
             player.Draw(spriteBatch);
 
-            spriteBatch.Draw(block, player.collisionRect, Color.White * 0.5f); 
+            spriteBatch.Draw(block, player.collisionRect, Color.White * 0.5f);
+
+            foreach (Projectile bullet in bullets)
+            {
+                spriteBatch.Draw(block, bullet.collisionRect, Color.White * 0.5f); 
+            }
 
             // Draw projectile
             foreach (Projectile bullet in bullets){ 

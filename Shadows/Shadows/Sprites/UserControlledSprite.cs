@@ -19,8 +19,7 @@ namespace Shadows
 
         public bool collision = false;
         public bool isWalking = false;
-        public bool wasWalking = false; 
-
+        public bool wasWalking = false;
 
         Vector2 inverseMatrixMouse; 
 
@@ -40,6 +39,22 @@ namespace Shadows
         public void setInverseMatrixMouse(Vector2 pos)
         {
             this.inverseMatrixMouse = pos; 
+        }
+
+        public bool circlesColliding(int x1,int y1,int radius1,int x2,int y2,int radius2)
+        {
+            //compare the distance to combined radii
+            int dx = x2 - x1;
+            int dy = y2 - y1;
+            int radii = radius1 + radius2;
+            if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override void Update(GameTime gameTime, Rectangle clientBounds)

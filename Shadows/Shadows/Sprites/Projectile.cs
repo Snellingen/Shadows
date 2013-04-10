@@ -13,14 +13,17 @@ namespace Shadows
         public Projectile(Texture2D textureImage, Vector2 startPosition, Vector2 speed, float rotation)
             : base(textureImage, startPosition, new Point(textureImage.Width, textureImage.Height), 1f, new Point(0, 0), new Point(0, 0), speed)
         {
-            this.rotation = rotation; 
+            this.rotation = rotation;
+            collisionRect.Width = 10;
+            collisionRect.Height = 10; 
         }
 
         public override void Update(GameTime gameTime, Rectangle clientBounds)
         {
             position += aimVector(rotation) * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            collisionRect.X = (int)position.X;
-            collisionRect.Y = (int)position.Y; 
+            origin = new Vector2(frameSize.X / 2, frameSize.Y);
+            collisionRect.X = (int)(position.X - frameSize.X / 6 );
+            collisionRect.Y = (int)(position.Y + frameSize.Y * 5); 
             base.Update(gameTime, clientBounds);
         }
 
