@@ -28,6 +28,7 @@ namespace Shadows
         LightSource light;
         LightSource light2;
         LightSource light3;
+
         ShadowMapResolver shadowmapResolver; // Processes the lightmap with the lights
         ShadowCasterMap shadowMap; // for shadowmap 
         LightsFX lightsFX; // For different light effects
@@ -54,11 +55,12 @@ namespace Shadows
                Game.Content.Load<Effect>("resolveShadowsEffect"),
                Game.Content.Load<Effect>("reductionEffect"),
                Game.Content.Load<Effect>("2xMultiBlend"));
-            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 600);
-            light = new LightSource(graphics, 600, LightAreaQuality.Low, Color.White);
-            light2 = new LightSource(graphics, 800, LightAreaQuality.Low, Color.Red);
-            light3 = new LightSource(graphics, 800, LightAreaQuality.Low, Color.Orange);
-            shadowMap = new ShadowCasterMap(PrecisionSettings.Low, graphics, this.spriteBatch);
+            shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 200);
+            light = new LightSource(graphics, 300, LightAreaQuality.VeryLow, Color.Wheat);
+            light2 = new LightSource(graphics, 600, LightAreaQuality.Low, Color.Orange);
+            light3 = new LightSource(graphics, 500, LightAreaQuality.Low, Color.SeaGreen);
+
+            shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
             lightPosition = spriteManager.GetPlayerPosition(); // light positon = player positon 
             screenLights = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             //screenGround = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);

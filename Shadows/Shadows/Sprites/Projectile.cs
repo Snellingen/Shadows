@@ -19,7 +19,8 @@ namespace Shadows
         public override void Update(GameTime gameTime, Rectangle clientBounds)
         {
             position += aimVector(rotation) * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            collisionRect.X = (int)position.X;
+            collisionRect.Y = (int)position.Y; 
             base.Update(gameTime, clientBounds);
         }
 

@@ -100,10 +100,14 @@ namespace Shadows
             if(input.leftClick)
                bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, new Vector2(1000, 1000), player.rotation));
 
-            foreach (Projectile bullet in bullets)
+            for (int i = 0; i < bullets.Count; i++)
             {
-               
-                bullet.Update(gameTime, collisionManager.clientRectangle);
+                bullets[i].Update(gameTime, collisionManager.clientRectangle);
+
+                if(collisionManager.IsOutOfBounds(bullets[i].GetPostion, player.frameSize) ||
+                    collisionManager.pixelPerfectCollision(bullets[i].collisionRect, walls))
+                    bullets.RemoveAt(i);
+                    
             }
             
 
