@@ -127,6 +127,20 @@ namespace Shadows
             spriteManager.DrawOrder = 8;
             lightManager.DrawOrder = 7; 
             base.Initialize();
+
+            // LYDMANAGER
+            soundManager.LoadSound("zombie-1", false);
+            soundManager.LoadSound("zombie-2", false);
+            soundManager.LoadSound("zombie-3", false);
+            soundManager.LoadSound("zombie-4", false);
+            soundManager.LoadSound("zombie-5", false);
+            soundManager.LoadSound("zombie-brains", false);
+            soundManager.LoadSound("zombie-hit", false);
+
+            soundManager.LoadSound("run-loop", true);
+
+            soundManager.LoadSong("Ambient");
+            soundManager.PlaySong("Ambient");
           
             // Events
             Events.MyEvent += MenuHandler;
@@ -143,18 +157,7 @@ namespace Shadows
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             blood = Content.Load<Texture2D>(@"World\blood");
-            
-            // LYDMANAGER
-            soundManager.LoadSound("zombie-1");
-            soundManager.LoadSound("zombie-2");
-            soundManager.LoadSound("zombie-3");
-            soundManager.LoadSound("zombie-4");
-            soundManager.LoadSound("zombie-5");
-            soundManager.LoadSound("zombie-brains");
-            soundManager.LoadSound("zombie-hit");
-
-            soundManager.LoadSong("Ambient"); 
-
+     
             // SCREENS 
             startScreen = new StartScreen(this, spriteBatch,  Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
             pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));

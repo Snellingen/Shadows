@@ -21,8 +21,10 @@ namespace Shadows
         Texture2D line;
         Texture2D walls;
         Texture2D block; 
-        Projectile bullet; 
+        Projectile bullet;
 
+
+        SoundManager sound; 
         CollisionManager collisionManager; 
         
 
@@ -49,6 +51,8 @@ namespace Shadows
         public override void Initialize()
         {
             collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
+            sound = (SoundManager)Game.Services.GetService(typeof(SoundManager)); 
+
             base.Initialize();
         }
 
@@ -80,15 +84,19 @@ namespace Shadows
 
             // Update Play
 
-            if(collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
-                player.Collision();
+            if (collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
+            {
 
+            }
+
+            playerWalking();
 
             if (collisionManager.pixelPerfectCollision(player.collisionRect, walls))
             {
                 player.Collision();
-                
             }
+
+            //playerWalking(); 
 
             bullet.Update(gameTime, collisionManager.clientRectangle);
                 
@@ -96,6 +104,19 @@ namespace Shadows
             player.setInverseMatrixMouse(inverseMatrixMosue);
             player.Update(gameTime, Game.Window.ClientBounds);
             base.Update(gameTime);
+        }
+
+        public void playerWalking()
+        {
+            if (!player.wasWalking)
+            {
+                sound.StopSoundLoop("run-loop");
+            }
+
+            if (player.wasWalking)
+            {
+                sound.PlaySoundLoop("run-loop");
+            }
         }
 
         public void setViewMatrix(Matrix viewMatrix)

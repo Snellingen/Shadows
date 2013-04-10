@@ -20,9 +20,10 @@ namespace Shadows
         // Her putter du atributtene (alle lydeffektene og sangene) 
         public Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
         public Dictionary<string, Song> songs = new Dictionary<string, Song>();
+        public Dictionary<string, SoundEffectInstance> effectSounds = new Dictionary<string, SoundEffectInstance>();
+
         public float soundVolume = 1f; 
         public Song currentSong;
-
         //constructor   
         public SoundManager(Game game)
             : base(game)
@@ -31,20 +32,25 @@ namespace Shadows
 
         public override void Initialize()
         {
-
             base.Initialize();
         }
 
-        public void LoadSound(string assetName)
+        public void LoadSound(string assetName, bool createSoundEffectInstance)
         {
             //loader lyder (soundeffects) inn i dictionaryen 
-            sounds.Add(assetName, Game.Content.Load<SoundEffect>(@"Sound/Effects/"+ assetName)); 
+            SoundEffect sound = Game.Content.Load<SoundEffect>(@"Sound/Effects/"+ assetName);
+
+             if (createSoundEffectInstance)
+                 effectSounds.Add(assetName, sound.CreateInstance()); 
+
+            sounds.Add(assetName, sound); 
             
         }
 
-        public void LoadSong(string assetName)
+        public void LoadSong(string assetName )
         {
-            songs.Add(assetName, Game.Content.Load<Song>(@"Sound/Music/" + assetName)); 
+            songs.Add(assetName, Game.Content.Load<Song>(@"Sound/Music/" + assetName));
+            
         }
 
 
@@ -54,6 +60,26 @@ namespace Shadows
              SoundEffect effect; 
             if (sounds.TryGetValue(name, out effect)) // Henter verdien fra dictonary ut i fra navnet på lyden som er lagret
                 effect.Play(soundVolume,  0f, 0f); // soundvolme sier seg selv, 0f la være(pitch), 0f la være(pan)
+        }
+
+        public void PlaySoundLoop(string name)
+        {
+            SoundEffectInstance instance;
+            if (effectSounds.TryGetValue(name, out instance))
+            {
+                if(!instance.IsLooped)
+                instance.IsLooped = true;
+                instance.Play(); 
+            }
+        }
+
+        public void StopSoundLoop(string name)
+        {
+            SoundEffectInstance instance;
+            if (effectSounds.TryGetValue(name, out instance))
+            { 
+                instance.Stop();
+            }
         }
 
         public void PlaySong(string name)

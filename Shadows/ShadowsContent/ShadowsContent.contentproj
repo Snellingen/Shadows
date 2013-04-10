@@ -176,8 +176,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Sound\Effects\run-loop-02.wav">
-      <Name>run-loop-02</Name>
+    <Compile Include="Sound\Effects\run-loop.wav">
+      <Name>run-loop</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>

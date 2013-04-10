@@ -17,7 +17,10 @@ namespace Shadows
         public Keys keyRoll = Keys.LeftControl;
         public Keys keyJump = Keys.Space;
 
-        bool collision = false; 
+        public bool collision = false;
+        public bool isWalking = false;
+        public bool wasWalking = false; 
+
 
         Vector2 inverseMatrixMouse; 
 
@@ -25,7 +28,7 @@ namespace Shadows
         float oldroation = 0;
 
         public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
-            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed)
+            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed )
         {
         }
 
@@ -49,9 +52,8 @@ namespace Shadows
 
             // collision ahead
 
-            collisionRect.X += (int) ((Direction.X / (speed.X * 2)) * collisionScale);
-            collisionRect.Y += (int) ((Direction.Y / (speed.Y * 2)) * collisionScale);
-
+            collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
+            collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
 
             rotation = MouseRotation();
             //rotation = GamepadRotation();
@@ -71,8 +73,8 @@ namespace Shadows
 
                 if (collision)
                 {
-                    collision = false; 
-                    return Vector2.Zero; 
+                    collision = false;
+                    return inputDirection;
                 }
                 else
                 if (Keyboard.GetState().IsKeyDown(keyLeft))
@@ -136,14 +138,24 @@ namespace Shadows
                 Direction.Y > 1 ||
                 Direction.Y < -1)
             {
-                playAnimation("walk", true, gameTime); 
+                playAnimation("walk", true, gameTime);
+                if (!isWalking)
+                {
+                    wasWalking = true;
+                }
+                isWalking = true;
             }
             
             // if standing still
             if (Direction.X == 0 &&
                 Direction.Y == 0 )
             {
-                playAnimation("idle", true, gameTime); 
+                playAnimation("idle", true, gameTime);
+                if (isWalking)
+                {
+                    wasWalking = false;
+                }
+                isWalking = false;
             }
         }
 
