@@ -136,6 +136,7 @@ namespace Shadows
             soundManager.LoadSound("zombie-5", false);
             soundManager.LoadSound("zombie-brains", false);
             soundManager.LoadSound("zombie-hit", false);
+            soundManager.LoadSound("shot", false); 
 
             soundManager.LoadSound("run-loop", true);
 
@@ -199,6 +200,8 @@ namespace Shadows
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+
+            soundManager.setGameTime(gameTime); 
 
             if (inputManager.isKeyPressed(Keys.P))
             {

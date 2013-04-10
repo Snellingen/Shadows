@@ -24,6 +24,10 @@ namespace Shadows
 
         public float soundVolume = 1f; 
         public Song currentSong;
+
+        float time = 0f;
+        GameTime gameTime; 
+
         //constructor   
         public SoundManager(Game game)
             : base(game)
@@ -33,6 +37,11 @@ namespace Shadows
         public override void Initialize()
         {
             base.Initialize();
+        }
+
+        public void setGameTime(GameTime gameTime)
+        {
+            this.gameTime = gameTime;
         }
 
         public void LoadSound(string assetName, bool createSoundEffectInstance)
@@ -60,6 +69,17 @@ namespace Shadows
              SoundEffect effect; 
             if (sounds.TryGetValue(name, out effect)) // Henter verdien fra dictonary ut i fra navnet på lyden som er lagret
                 effect.Play(soundVolume,  0f, 0f); // soundvolme sier seg selv, 0f la være(pitch), 0f la være(pan)
+        }
+
+        public void PlaySoundContinuously(string name, float miliseconds)
+        {
+            time -= gameTime.ElapsedGameTime.Milliseconds;
+            if (time < 0)
+            {
+                PlaySound(name);
+                this.time = miliseconds; 
+            }
+            
         }
 
         public void PlaySoundLoop(string name)

@@ -25,7 +25,8 @@ namespace Shadows
 
 
         SoundManager sound; 
-        CollisionManager collisionManager; 
+        CollisionManager collisionManager;
+        InputManager input; 
         
 
         Matrix viewMatrix;
@@ -51,7 +52,8 @@ namespace Shadows
         public override void Initialize()
         {
             collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
-            sound = (SoundManager)Game.Services.GetService(typeof(SoundManager)); 
+            sound = (SoundManager)Game.Services.GetService(typeof(SoundManager));
+            input = (InputManager)Game.Services.GetService(typeof(InputManager)); 
 
             base.Initialize();
         }
@@ -89,14 +91,12 @@ namespace Shadows
 
             }
 
-            playerWalking();
-
             if (collisionManager.pixelPerfectCollision(player.collisionRect, walls))
             {
                 player.Collision();
             }
 
-            //playerWalking(); 
+            PlayerSound();
 
             bullet.Update(gameTime, collisionManager.clientRectangle);
                 
@@ -106,7 +106,7 @@ namespace Shadows
             base.Update(gameTime);
         }
 
-        public void playerWalking()
+        public void PlayerSound()
         {
             if (!player.wasWalking)
             {
@@ -116,6 +116,11 @@ namespace Shadows
             if (player.wasWalking)
             {
                 sound.PlaySoundLoop("run-loop");
+            }
+
+            if (input.leftClick)
+            {
+                sound.PlaySoundContinuously("shot", 100f);
             }
         }
 
