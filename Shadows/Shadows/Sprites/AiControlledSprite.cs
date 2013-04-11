@@ -74,6 +74,16 @@ namespace Shadows
             enemyAngle = angle; 
         }
 
+        public float MouseRotation()
+        {
+            Vector2 pos = inverseMatrixMouse;
+
+            // substracts the position of the player so that the rotation will be correct according to the player position. 
+            pos -= position;
+            // return the rotation value based on the mouse position. 
+            return (float)Math.Atan2(pos.Y, pos.X);
+        }
+
         public Vector2 aimVector(float angle)
         {
             return new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
