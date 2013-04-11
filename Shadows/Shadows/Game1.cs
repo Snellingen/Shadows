@@ -140,6 +140,7 @@ namespace Shadows
 
             soundManager.LoadSound("run-loop", true);
 
+            soundManager.LoadSong("Cold");
             soundManager.LoadSong("Ambient");
             soundManager.PlaySong("Ambient");
           
