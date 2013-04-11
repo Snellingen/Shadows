@@ -27,7 +27,7 @@ namespace Shadows
         Texture2D image)
             : base(game, spriteBatch)
         {
-            string[] menuItems = { "Continue", "End Game" };
+            string[] menuItems = { "Continue", "End Game", "Next Song" };
             menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
             Components.Add(menuComponent);
             this.image = image;
@@ -50,6 +50,11 @@ namespace Shadows
                 {
                     Events.FireMyEvent(Selected.ExitGame);
                 }
+                else if (menuComponent.SelectedIndex == 2)
+                {
+                    Events.FireMyEvent(Selected.NextSong);
+                }
+
             }
             base.Update(gameTime);
         }

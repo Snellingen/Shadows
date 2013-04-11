@@ -25,7 +25,8 @@ namespace Shadows
     {
         PlayGame,
         Continue,
-        ExitGame
+        ExitGame,
+        NextSong
     }
 
     public delegate void MyEventHandler(Selected selected);
@@ -140,9 +141,9 @@ namespace Shadows
 
             soundManager.TryLoadSound("run-loop", true);
 
-            //soundManager.LoadSong("Cold");
+            soundManager.TryLoadSong("Cold");
             soundManager.TryLoadSong("Ambient");
-            soundManager.PlaySong("Ambient");
+            soundManager.PlaySong(0);
           
             // Events
             Events.MyEvent += MenuHandler;

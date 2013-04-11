@@ -19,14 +19,14 @@ namespace Shadows
     {
         // Her putter du atributtene (alle lydeffektene og sangene) 
         public Dictionary<string, SoundEffect> sounds = new Dictionary<string, SoundEffect>();
-        public Dictionary<string, Song> songs = new Dictionary<string, Song>();
+        public List<Song> songs = new List<Song>();
         public Dictionary<string, SoundEffectInstance> effectSounds = new Dictionary<string, SoundEffectInstance>();
 
-        public float soundVolume = 1f; 
-        public Song currentSong;
+        public float soundVolume = 1f;
+        public int currentSong = -1;
 
         float time = 0f;
-        GameTime gameTime; 
+        GameTime gameTime;
 
         //constructor   
         public SoundManager(Game game)
@@ -47,28 +47,28 @@ namespace Shadows
         public void TryLoadSound(string assetName, bool createSoundEffectInstance)
         {
             //loader lyder (soundeffects) inn i dictionaryen 
-            SoundEffect sound = Game.Content.Load<SoundEffect>(@"Sound/Effects/"+ assetName);
+            SoundEffect sound = Game.Content.Load<SoundEffect>(@"Sound/Effects/" + assetName);
 
-             if (createSoundEffectInstance)
-                 effectSounds.Add(assetName, sound.CreateInstance()); 
+            if (createSoundEffectInstance)
+                effectSounds.Add(assetName, sound.CreateInstance());
 
-            sounds.Add(assetName, sound); 
-            
+            sounds.Add(assetName, sound);
+
         }
 
-        public void TryLoadSong(string assetName )
+        public void TryLoadSong(string assetName)
         {
-            songs.Add(assetName, Game.Content.Load<Song>(@"Sound/Music/" + assetName));
-            
+            songs.Add(Game.Content.Load<Song>(@"Sound/Music/" + assetName));
+
         }
 
 
         // denne vil spille av en lydeffect etter hva den heter. f.eks om du har en lydeffekt i dictionaryen som heter "growl" så kan man skrive PlaySound("growl"); 
         public void PlaySound(string name)
         {
-             SoundEffect effect; 
+            SoundEffect effect;
             if (sounds.TryGetValue(name, out effect)) // Henter verdien fra dictonary ut i fra navnet på lyden som er lagret
-                effect.Play(soundVolume,  0f, 0f); // soundvolme sier seg selv, 0f la være(pitch), 0f la være(pan)
+                effect.Play(soundVolume, 0f, 0f); // soundvolme sier seg selv, 0f la være(pitch), 0f la være(pan)
         }
 
         public void PlaySoundContinuously(string name, float miliseconds)
@@ -77,9 +77,9 @@ namespace Shadows
             if (time < 0)
             {
                 PlaySound(name);
-                this.time = miliseconds; 
+                this.time = miliseconds;
             }
-            
+
         }
 
         public void PlaySoundLoop(string name)
@@ -87,9 +87,9 @@ namespace Shadows
             SoundEffectInstance instance;
             if (effectSounds.TryGetValue(name, out instance))
             {
-                if(!instance.IsLooped)
-                instance.IsLooped = true;
-                instance.Play(); 
+                if (!instance.IsLooped)
+                    instance.IsLooped = true;
+                instance.Play();
             }
         }
 
@@ -97,41 +97,55 @@ namespace Shadows
         {
             SoundEffectInstance instance;
             if (effectSounds.TryGetValue(name, out instance))
-            { 
+            {
                 instance.Stop();
             }
         }
 
-        public void PlaySong(string name)
+        public void PlaySong(int track)
         {
-            Song song;
-            if (songs.TryGetValue(name, out song))
-            {
-                MediaPlayer.Play(song);
-                currentSong = song; 
-            }
+            MediaPlayer.Play(songs[track]);
+            currentSong = track;
         }
 
         public void PauseSong()
         {
-            if (currentSong != null)
+            if (currentSong != -1)
                 MediaPlayer.Pause();
+        }
+
+        public void NextSong()
+        {
+
+            if (songs.Count - 1 != currentSong)
+            {
+                currentSong++;
+                Console.WriteLine("current " + (currentSong) + " list: " + songs.Count);
+                MediaPlayer.Play(songs[currentSong]);
+
+            }
+            else
+            {
+                Console.WriteLine("else current " + (currentSong) + " list: " + songs.Count);
+                MediaPlayer.Play(songs[0]);
+                currentSong = 0;
+            }
         }
 
         public void StopSong()
         {
-            if (currentSong != null)
-                MediaPlayer.Stop(); 
+            if (currentSong != -1)
+                MediaPlayer.Stop();
         }
-        
+
         public void setVolumeEffects(float volume)
         {
-            soundVolume = volume; 
+            soundVolume = volume;
         }
 
         public void setVolumeMediaPlayer(float volume)
         {
-            MediaPlayer.Volume = volume; 
+            MediaPlayer.Volume = volume;
         }
 
         public override void Update(GameTime gameTime)
