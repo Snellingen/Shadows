@@ -17,12 +17,14 @@ namespace Shadows
         Texture2D miniMap { get; protected set; }
         Vector2 playerSpawn { get; protected set; }
         List<Vector2> zombieSpawns = new List<Vector2>();
+        Rectangle winZone { get; protected set; }
 
 
-        public Level (Texture2D map, Texture2D miniMap, Vector2 playerSpawn){
+        public Level (Texture2D map, Texture2D miniMap, Vector2 playerSpawn, Rectangle winZone){
             this.map = map;
             this.miniMap = miniMap;
             this.playerSpawn = playerSpawn;
+            this.winZone = winZone;
         }
 
         public void addZombie(Vector2[] array)
