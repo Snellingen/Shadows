@@ -26,6 +26,7 @@ namespace Shadows
         List<Level> levels = new List<Level>();
 
         Level currentLevel;
+        int lvlNr;
 
         Texture2D line;
         DrawData dot;
@@ -62,8 +63,16 @@ namespace Shadows
 
         public void setCurrentLevel(int nr)
         {
-            if (nr <= levels.Count )
-                currentLevel = levels[nr-1]; 
+            if (nr <= levels.Count)
+            {
+                currentLevel = levels[nr - 1];
+                lvlNr = nr; 
+            }
+        }
+
+        public int getCurrentLevel()
+        {
+            return lvlNr;
         }
 
         public Vector2 GetPlayerPosition(int playerIndex)

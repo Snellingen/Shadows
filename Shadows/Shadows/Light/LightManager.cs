@@ -20,14 +20,15 @@ namespace Shadows
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteManager spriteManager;
-        Matrix viewMatrix; 
+        Matrix viewMatrix;
 
         //LIGHT 
         Texture2D shadowHouseTexture; 
         Vector2 lightPosition;
-        LightSource light;
-        LightSource light2;
-        LightSource light3;
+
+        List<LightSource> lights = new List<LightSource>();
+        List<Vector2> lightPositions = new List<Vector2>();
+        LightSource playerLight;
 
         public int lightMapTexture;
 
@@ -44,7 +45,6 @@ namespace Shadows
             this.graphics = graphics; 
         }
 
-
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -52,15 +52,14 @@ namespace Shadows
             spriteManager = (SpriteManager)Game.Services.GetService(typeof(SpriteManager));
 
             // Lights: 
+            playerLight = new LightSource(graphics, 300, LightAreaQuality.VeryLow, Color.Wheat);
+
             // Load lightFx with effects
             lightsFX = new LightsFX(
                Game.Content.Load<Effect>("resolveShadowsEffect"),
                Game.Content.Load<Effect>("reductionEffect"),
                Game.Content.Load<Effect>("2xMultiBlend"));
             shadowmapResolver = new ShadowMapResolver(GraphicsDevice, this.lightsFX, 200);
-            light = new LightSource(graphics, 300, LightAreaQuality.VeryLow, Color.Wheat);
-            light2 = new LightSource(graphics, 600, LightAreaQuality.Low, Color.Orange);
-            light3 = new LightSource(graphics, 500, LightAreaQuality.Low, Color.SeaGreen);
 
             shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
             lightPosition = spriteManager.GetPlayerPosition(1); // light positon = player positon 
@@ -74,6 +73,12 @@ namespace Shadows
 
             base.LoadContent();
         }
+
+        public void addLight(int radius, LightAreaQuality quality, Color color, Vector2 position)
+        {
+            lights.Add(new LightSource(graphics, radius, quality, color, position));
+        }
+
 
         public override void Update(GameTime gameTime)
         {
@@ -94,9 +99,11 @@ namespace Shadows
         public override void Draw(GameTime gameTime)
         {
             // Process the light mape with the shadowmap, light, effect and position ( saves to lightsource.printedlight) 
-            shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
-            shadowmapResolver.ResolveShadows(shadowMap, light2, PostEffect.LinearAttenuation_BlurHigh, new Vector2(1000, 200));
-            shadowmapResolver.ResolveShadows(shadowMap, light3, PostEffect.LinearAttenuation_BlurHigh, new Vector2(700, 783));
+            foreach (LightSource light in lights)
+            {
+                shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.LinearAttenuation_BlurHigh, light.DrawPosition);
+            }
+            shadowmapResolver.ResolveShadows(shadowMap, playerLight, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
            
             //shadowmapResolver.ResolveShadows(shadowMap, light4, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
             // Draw lightmap to rendertarget screeLight
@@ -105,9 +112,11 @@ namespace Shadows
                 GraphicsDevice.Clear(Color.Black);
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, null, null, null, null, viewMatrix);
                 {
-                    light.Draw(spriteBatch, 90);
-                    light2.Draw(spriteBatch);
-                    light3.Draw(spriteBatch);
+                    foreach (LightSource light in lights)
+                    {
+                        light.Draw(spriteBatch);
+                    }
+                    playerLight.Draw(spriteBatch, 90);
                 }
                 spriteBatch.End();
             }

@@ -22,6 +22,7 @@ namespace Shadows
 
         public RenderTarget2D PrintedLight;
         public Vector2 Position { get; set; }
+        public Vector2 DrawPosition { get; set; }
         public Vector2 RenderTargetSize { get; set; }
         public Vector2 Size { get; set; }
         private float qualityRatio;
@@ -33,6 +34,12 @@ namespace Shadows
         public Vector2 PrintPosition
         {
             get { return this.Position - new Vector2(this.Radius, this.Radius); }
+        }
+
+        public LightSource(GraphicsDeviceManager graphics, int radius, LightAreaQuality quality, Color color, Vector2 drawPosition)
+            :this(graphics, radius, quality, color)
+        {
+            this.DrawPosition = drawPosition;
         }
 
         public LightSource(GraphicsDeviceManager graphics, int radius, LightAreaQuality quality, Color color)
