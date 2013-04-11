@@ -24,7 +24,8 @@ namespace Shadows
         Texture2D walls;
         Texture2D block;
         Texture2D miniMap;
-        
+        Texture2D dot;
+        Vector2 miniplayerposition;
         List<Projectile> bullets = new List<Projectile>();
         float time; 
 
@@ -77,7 +78,7 @@ namespace Shadows
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             block = Game.Content.Load<Texture2D>(@"block");
             miniMap = Game.Content.Load<Texture2D>(@"World\minimap");
-            
+            dot = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
             base.LoadContent();
         }
 
@@ -187,7 +188,13 @@ namespace Shadows
                 spriteBatch.End();
 
                 spriteBatch.Begin();
-                spriteBatch.Draw(miniMap, new Vector2(GraphicsDevice.Viewport.Width - miniMap.Width, 0), Color.White);
+                spriteBatch.Draw(miniMap, Vector2.Zero, Color.White);
+
+                spriteBatch.Draw(dot, miniplayerposition, Color.Crimson);
+
+                miniplayerposition.X = (int)(player.GetPostion.X * 0.20f);
+                miniplayerposition.Y = (int)(player.GetPostion.Y * 0.20f);
+ 
                 spriteBatch.End();
             }
             base.Draw(gameTime);

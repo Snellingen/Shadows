@@ -16,6 +16,7 @@ Content\Sprites\green.xnb
 Content\block.xnb
 Content\Sprites\blue.xnb
 Content\Sprites\zombie_spritesheet.xnb
+Content\World\MiniMap.xnb
 Content\Sound\Effects\zombie-1.xnb
 Content\Sound\Effects\zombie-2.xnb
 Content\Sound\Effects\zombie-3.xnb
@@ -26,7 +27,6 @@ Content\Sound\Effects\zombie-hit.xnb
 Content\Sound\Effects\run-loop.xnb
 Content\Sound\Effects\shot.xnb
 Content\Sound\Music\Ambient.xnb
-Content\World\MiniMap.xnb
 Content\Sound\Music\Cold.xnb
 Content\Sound\Music\Ambient.wma
 Content\Sound\Music\Cold.wma
