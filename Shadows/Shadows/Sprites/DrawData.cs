@@ -31,7 +31,8 @@ namespace Shadows
             : this(textureImage, origin, position, scale)
         {
             this.rotation = rotation;
-            this.rotationOffset = rotatiOffset; 
+            this.rotationOffset = rotatiOffset;
+            this.origin = origin;
         }
 
         public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale)
