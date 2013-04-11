@@ -21,6 +21,7 @@ namespace Shadows
         Texture2D line;
         Texture2D walls;
         Texture2D block;
+        Texture2D miniMap;
         
         List<Projectile> bullets = new List<Projectile>();
         float time; 
@@ -75,6 +76,7 @@ namespace Shadows
 
             walls = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
             block = Game.Content.Load<Texture2D>(@"block");
+            miniMap = Game.Content.Load<Texture2D>(@"World\minimap");
             
             base.LoadContent();
         }
@@ -153,6 +155,7 @@ namespace Shadows
 
         public override void Draw(GameTime gameTime)
         {
+
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
 
             // Draw player
@@ -175,6 +178,10 @@ namespace Shadows
             DrawLine(line, 1, Color.Red, player.GetPostion, 1900f);
 
             spriteBatch.End();
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(miniMap, new Vector2(GraphicsDevice.Viewport.Width - miniMap.Width, 0), Color.White);
+            spriteBatch.End(); 
 
             base.Draw(gameTime);
         }

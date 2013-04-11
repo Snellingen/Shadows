@@ -140,7 +140,7 @@ namespace Shadows
 
             soundManager.LoadSound("run-loop", true);
 
-            soundManager.LoadSong("Cold");
+            //soundManager.LoadSong("Cold");
             soundManager.LoadSong("Ambient");
             soundManager.PlaySong("Ambient");
           
@@ -159,6 +159,7 @@ namespace Shadows
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             blood = Content.Load<Texture2D>(@"World\blood");
+           
      
             // SCREENS 
             startScreen = new StartScreen(this, spriteBatch,  Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
@@ -273,8 +274,6 @@ namespace Shadows
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-    
 
             //set render target to toApplyLight which will be used to blend together with the screenLight render target
             GraphicsDevice.SetRenderTarget(toApplyLight);
