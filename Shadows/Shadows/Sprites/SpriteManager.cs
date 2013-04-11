@@ -51,7 +51,8 @@ namespace Shadows
         }
 
         Vector2 miniplayerposition;
-        float timer;
+
+        float time = 0f; 
         public bool isPaused = false;
 
         public SpriteManager(Game game)
@@ -68,7 +69,6 @@ namespace Shadows
         public Vector2 GetPlayerPosition(int playerIndex)
         {
                 return players[0].GetPostion;
-            return Vector2.Zero;
         }
 
         public void addToDraw(string textureName, Vector2 position, float scale)
@@ -89,7 +89,7 @@ namespace Shadows
         public void addPlayers(int playerIndex, Vector2 spawn)
         {
             toDrawNoMatrix.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1 )); 
-            players.Add(new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6), new Vector2(34, 57), 0, 89.5f));
+            players.Add(new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6), new Vector2(34, 57), 1, 89.5f));
         }
 
         public override void Initialize()
@@ -97,8 +97,6 @@ namespace Shadows
             collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
             sound = (SoundManager)Game.Services.GetService(typeof(SoundManager));
             input = (InputManager)Game.Services.GetService(typeof(InputManager));
-            dot = new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Zero, 1);
-            dot.textureImage = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
 
             base.Initialize();
         }
@@ -117,7 +115,9 @@ namespace Shadows
                 players[0].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
             }
             Console.WriteLine(players.Count);
-           
+
+            dot = new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Zero, 1);
+            //dot.textureImage = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
 
             base.LoadContent();
         }
@@ -129,9 +129,6 @@ namespace Shadows
             // if game not paused
             if (!isPaused)
             {
-                // get elapsed time
-                timer += gameTime.ElapsedGameTime.Milliseconds;
-
                 // Update bullets
                 for (int i = 0; i < bullets.Count; i++)
                 {
@@ -139,8 +136,10 @@ namespace Shadows
                     bullets[i].Update(gameTime, collisionManager.clientRectangle);
 
                     // Check collision
-                    if (collisionManager.IsOutOfBounds(bullets[i].GetPostion, players[i].frameSize) ||
-                        collisionManager.pixelPerfectCollision(bullets[i].collisionRect, currentLevel.map))
+                if(collisionManager.IsOutOfBounds(bullets[i].GetPostion, players[0].frameSize) ||
+                    collisionManager.pixelPerfectCollision(bullets[i].collisionRect, currentLevel.map))
+                    bullets.RemoveAt(i);
+
                             // collision! 
                             bullets.RemoveAt(i);
                 }
@@ -173,11 +172,15 @@ namespace Shadows
                 if (input.leftClick)
                 {
                     // Pause inbetween shots
-                    if (timer < 0)
+                    // get elapsed time
+                    time += gameTime.ElapsedGameTime.Milliseconds;
+                time -= gameTime.ElapsedGameTime.Milliseconds;
+                if (time < 0)
+
                     {
                         // Shoot! 
-                        bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), players[i].GetPostion, new Vector2(2000, 2000), players[i].rotation));
-                        timer = 100f;
+                        bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), players[i].GetPostion, new Vector2(400, 400), players[i].rotation));
+                        time = 100f;
                     }
                 }
             }
@@ -238,18 +241,19 @@ namespace Shadows
                 // NoMatrix
                 spriteBatch.Begin();
 
-                
+                dot.Draw(spriteBatch);
 
                 spriteBatch.Draw(currentLevel.miniMap, Vector2.Zero, Color.White);
 
                 for (int i = 0; i < players.Count; i++)
                 {
-                    dot.Draw(spriteBatch);
+                    
                 }
 
                 spriteBatch.End();
+                base.Draw(gameTime);
             }
-            base.Draw(gameTime);
+            
         }
 
         void DrawLine(Texture2D blank,

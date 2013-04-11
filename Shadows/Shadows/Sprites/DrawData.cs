@@ -27,29 +27,33 @@ namespace Shadows
         public float collisionScale { get; set; }
 
         // Constructors
-        public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale, float rotation, float rotatiOffset)
-            : this(textureImage, origin, position, scale)
+       
+        public DrawData(Texture2D textureImage, Vector2 position, float scale)
+            :this(textureImage, new Vector2(textureImage.Width/2, textureImage.Height/2) , position, scale) 
         {
-            this.rotation = rotation;
-            this.rotationOffset = rotatiOffset;
-            this.origin = origin;
+        }
+        
+        public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale)
+            :this(textureImage, origin, position, scale, 0, 0)
+        {
         }
 
-        public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale)
+        public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale, float rotation, float rotatiOffset)
         {
             this.textureImage = textureImage;
             this.position = position;
-            this.scale = scale; 
-        }
-
-        public DrawData(Texture2D textureImage, Vector2 position, float scale)
-        {
+            this.scale = scale;
+            this.rotation = rotation;
+            this.rotationOffset = rotatiOffset;
+            this.origin = origin;
             collisionRect = new Rectangle((int)position.X, (int)position.Y, (int)(textureImage.Width * collisionScale), (int)(textureImage.Height * collisionScale));
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(textureImage, position, collisionRect, Color.White, rotation + rotationOffset, origin, scale, SpriteEffects.None, 0);
+            //spriteBatch.Draw(textureImage, position, collisionRect, Color.White, rotation + rotationOffset, origin, scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureImage, position, new Rectangle(0, 0, textureImage.Width, textureImage.Height),
+            Color.White, rotation + rotationOffset, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
         }
 
         public Vector2 GetPostion { get { return position; } }
