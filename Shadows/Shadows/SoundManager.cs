@@ -44,7 +44,7 @@ namespace Shadows
             this.gameTime = gameTime;
         }
 
-        public void LoadSound(string assetName, bool createSoundEffectInstance)
+        public void TryLoadSound(string assetName, bool createSoundEffectInstance)
         {
             //loader lyder (soundeffects) inn i dictionaryen 
             SoundEffect sound = Game.Content.Load<SoundEffect>(@"Sound/Effects/"+ assetName);
@@ -56,7 +56,7 @@ namespace Shadows
             
         }
 
-        public void LoadSong(string assetName )
+        public void TryLoadSong(string assetName )
         {
             songs.Add(assetName, Game.Content.Load<Song>(@"Sound/Music/" + assetName));
             

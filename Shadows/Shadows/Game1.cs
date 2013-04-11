@@ -129,19 +129,19 @@ namespace Shadows
             base.Initialize();
 
             // LYDMANAGER
-            soundManager.LoadSound("zombie-1", false);
-            soundManager.LoadSound("zombie-2", false);
-            soundManager.LoadSound("zombie-3", false);
-            soundManager.LoadSound("zombie-4", false);
-            soundManager.LoadSound("zombie-5", false);
-            soundManager.LoadSound("zombie-brains", false);
-            soundManager.LoadSound("zombie-hit", false);
-            soundManager.LoadSound("shot", false); 
+            soundManager.TryLoadSound("zombie-1", false);
+            soundManager.TryLoadSound("zombie-2", false);
+            soundManager.TryLoadSound("zombie-3", false);
+            soundManager.TryLoadSound("zombie-4", false);
+            soundManager.TryLoadSound("zombie-5", false);
+            soundManager.TryLoadSound("zombie-brains", false);
+            soundManager.TryLoadSound("zombie-hit", false);
+            soundManager.TryLoadSound("shot", false);
 
-            soundManager.LoadSound("run-loop", true);
+            soundManager.TryLoadSound("run-loop", true);
 
             //soundManager.LoadSong("Cold");
-            soundManager.LoadSong("Ambient");
+            soundManager.TryLoadSong("Ambient");
             soundManager.PlaySong("Ambient");
           
             // Events

@@ -11,33 +11,32 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
-    abstract class Sprite
+    abstract class Sprite : DrawData
     {
         // atributes 
         public Texture2D textureImage { get; set; }
-
-        public Point frameSize { get; set; }
-        protected Point currentFrame;
-        public Point sheetSize { get; set; }
-        public Point startFrame = new Point(0, 0);
-
-        private int timeSinceLastFrame = 0;
-        private const int defaultMillisecondsPerFrame = 90;
-        public int millisecondsPerFrame { get; set; }
-        public float collisionScale { get; set; }
-        public Vector2 speed { get; set; }
         protected Vector2 position;
+       
         public Vector2 origin = Vector2.Zero;
         public float scale = 1;
         public float rotation = 0;
         public float rotationOffset = 0;
 
-        public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
-
-
         // The collision rectangle for the sprite. 
         public Rectangle collisionRect;
+        public float collisionScale { get; set; }
+
+        // For animation
+        public Point frameSize { get; set; }
+        protected Point currentFrame;
+        public Point sheetSize { get; set; }
+        public Point startFrame = new Point(0, 0);
+        private int timeSinceLastFrame = 0;
+        private const int defaultMillisecondsPerFrame = 90;
+        public int millisecondsPerFrame { get; set; }
+        public Vector2 speed { get; set; }
         
+        public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
 
         // Constructors
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,

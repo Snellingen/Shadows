@@ -98,6 +98,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Sprites\AiControlledSprite.cs" />
+    <Compile Include="Sprites\DrawData.cs" />
     <Compile Include="Sprites\Projectile.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteManager.cs" />
