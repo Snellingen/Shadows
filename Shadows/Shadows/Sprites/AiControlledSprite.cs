@@ -20,13 +20,10 @@ namespace Shadows
         // Used for gamepad to store last roatation
         float oldroation = 0;
 
-        public AiControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
-            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed )
-        {
-        }
-
-        public AiControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, int millisecondsPerFrame)
-            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, millisecondsPerFrame)
+        public AiControlledSprite (Texture2D textureImage, Vector2 position, Point frameSize,
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float rotationOffset)
+            : base(textureImage, position, frameSize, collisionScale, currentFrame,
+            sheetSize, speed, new Vector2(textureImage.Width/2, textureImage.Height/2), 1, 0f)
         {
         }
 

@@ -13,18 +13,6 @@ namespace Shadows
 {
     abstract class Sprite : DrawData
     {
-        // atributes 
-        public Texture2D textureImage { get; set; }
-        protected Vector2 position;
-       
-        public Vector2 origin = Vector2.Zero;
-        public float scale = 1;
-        public float rotation = 0;
-        public float rotationOffset = 0;
-
-        // The collision rectangle for the sprite. 
-        public Rectangle collisionRect;
-        public float collisionScale { get; set; }
 
         // For animation
         public Point frameSize { get; set; }
@@ -39,24 +27,32 @@ namespace Shadows
         public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
 
         // Constructors
+
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float rotationOffset)
             : this(textureImage, position, frameSize, collisionScale, currentFrame,
-            sheetSize, speed, defaultMillisecondsPerFrame)
+            sheetSize, speed, new Vector2(textureImage.Width/2, textureImage.Height/2), 1, 0f)
         {
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
-            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float scale)
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
             : this(textureImage, position, frameSize, collisionScale, currentFrame,
-            sheetSize, speed, defaultMillisecondsPerFrame)
+            sheetSize, speed, defaultMillisecondsPerFrame, new Vector2(textureImage.Width/2, textureImage.Height/2), 1, 0)
         {
-            this.scale = scale;
+        }
+
+        public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
+            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, Vector2 origin, float scale, float rotationOffset)
+            : this(textureImage, position, frameSize, collisionScale, currentFrame,
+            sheetSize, speed, defaultMillisecondsPerFrame, origin, scale, rotationOffset)
+        {
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
             float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed,
-            int millisecondsPerFrame)
+            int millisecondsPerFrame, Vector2 origin, float scale, float rotationOffset)
+            : base(textureImage, origin, position, scale, 0, rotationOffset)
         {
             this.textureImage = textureImage;
             this.position = position;
@@ -69,9 +65,6 @@ namespace Shadows
 
             collisionRect = new Rectangle((int)position.X, (int)position.Y, (int)(frameSize.X * collisionScale), (int)(frameSize.Y * collisionScale));
         }
-
-
-        public Vector2 GetPostion { get { return position; } }
 
         public virtual void Update(GameTime gameTime, Rectangle clientBounds)
         {
@@ -92,7 +85,7 @@ namespace Shadows
             return false;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureImage, position, new Rectangle((currentFrame.X * frameSize.X) + startFrame.X, (currentFrame.Y * frameSize.Y) + startFrame.Y, frameSize.X, frameSize.Y),
             Color.White, rotation + rotationOffset, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
