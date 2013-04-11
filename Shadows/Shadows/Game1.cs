@@ -118,7 +118,8 @@ namespace Shadows
             spriteManager.addLevels("ShadowHouse4", "Minihouse4", new Vector2(100, 100), new Rectangle(200, 0, 70, 20));
             spriteManager.addLevels("ShadowHouse5", "Minihouse5", new Vector2(100, 100), new Rectangle(200, 0, 70, 20));
             // sett currentLevel
-            spriteManager.setCurrentLevel(4); 
+            spriteManager.setCurrentLevel(4);
+            lightManager.lightMapTexture = 4;
 
             // Disable Components
             spriteManager.Enabled = false;

@@ -29,6 +29,8 @@ namespace Shadows
         LightSource light2;
         LightSource light3;
 
+        public int lightMapTexture;
+
         ShadowMapResolver shadowmapResolver; // Processes the lightmap with the lights
         ShadowCasterMap shadowMap; // for shadowmap 
         LightsFX lightsFX; // For different light effects
@@ -46,7 +48,7 @@ namespace Shadows
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            shadowHouseTexture = Game.Content.Load<Texture2D>(@"World\ShadowHouse");
+            shadowHouseTexture = Game.Content.Load<Texture2D>(@"World\ShadowHouse"  + lightMapTexture);
             spriteManager = (SpriteManager)Game.Services.GetService(typeof(SpriteManager));
 
             // Lights: 
