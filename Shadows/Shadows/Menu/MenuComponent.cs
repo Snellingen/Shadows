@@ -104,11 +104,6 @@ namespace Shadows
                     selectedIndex = menuItems.Length - 1;
             }
 
-            if (CheckKey(Keys.Enter))
-            {
-                
-            }
-
             base.Update(gameTime);
             oldKeyboardState = keyboardState;
         }

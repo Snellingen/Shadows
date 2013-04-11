@@ -16,6 +16,8 @@ namespace Shadows
         MenuComponent menuComponent;
         Texture2D image;
         Rectangle imageRectangle;
+        InputManager input; 
+
         public int SelectedIndex
         {
             get { return menuComponent.SelectedIndex; }
@@ -30,6 +32,8 @@ namespace Shadows
             string[] menuItems = { "Continue", "End Game", "Next Song" };
             menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
             Components.Add(menuComponent);
+            
+
             this.image = image;
             imageRectangle = new Rectangle(
             0,
@@ -39,7 +43,8 @@ namespace Shadows
         }
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            input = (InputManager)Game.Services.GetService(typeof(InputManager));
+            if (input.isKeyPressed(Keys.Enter))
             {
                 if (menuComponent.SelectedIndex == 0)
                 {

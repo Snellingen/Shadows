@@ -16,6 +16,8 @@ namespace Shadows
     /// </summary>
     public class SpriteManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        public bool isPaused = false;
+
         SpriteBatch spriteBatch;
         UserControlledSprite player;
         Texture2D line;
@@ -81,45 +83,50 @@ namespace Shadows
 
         public override void Update(GameTime gameTime)
         {
-            timer += gameTime.ElapsedGameTime.Milliseconds;
-
-            // Update Play
-
-            if (collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
+            if (!isPaused)
             {
 
-            }
+                timer += gameTime.ElapsedGameTime.Milliseconds;
 
-            if (collisionManager.pixelPerfectCollision(player.collisionRect, walls))
-            {
-                player.Collision();
-            }
+                // Update Play
 
-            PlayerSound();
-
-            if (input.leftClick)
-            {
-                time -= gameTime.ElapsedGameTime.Milliseconds;
-                if (time < 0)
+                if (collisionManager.IsOutOfBounds(player.GetPostion, player.frameSize))
                 {
-                    bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, new Vector2(400, 400), player.rotation));
-                    time = 100f;
+
                 }
+
+                if (collisionManager.pixelPerfectCollision(player.collisionRect, walls))
+                {
+                    player.Collision();
+                }
+
+                PlayerSound();
+
+                if (input.leftClick)
+                {
+                    time -= gameTime.ElapsedGameTime.Milliseconds;
+                    if (time < 0)
+                    {
+                        bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), player.GetPostion, new Vector2(2000, 2000), player.rotation));
+                        time = 100f;
+                    }
+                }
+
+                for (int i = 0; i < bullets.Count; i++)
+                {
+                    bullets[i].Update(gameTime, collisionManager.clientRectangle);
+
+                    if (collisionManager.IsOutOfBounds(bullets[i].GetPostion, player.frameSize) ||
+                        collisionManager.pixelPerfectCollision(bullets[i].collisionRect, walls))
+                        bullets.RemoveAt(i);
+
+                }
+
+
+                player.setInverseMatrixMouse(inverseMatrixMosue);
+                player.Update(gameTime, Game.Window.ClientBounds); 
             }
 
-            for (int i = 0; i < bullets.Count; i++)
-            {
-                bullets[i].Update(gameTime, collisionManager.clientRectangle);
-
-                if(collisionManager.IsOutOfBounds(bullets[i].GetPostion, player.frameSize) ||
-                    collisionManager.pixelPerfectCollision(bullets[i].collisionRect, walls))
-                    bullets.RemoveAt(i);
-                    
-            }
-            
-
-            player.setInverseMatrixMouse(inverseMatrixMosue);
-            player.Update(gameTime, Game.Window.ClientBounds);
             base.Update(gameTime);
         }
 
@@ -153,34 +160,36 @@ namespace Shadows
 
         public override void Draw(GameTime gameTime)
         {
-
-            spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
-
-            // Draw player
-            player.Draw(spriteBatch);
-
-            spriteBatch.Draw(block, player.collisionRect, Color.White * 0.5f);
-
-            foreach (Projectile bullet in bullets)
+            if (!isPaused)
             {
-                spriteBatch.Draw(block, bullet.collisionRect, Color.White * 0.5f); 
+                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
+
+                // Draw player
+                player.Draw(spriteBatch);
+
+                spriteBatch.Draw(block, player.collisionRect, Color.White * 0.5f);
+
+                foreach (Projectile bullet in bullets)
+                {
+                    spriteBatch.Draw(block, bullet.collisionRect, Color.White * 0.5f);
+                }
+
+                // Draw projectile
+                foreach (Projectile bullet in bullets)
+                {
+                    bullet.Draw(spriteBatch);
+                }
+
+                spriteBatch.Draw(walls, Vector2.Zero, Color.White);
+
+                DrawLine(line, 1, Color.Red, player.GetPostion, 1900f);
+
+                spriteBatch.End();
+
+                spriteBatch.Begin();
+                spriteBatch.Draw(miniMap, new Vector2(GraphicsDevice.Viewport.Width - miniMap.Width, 0), Color.White);
+                spriteBatch.End();
             }
-
-            // Draw projectile
-            foreach (Projectile bullet in bullets){ 
-                  bullet.Draw(spriteBatch);
-            }
-
-            spriteBatch.Draw(walls, Vector2.Zero, Color.White);
-
-            DrawLine(line, 1, Color.Red, player.GetPostion, 1900f);
-
-            spriteBatch.End();
-
-            spriteBatch.Begin();
-            spriteBatch.Draw(miniMap, new Vector2(GraphicsDevice.Viewport.Width - miniMap.Width, 0), Color.White);
-            spriteBatch.End(); 
-
             base.Draw(gameTime);
         }
 

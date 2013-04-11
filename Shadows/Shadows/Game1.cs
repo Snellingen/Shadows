@@ -62,7 +62,7 @@ namespace Shadows
 
         Camera camera;
         GameState gameState;
-        bool disabled;
+        bool IsComponentsDisabled;
         bool paused; 
 
         public Game1()
@@ -112,7 +112,7 @@ namespace Shadows
             lightManager.Enabled = false;
             collisionManager.Enabled = false;
 
-            disabled = true; 
+            IsComponentsDisabled = true; 
 
             // AddService
             Services.AddService(typeof(GraphicsDeviceManager), graphics);
@@ -194,7 +194,10 @@ namespace Shadows
                     break;
                 case Selected.Continue:
                     gameState = GameState.Playing;
-                    break; 
+                    break;
+                case Selected.NextSong:
+                    soundManager.NextSong();
+                    break;
             }
         }
 
@@ -235,20 +238,22 @@ namespace Shadows
                 case GameState.Menu:
 
                     lightManager.Enabled = false;
-                    lightManager.Visible = false;
+                    spriteManager.Enabled = false;
+                    spriteManager.Enabled = false;
                     pauseScreen.Hide();
                     startScreen.Show(); 
                     break; 
 
                 case GameState.Playing:
-                    if (disabled)
+                    if (IsComponentsDisabled)
                     {
                         lightManager.Enabled = true;
                         lightManager.Visible = true;
-                        spriteManager.Enabled = true;
-                        disabled = false;
+                        spriteManager.Enabled = true; 
+                        IsComponentsDisabled = false;
                     }
 
+                    spriteManager.isPaused = false;
                     pauseScreen.Hide();
                     startScreen.Hide(); 
 
@@ -257,6 +262,10 @@ namespace Shadows
                 case GameState.Pause:
                         startScreen.Hide();
                         pauseScreen.Show();
+                        lightManager.Enabled = false;
+                        lightManager.Visible = true;
+                        spriteManager.Enabled = true;
+                        spriteManager.isPaused = true; 
                         activeScreen = pauseScreen;
 
                     break; 
@@ -274,6 +283,7 @@ namespace Shadows
 
         protected override void Draw(GameTime gameTime)
         {
+            
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //set render target to toApplyLight which will be used to blend together with the screenLight render target

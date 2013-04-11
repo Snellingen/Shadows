@@ -117,7 +117,7 @@ namespace Shadows
         public void NextSong()
         {
 
-            if (songs.Count - 1 != currentSong)
+            if (songs.Count - 1 > currentSong)
             {
                 currentSong++;
                 Console.WriteLine("current " + (currentSong) + " list: " + songs.Count);
@@ -126,9 +126,10 @@ namespace Shadows
             }
             else
             {
-                Console.WriteLine("else current " + (currentSong) + " list: " + songs.Count);
-                MediaPlayer.Play(songs[0]);
                 currentSong = 0;
+                Console.WriteLine("else current " + (currentSong) + " list: " + songs.Count);
+                MediaPlayer.Play(songs[currentSong]);
+                
             }
         }
 
