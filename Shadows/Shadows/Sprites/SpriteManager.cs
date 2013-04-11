@@ -18,6 +18,9 @@ namespace Shadows
     {
         public bool isPaused = false;
 
+        List<DrawData> toDraw = new List<DrawData>();
+        List<UserControlledSprite> players = new List<UserControlledSprite>(); 
+
         SpriteBatch spriteBatch;
         UserControlledSprite player;
         Texture2D line;
@@ -25,6 +28,7 @@ namespace Shadows
         Texture2D block;
         Texture2D miniMap;
         Texture2D dot;
+
         Vector2 miniplayerposition;
         List<Projectile> bullets = new List<Projectile>();
         float time; 
@@ -33,7 +37,6 @@ namespace Shadows
         CollisionManager collisionManager;
         InputManager input; 
         
-
         Matrix viewMatrix;
         Vector2 inverseMatrixMosue; 
 
@@ -52,6 +55,16 @@ namespace Shadows
         public Texture2D GetPlayerTexture()
         {
             return player.textureImage; 
+        }
+
+        public void addToDraw(DrawData o)
+        {
+            toDraw.Add(o);
+        }
+
+        public void addPlayers(UserControlledSprite o, int playerIndex )
+        {
+            players.Add(o);
         }
 
         public override void Initialize()
@@ -79,6 +92,7 @@ namespace Shadows
             block = Game.Content.Load<Texture2D>(@"block");
             miniMap = Game.Content.Load<Texture2D>(@"World\minimap");
             dot = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
+
             base.LoadContent();
         }
 
