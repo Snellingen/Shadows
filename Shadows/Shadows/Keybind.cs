@@ -12,11 +12,11 @@ namespace Shadows
 {
     class Keybind
     {
-        Keys up {get; protected set;}
-        Keys down { get; protected set; }
-        Keys left { get; protected set; }
-        Keys right { get; protected set; }
-        Keys granade { get; protected set; }
+        public Keys up {get; protected set;}
+        public Keys down { get; protected set; }
+        public Keys left { get; protected set; }
+        public Keys right { get; protected set; }
+        public Keys granade { get; protected set; }
 
         public Keybind(Keys up, Keys down, Keys left, Keys right, Keys granade)
         {
@@ -24,7 +24,7 @@ namespace Shadows
             this.down = down;
             this.left = left;
             this.right = right;
-            this.granade = granade:
+            this.granade = granade;
         }
     }
 }

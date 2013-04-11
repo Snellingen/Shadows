@@ -37,6 +37,13 @@ namespace Shadows
 
         public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale)
         {
+            this.textureImage = textureImage;
+            this.position = position;
+            this.scale = scale; 
+        }
+
+        public DrawData(Texture2D textureImage, Vector2 position, float scale)
+        {
             collisionRect = new Rectangle((int)position.X, (int)position.Y, (int)(textureImage.Width * collisionScale), (int)(textureImage.Height * collisionScale));
         }
 

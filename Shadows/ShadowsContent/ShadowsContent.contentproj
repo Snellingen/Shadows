@@ -149,7 +149,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="image.jpg">
+    <Compile Include="Sprites\image.jpg">
       <Name>image</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -183,7 +183,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="block.jpg">
+    <Compile Include="Sprites\block.jpg">
       <Name>block</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -222,6 +222,58 @@
       <Name>Cold</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="World\MiniHouse1.png">
+      <Name>MiniHouse1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\MiniHouse2.png">
+      <Name>MiniHouse2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\MiniHouse3.png">
+      <Name>MiniHouse3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\MiniHouse4.png">
+      <Name>MiniHouse4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\MiniHouse5.png">
+      <Name>MiniHouse5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\ShadowHouse1.png">
+      <Name>ShadowHouse1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\ShadowHouse2.png">
+      <Name>ShadowHouse2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\ShadowHouse3.png">
+      <Name>ShadowHouse3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\ShadowHouse4.png">
+      <Name>ShadowHouse4</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="World\ShadowHouse5.png">
+      <Name>ShadowHouse5</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

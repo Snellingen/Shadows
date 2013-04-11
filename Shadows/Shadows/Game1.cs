@@ -105,7 +105,17 @@ namespace Shadows
             Components.Add(inputManager);
             Components.Add(lightManager);
             Components.Add(collisionManager);
-            Components.Add(soundManager); 
+            Components.Add(soundManager);
+
+            // Adding draw data to spriteManager) 
+            spriteManager.addPlayers(1, new Vector2(100, 100));
+            spriteManager.addToDrawNoMatrix("MiniMap", Vector2.Zero, 1);
+
+            // Adding leves to spriteManager
+            spriteManager.addLevels("ShadowHouse1", "MiniHouse1", new Vector2(100, 100), new Rectangle(400, 0, 200, 100));
+
+            // sett currentLevel
+            spriteManager.setCurrentLevel(1); 
 
             // Disable Components
             spriteManager.Enabled = false;
@@ -149,10 +159,10 @@ namespace Shadows
             Events.MyEvent += MenuHandler;
             
             // ONLY REMOVE THIS IF YOU HAVE A MULTIPLE MONITOR SETUP!! ( DRAWS THE GAME ON THE SECOND MONITOR IF IN DEBUG MODE ) 
-/* #if DEBUG
+            /* #if DEBUG
             var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
             form.Location = new System.Drawing.Point(1920 + 1920/2, 0);
-#endif */
+            #endif */
         }
 
         protected override void LoadContent()
@@ -160,11 +170,11 @@ namespace Shadows
             spriteBatch = new SpriteBatch(GraphicsDevice);
             toApplyLight = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             blood = Content.Load<Texture2D>(@"World\blood");
-           
-     
+
+
             // SCREENS 
-            startScreen = new StartScreen(this, spriteBatch,  Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
-            pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("image"));
+            startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
+            pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
 
             Components.Add(startScreen);
             Components.Add(pauseScreen);
@@ -172,10 +182,10 @@ namespace Shadows
             pauseScreen.DrawOrder = 9;
             startScreen.DrawOrder = 9;
 
-            pauseScreen.Hide(); 
+            pauseScreen.Hide();
             startScreen.Hide();
-            gameState = GameState.Menu; 
-            activeScreen = startScreen; 
+            gameState = GameState.Menu;
+            activeScreen = startScreen;
         }
 
         protected override void UnloadContent()
@@ -224,7 +234,7 @@ namespace Shadows
                 }
             }
 
-            camera.Update(spriteManager.GetPlayerPosition());
+            camera.Update(spriteManager.GetPlayerPosition(0));
             spriteManager.setViewMatrix(camera.ViewMatrix);
             lightManager.setViewMatrix(camera.ViewMatrix);
             inputManager.setViewMatrix(camera.ViewMatrix);
@@ -294,6 +304,7 @@ namespace Shadows
             spriteBatch.Draw(blood, Vector2.Zero, Color.White);
             spriteBatch.End(); 
             GraphicsDevice.SetRenderTarget(null); 
+
             // sends the rendertarget to the light manager; 
             lightManager.setRendertarget(toApplyLight); 
 

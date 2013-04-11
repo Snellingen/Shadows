@@ -61,7 +61,7 @@ namespace Shadows
             light3 = new LightSource(graphics, 500, LightAreaQuality.Low, Color.SeaGreen);
 
             shadowMap = new ShadowCasterMap(PrecisionSettings.VeryHigh, graphics, this.spriteBatch);
-            lightPosition = spriteManager.GetPlayerPosition(); // light positon = player positon 
+            lightPosition = spriteManager.GetPlayerPosition(1); // light positon = player positon 
             screenLights = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             //screenGround = new RenderTarget2D(GraphicsDevice, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
@@ -75,7 +75,7 @@ namespace Shadows
 
         public override void Update(GameTime gameTime)
         {
-            lightPosition = spriteManager.GetPlayerPosition();
+            lightPosition = spriteManager.GetPlayerPosition(1);
 
             base.Update(gameTime);
         }

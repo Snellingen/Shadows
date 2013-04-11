@@ -13,11 +13,11 @@ namespace Shadows
 {
     class Level
     {
-        Texture2D map { get; protected set; }
-        Texture2D miniMap { get; protected set; }
-        Vector2 playerSpawn { get; protected set; }
-        List<Vector2> zombieSpawns = new List<Vector2>();
-        Rectangle winZone { get; protected set; }
+        public Texture2D map { get; protected set; }
+        public Texture2D miniMap { get; protected set; }
+        public Vector2 playerSpawn { get; protected set; }
+        public List<Vector2> zombieSpawns = new List<Vector2>();
+        public Rectangle winZone { get; protected set; }
 
 
         public Level (Texture2D map, Texture2D miniMap, Vector2 playerSpawn, Rectangle winZone){
