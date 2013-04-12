@@ -109,7 +109,6 @@ namespace Shadows
 
             // Adding draw data to spriteManager) 
             spriteManager.addPlayers(1, new Vector2(100, 100));
-            spriteManager.addZombies(new Vector2(100, 100));
 
             // Adding leves to spriteManager
             spriteManager.addLevels("ShadowHouse1", "MiniHouse1", new Vector2(100, 100), new Rectangle(400, 0, 200, 100), new LightSource[] {
@@ -135,12 +134,14 @@ namespace Shadows
             spriteManager.addLevels("ShadowHouse5", "Minihouse5", new Vector2(100, 100), new Rectangle(200, 0, 70, 20), new LightSource[] {
                 new LightSource(graphics, 400, LightAreaQuality.Low, Color.Red, new Vector2(198, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
-                new LightSource(graphics, 200, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))});
+                new LightSource(graphics, 200, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))}, new Vector2[] {
+                new Vector2(100, 100), new Vector2( 100, 300)});
 
             // sett currentLevel
             spriteManager.setCurrentLevel(5);
             lightManager.lightMapTexture = spriteManager.lvlNr;
             lightManager.addLight(spriteManager.currentLevel.Lights);
+            spriteManager.addZombies(spriteManager.currentLevel.Zombies);
 
 
             // Disable Components

@@ -19,9 +19,17 @@ namespace Shadows
         public List<Vector2> zombieSpawns = new List<Vector2>();
         public Rectangle winZone { get; protected set; }
         public List<LightSource> Lights { get; protected set; }
+        public List<Vector2> Zombies { get; protected set; }
+
+        public Level(Texture2D map, Texture2D miniMap, Vector2 playerSpawn, Rectangle winZone, LightSource[] aLights, Vector2[] zombies)
+            :this(map, miniMap, playerSpawn, winZone)
+        {
+            Lights = new List<LightSource>(aLights);
+            Zombies = new List<Vector2>(zombies);
+        }
 
         public Level(Texture2D map, Texture2D miniMap, Vector2 playerSpawn, Rectangle winZone, LightSource[] aLights)
-            :this(map, miniMap, playerSpawn, winZone)
+            : this(map, miniMap, playerSpawn, winZone)
         {
             Lights = new List<LightSource>(aLights);
         }
@@ -38,6 +46,14 @@ namespace Shadows
             foreach (Vector2 pos in array)
             {
                 zombieSpawns.Add(pos);
+            }
+        }
+
+        public void addLight(LightSource[] array)
+        {
+            foreach (LightSource light in array)
+            {
+                Lights.Add(light);
             }
         }
     

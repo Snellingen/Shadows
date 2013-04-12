@@ -66,6 +66,8 @@ namespace Shadows
                 return players[0].GetPostion;
         }
 
+        // ADDING STUFF
+        #region addstuff
         // lets you add elements to draw
         public void addToDraw(string textureName, Vector2 position, float scale)
         {
@@ -90,6 +92,12 @@ namespace Shadows
             levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map), Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn, winZone, lights));
         }
 
+        // let's you add level with light abd zombies
+        public void addLevels(string Map, string minMap, Vector2 playerSpawn, Rectangle winZone, LightSource[] lights, Vector2[] zombies)
+        {
+            levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map), Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn, winZone, lights, zombies));
+        }
+
         public void addPlayers(int playerIndex, Vector2 spawn)
         {
             miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f )); 
@@ -101,6 +109,17 @@ namespace Shadows
             miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
             zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57),  1, 89.5f));
         }
+
+        public void addZombies(IEnumerable<Vector2> spawns)
+        {
+            foreach (Vector2 spawn in spawns)
+            {
+                miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
+                zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57), 1, 89.5f));
+            }
+        }
+
+        #endregion
 
         public override void Initialize()
         {
