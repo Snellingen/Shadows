@@ -22,12 +22,12 @@ namespace Shadows
         public CollisionManager(Game game, Rectangle clientRectangle)
             : base(game)
         {
-            this.clientRectangle = clientRectangle; 
+            this.clientRectangle = clientRectangle;
         }
 
         public override void Initialize()
         {
-            spriteBatch = new SpriteBatch(Game.GraphicsDevice); 
+            spriteBatch = new SpriteBatch(Game.GraphicsDevice);
             base.Initialize();
         }
 
@@ -56,14 +56,14 @@ namespace Shadows
             int pixels = o.Width * o.Height;
             Color[] myColors = new Color[pixels];
             CollisionCheck.GetData<Color>(0, new Rectangle((int)(CollisionCheck.Width / 2 - o.Width / 2),
-                (int)(CollisionCheck.Height / 2 - o.Height / 2), o.Width, o.Height), myColors, 0, pixels); 
-            
+                (int)(CollisionCheck.Height / 2 - o.Height / 2), o.Width, o.Height), myColors, 0, pixels);
+
             // Cycle through all the colors in the array to see if any pixels are black, if so there's a collision.
             foreach (Color color in myColors)
             {
                 if (color == Color.Black)
                 {
-                    return true; 
+                    return true;
                 }
             }
             return false;
@@ -87,16 +87,16 @@ namespace Shadows
             spriteBatch.Begin();
             spriteBatch.Draw(collisionMap, new Rectangle(0, 0, o.Width, o.Height), o, Color.White);
             spriteBatch.End();
-            Texture2D texture = (Texture2D) collisionRender;
-            Game.GraphicsDevice.SetRenderTarget(null); 
-            return texture; 
+            Texture2D texture = (Texture2D)collisionRender;
+            Game.GraphicsDevice.SetRenderTarget(null);
+            return texture;
 
 
         }
 
         public override void Update(GameTime gameTime)
         {
-           
+
 
             base.Update(gameTime);
         }

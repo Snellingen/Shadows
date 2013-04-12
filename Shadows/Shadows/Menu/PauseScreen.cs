@@ -34,7 +34,7 @@ namespace Shadows
             menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
             Components.Add(menuComponent);
 
-            this.spriteFont = spriteFont; 
+            this.spriteFont = spriteFont;
 
             this.image = image;
             imageRectangle = new Rectangle(
@@ -84,14 +84,14 @@ namespace Shadows
                 }
 
             }
-            oldState = Keyboard.GetState(); 
+            oldState = Keyboard.GetState();
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.Draw(image, imageRectangle, Color.White * 0.5f);
-            spriteBatch.End(); 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

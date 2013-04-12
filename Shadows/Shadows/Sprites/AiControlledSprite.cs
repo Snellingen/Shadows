@@ -61,9 +61,10 @@ namespace Shadows
         public override void Update(GameTime gameTime, Rectangle clientBounds)
         {
             // Moves the sprite based on direction
+            MovementUpdate(gameTime);
             if (active)
             {
-                
+
                 collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
                 collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
                 collisionRect.Height = collisionRect.Width;
@@ -75,7 +76,7 @@ namespace Shadows
 
                 rotation = Rotation();
             }
-            MovementUpdate(gameTime);
+
             base.Update(gameTime, clientBounds);
         }
 
@@ -88,7 +89,7 @@ namespace Shadows
         public void MovementUpdate(GameTime gameTime)
         {
             // Update position
-            if(active)
+            if (active)
                 position += Vector2.Multiply(Direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
 

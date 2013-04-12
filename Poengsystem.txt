@@ -1,0 +1,106 @@
+-----------------------------------------------------------------------------------
+DETTE ER OVERSIKT OVER POENG OG PUNKTER VI HAR OPPFYLLT, SAMMEN MED EN BESKRIVELSE.
+-----------------------------------------------------------------------------------
+
+
+5 PTS - Spillet kan spille av lyder med SoundEffect
+
+8 PTS - Spillet spiller av bakgrunnsmusikk med MediaPlayer, hvor spiller kan bytte mellom minst to sanger, justere volum, pause og stoppe.
+
+10  PTS - Spillet støtter interaktiv 3D lyd, altså hvor AudioEmitter instanser, eller AudioListener (eller begge) beveger seg rundt i samspill med objekter. 
+	  Disse brukes igjen til å skape 3D lyd i spillet ved hjelp av SoundEffectInstance objekter.
+
+7 PTS - Lydsystemet er en GameComponent som legges til og settes opp på korrekt måte. 
+	Denne legges også til i services i form som et IPlayGameAudio interface med støtte for korrekt funksjonalitet. 
+	Spillobjekter som spiller av lyd har egne AudioEmitter entiteter som de sender inn til komponenten sammen med lyden de ønsker å spille av. 
+
+3 PTS - Brukeren kan slå av/på musikk og lyd med sepparate valg.
+
+Beskrivelse:
+
+Vi har besvart alle punkter innen lyd. Vi har brukt SoundEffect, bakgrunnsmusikk med MediaPlayer, Karakteren og zombien har sine egne lyder, interaktiv 3D lyd (gå lyder, skyte lyder, zombie lyder),
+brukeren kan slå av/på musikken. (Se SoundManager.cs, Sound-mappen, Game1.cs).
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5 PTS - Spillet har en egen implementasjon av en DrawablElement-klasse for å tegne sprites med SpriteBatch.
+
+5 PTS - Systemet har en egen DrawableGameComponent implementasjon, med tilhørende interface.
+
+10 PTS - Spillet støtter animasjon i samme system, hvor AnimatedDrawableElement er en spesialisering av DrawableElement. DrawableElement har da støtte for å bli oppdatert.
+
+5 PTS - Spillet benytter seg av Dictionary objekter for å enkelt spille av animasjonssekvenser. 
+	Disse sekvensene har støtte for forskjellig antall "frames" forskjellig størelse (fra animasjon til animasjon) og tid mellom hvert bilde.
+
+1 PTS - Spillet støtter rotasjon av bilder ved hjelp av data i DrawableElement.
+
+10 PTS - Spilleren kan bevege en avatar rundt på et område som tar opp mer enn en skjerm. "Kameraet" beveger seg for å holde spilleren innenfor vinduet.
+
+15 PTS - Spillet har et "MiniMap" som holdes Ajour med tilstanden til hele spillebrettet. 
+
+Beskrivelse:
+
+Se Sprites-mappen med .cs filer. Vi har DrawData-klasse for å tegne sprites med SpriteBatch. Spilleren beveger seg rundt på et område som tar opp mer enn en skjerm.
+"kameraet" beveger seg for å holde spilleren innenfor vinduet. Spilleren ser heller ikke hele området, noe som er meningen. Det skal være et mørkt og skummelt område, hvor spilleren 
+har en utsikt bare noen få meter i spillet ved hjelp av en lommelykt. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5 PTS - Spillet skriver tekst til skjerm ved hjelp av SpriteFont. 
+
+5 PTS - Systemet har en egen DrawableGameComponent implementasjon, med tilhørende interface. 
+
+(10 PTS - Spillet har tekst og grafikk- baserte menyer/GUI som holder seg på samme plass i bildet selv om oppløsningen endres.)
+
+15 PTS - Spillet støtter å skrive dynamisk tekst til skjerm, altså tekst som ikke er kjent når programmet ble bygget. 
+	 Denne teksten skal holde seg innenfor bakgrunnsbilder og ellers oppføre seg korrekt i hennhold til logisk oppførsel på slikt innhold.
+
+Beskrivelse:
+
+Se Sprites-mappen og ShadowsContent. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2 PTS - Spillet kan kontrolleres med tastatur.
+
+2 PTS - spillet benytter også input fra mus. Musen må være synlig med egen grafikk (ikke hardware cursor).
+
+5 PTS - Input systemet er en egen GameComponent med tilhørende interface, som legges til og hentes ut ved hjelp av Services.
+
+(5 PTS - Spillet kan også kontrolleres med gamepad.)
+
+7 PTS - Spiller kan endre tastaturoppsett / gamepad oppsett for hvordan spillet kontrolleres (Hvilke knapper som benyttes).
+
+Beskrivelse:
+
+Se Input-mappen med .cs filer. Karakteren styres ved hjelp av piltastene og musen. Spilleren kan endre knappe oppsett, som f.eks bruke WASD tastene istedenfor. 
+(Spilleren har også muligheten for å spille med en gamepad). 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+5 PTS - Spillet benytter seg av kollisjonshåndtering ved hjelp av Rectangle, eller sirkel kollisjon.
+
+5 PTS - Kollisjonsystemet er en egen GameComponent med tilhørende interface, som legges til og hentes ut ved hjelp av Services.
+
+2 PTS - Systemet har støtte for bevegelser i desimalform (Vector2).
+
+Beskrivelse:
+
+Se CollisionManager.cs. Vi har brukt kollisjonshåndtering ved hjelp av Rectangle kollisjon. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+15 PTS - Spillet kan startes på nytt, avsluttes, bli pauset, tapt og vunnet. 
+
+25 PTS - Spillet har et fungerende konfliktsystem. Med dette menes kampsystemer, logiske problemer (puzzles) og andre utfordringer som gir spillet "mening". 
+
+40 PTS - Spillet har en kunstig inteligens som oppfører seg på hensiktsmessig vis, og skaper innhold i spillet.
+
+Beskrivelse:
+
+Vi har brukt Screen Manager for å lage meny, hvor du kan pause spillet, starte spillet, avslutte spillet og en skjerm som viser om du har vunnet eller tapt. 
+Spillet har et fornuftig konfliktproblem med logiske problemer og utfordringer som gir spillet karakter og mening. I en verden hvor zombiene tar over må karakteren i spillet beskytte seg selv.
+For at zombiene ikke skal spise hjernen hans må han skyte seg gjennom spillet. Zombiene kommer fra alle sider og det gjør sånn at spillet blir spennende og setter spilleren i en situasjon hvor
+konsentrasjonen og fokuset må alltid være oppe. Alt for å ikke bli spist opp av zombiene. 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

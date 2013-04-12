@@ -22,9 +22,9 @@ namespace Shadows
         public bool wasWalking = false;
         public bool usingGamepad = false;
 
-        public bool isDead = false; 
+        public bool isDead = false;
 
-        public int life = 100; 
+        public int life = 100;
 
         Vector2 inverseMatrixMouse;
         GamePadState gamepadState;
@@ -34,7 +34,7 @@ namespace Shadows
         float oldroation = 0;
 
         public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, Vector2 origin, float scale, float rotationOffset)
-            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, origin, scale, rotationOffset )
+            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, origin, scale, rotationOffset)
         {
         }
 
@@ -50,16 +50,16 @@ namespace Shadows
 
         public void setInverseMatrixMouse(Vector2 pos)
         {
-            this.inverseMatrixMouse = pos; 
+            this.inverseMatrixMouse = pos;
         }
 
-        public bool circlesColliding(int x1,int y1,int radius1,int x2,int y2,int radius2)
+        public bool circlesColliding(int x1, int y1, int radius1, int x2, int y2, int radius2)
         {
             //compare the distance to combined radii
             int dx = x2 - x1;
             int dy = y2 - y1;
             int radii = radius1 + radius2;
-            if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
+            if ((dx * dx) + (dy * dy) < radii * radii)
             {
                 // collision! 
                 return true;
@@ -78,13 +78,13 @@ namespace Shadows
             MovementUpdate(gameTime);
             collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
             collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
-            collisionRect.Height = collisionRect.Width; 
+            collisionRect.Height = collisionRect.Width;
 
             // collision ahead
             collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
             collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
 
-            if(usingGamepad)
+            if (usingGamepad)
                 rotation = GamepadRotation();
             else
                 rotation = MouseRotation();
@@ -96,14 +96,16 @@ namespace Shadows
 
         public bool isShooting()
         {
-            if (usingGamepad){
+            if (usingGamepad)
+            {
                 if (gamepadState.Buttons.RightShoulder == ButtonState.Pressed)
                     return true;
             }
-            else{
+            else
+            {
                 if (Mouse.GetState().LeftButton == ButtonState.Pressed)
                     return true;
-                }
+            }
             return false;
         }
 
@@ -121,8 +123,8 @@ namespace Shadows
                     return inputDirection;
                 }
                 else
-                if (Keyboard.GetState().IsKeyDown(keyLeft))
-                    inputDirection.X -= 1;
+                    if (Keyboard.GetState().IsKeyDown(keyLeft))
+                        inputDirection.X -= 1;
                 if (Keyboard.GetState().IsKeyDown(keyRight))
                     inputDirection.X += 1;
                 if (Keyboard.GetState().IsKeyDown(keyUp))
@@ -130,11 +132,11 @@ namespace Shadows
                 if (Keyboard.GetState().IsKeyDown(keyDown))
                     inputDirection.Y += 1;
 
-                
+
                 if (gamepadState.ThumbSticks.Left.X != 0)
                     inputDirection.X += gamepadState.ThumbSticks.Left.X;
                 if (gamepadState.ThumbSticks.Left.Y != 0)
-                   inputDirection.Y -= gamepadState.ThumbSticks.Left.Y;
+                    inputDirection.Y -= gamepadState.ThumbSticks.Left.Y;
 
 
                 return Vector2.Multiply(inputDirection, speedFromLoopTime(5)); // reutrn direction + speed
@@ -145,28 +147,29 @@ namespace Shadows
         public float MouseRotation()
         {
             Vector2 pos = inverseMatrixMouse;
-            
+
             // substracts the position of the player so that the rotation will be correct according to the player position. 
             pos -= position;
             // return the rotation value based on the mouse position. 
-            return (float)Math.Atan2(pos.Y, pos.X); 
+            return (float)Math.Atan2(pos.Y, pos.X);
         }
-        
+
         public float GamepadRotation()
-        {;
+        {
+            ;
             // Doing basically the same thing as for MouseRotation() but now with gamepad. We also need to store the rotation from last update
             // so that it does not reset when you let go of the stick. also using GamePadDeadZone.Circular so you get a smoother rotation without
             // it sticking to 0, 90, 180, 270 degrees. 
-            GamePadState gamepadState = GamePad.GetState( PlayerIndex.One, GamePadDeadZone.Circular);
+            GamePadState gamepadState = GamePad.GetState(PlayerIndex.One, GamePadDeadZone.Circular);
             if (gamepadState.ThumbSticks.Right.X >= .10 || gamepadState.ThumbSticks.Right.X <= -.10 ||
                  gamepadState.ThumbSticks.Right.Y >= .10 || gamepadState.ThumbSticks.Right.Y <= -.10)
             {
-                oldroation = (float)Math.Atan2(gamepadState.ThumbSticks.Right.X, gamepadState.ThumbSticks.Right.Y) -89.5f;
+                oldroation = (float)Math.Atan2(gamepadState.ThumbSticks.Right.X, gamepadState.ThumbSticks.Right.Y) - 89.5f;
                 return oldroation;
             }
 
             return oldroation;
-              
+
         }
 
         // Animation logic
@@ -188,10 +191,10 @@ namespace Shadows
                 }
                 isWalking = true;
             }
-            
+
             // if standing still
             if (Direction.X == 0 &&
-                Direction.Y == 0 )
+                Direction.Y == 0)
             {
                 playAnimation("idle", true, gameTime);
                 if (isWalking)
@@ -204,12 +207,12 @@ namespace Shadows
 
         public void Collision()
         {
-            collision = true; 
+            collision = true;
         }
 
         public float speedFromLoopTime(float speed)
         {
-            return speed * 60; 
+            return speed * 60;
         }
 
         // Set input
@@ -222,5 +225,5 @@ namespace Shadows
             keyRoll = roll;
             keyJump = jump;
         }
-    }     
+    }
 }

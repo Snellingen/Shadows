@@ -126,16 +126,14 @@ namespace Shadows
             if (songs.Count - 1 > currentSong)
             {
                 currentSong++;
-                Console.WriteLine("current " + (currentSong) + " list: " + songs.Count);
                 MediaPlayer.Play(songs[currentSong]);
 
             }
             else
             {
                 currentSong = 0;
-                Console.WriteLine("else current " + (currentSong) + " list: " + songs.Count);
                 MediaPlayer.Play(songs[currentSong]);
-                
+
             }
         }
 

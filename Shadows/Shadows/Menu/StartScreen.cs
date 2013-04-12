@@ -19,6 +19,8 @@ namespace Shadows
 
         Texture2D image;
         Rectangle imageRectangle;
+        bool xbox;
+
         public int SelectedIndex
         {
             get { return menuComponent.SelectedIndex; }
@@ -30,7 +32,7 @@ namespace Shadows
         Texture2D image)
             : base(game, spriteBatch)
         {
-            string[] menuItems = { "Start Game", "End Game" };
+            string[] menuItems = { "Start Game", "End Game", "Use Xbox Controller" };
             menuComponent = new MenuComponent(game,
             spriteBatch,
             spriteFont,
@@ -56,6 +58,23 @@ namespace Shadows
                 {
                     Events.FireMyEvent(Selected.ExitGame);
                 }
+
+                else if (menuComponent.SelectedIndex == 3)
+                {
+                    if (!xbox)
+                    {
+                        Events.FireMyEvent(Selected.PauseSong);
+                        menuComponent.replaceItem(3, "Use Keyboard/Mouse");
+                        xbox = true;
+                    }
+                    else
+                    {
+                        Events.FireMyEvent(Selected.PauseSong);
+                        menuComponent.replaceItem(3, "Use Xbox Controller");
+                        xbox = false;
+                    }
+
+                }
             }
             base.Update(gameTime);
         }
@@ -63,7 +82,7 @@ namespace Shadows
         {
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             spriteBatch.Draw(image, imageRectangle, Color.White);
-            spriteBatch.End(); 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

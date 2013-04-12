@@ -27,7 +27,7 @@ namespace Shadows
         Continue,
         ExitGame,
         NextSong,
-        PauseSong, 
+        PauseSong,
         StopSong,
         PlaySong,
         ResumeSong
@@ -46,7 +46,7 @@ namespace Shadows
         FpsViewer fps;
         GraphicsDeviceManager graphics;
         SpriteManager spriteManager;
-        LightManager lightManager; 
+        LightManager lightManager;
         InputManager inputManager;
         CollisionManager collisionManager;
         SoundManager soundManager;
@@ -60,7 +60,7 @@ namespace Shadows
         Vector2 inverseMatrixPostion;
 
         Texture2D floorTexture;
-        Texture2D blood; 
+        Texture2D blood;
         RenderTarget2D toApplyLight;
 
         int screenWidth = 1440;
@@ -69,7 +69,7 @@ namespace Shadows
         Camera camera;
         GameState gameState;
         bool IsComponentsDisabled;
-        bool paused; 
+        bool paused;
 
         public Game1()
         {
@@ -101,9 +101,9 @@ namespace Shadows
             inputManager = new InputManager(this);
             lightManager = new LightManager(this, graphics);
             collisionManager = new CollisionManager(this, new Rectangle(0, 0, screenWidth, screenHeight));
-            soundManager = new SoundManager(this); 
+            soundManager = new SoundManager(this);
 
-            camera = new Camera(new Vector2(screenWidth, screenHeight), 1.5f); 
+            camera = new Camera(new Vector2(screenWidth, screenHeight), 1.5f);
 
             // Add Component
             Components.Add(fps);
@@ -142,7 +142,7 @@ namespace Shadows
             spriteManager.addLevels("ShadowHouse4", "Minihouse4", new Vector2(150, 500), new Rectangle(1297, 379, 137, 245), new LightSource[] {
                 new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(610, 474)),
-                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))},new Vector2[] {
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))}, new Vector2[] {
                 new Vector2(100, 100), new Vector2( 100, 300)});
 
             spriteManager.addLevels("ShadowHouse5", "Minihouse5", new Vector2(170, 450), new Rectangle(1130, 280, 304, 400), new LightSource[] {
@@ -163,7 +163,7 @@ namespace Shadows
             lightManager.Enabled = false;
             collisionManager.Enabled = false;
 
-            IsComponentsDisabled = true; 
+            IsComponentsDisabled = true;
 
             // AddService
             Services.AddService(typeof(GraphicsDeviceManager), graphics);
@@ -171,13 +171,13 @@ namespace Shadows
             Services.AddService(typeof(LightManager), lightManager);
             Services.AddService(typeof(InputManager), inputManager);
             Services.AddService(typeof(CollisionManager), collisionManager);
-            Services.AddService(typeof(SoundManager), soundManager); 
+            Services.AddService(typeof(SoundManager), soundManager);
 
             // draworder 
             fps.DrawOrder = 11;
             inputManager.DrawOrder = 10;
             spriteManager.DrawOrder = 8;
-            lightManager.DrawOrder = 7; 
+            lightManager.DrawOrder = 7;
             base.Initialize();
 
             // LYDMANAGER
@@ -197,10 +197,10 @@ namespace Shadows
             soundManager.TryLoadSong("Cold");
             soundManager.TryLoadSong("Ambient");
             soundManager.PlaySong(0);
-          
+
             // Events
             Events.MyEvent += MenuHandler;
-            
+
             // ONLY REMOVE THIS IF YOU HAVE A MULTIPLE MONITOR SETUP!! ( DRAWS THE GAME ON THE SECOND MONITOR IF IN DEBUG MODE ) 
             /* #if DEBUG
             var form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(this.Window.Handle);
@@ -251,9 +251,9 @@ namespace Shadows
             {
                 case Selected.ExitGame:
                     this.Exit();
-                    break; 
+                    break;
                 case Selected.PlayGame:
-                    gameState = GameState.Playing; 
+                    gameState = GameState.Playing;
                     break;
                 case Selected.Continue:
                     gameState = GameState.Playing;
@@ -279,26 +279,32 @@ namespace Shadows
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            soundManager.setGameTime(gameTime); 
+            soundManager.setGameTime(gameTime);
 
             if (inputManager.isKeyPressed(Keys.P))
             {
                 if (!paused)
                 {
                     gameState = GameState.Pause;
-                    paused = true; 
-                    
+                    paused = true;
+
                 }
                 else
                 {
                     gameState = GameState.Playing;
-                    paused = false; 
+                    paused = false;
                 }
             }
 
+            // see if won or lost
             if (spriteManager.win)
             {
                 gameState = GameState.GameWin;
+            }
+
+            if (spriteManager.fail)
+            {
+                gameState = GameState.GameOver;
             }
 
             camera.Update(spriteManager.GetPlayerPosition(0));
@@ -321,21 +327,21 @@ namespace Shadows
                     startScreen.Show();
                     winScreen.Hide();
                     looseScreen.Hide();
-                    break; 
+                    break;
 
                 case GameState.Playing:
                     if (IsComponentsDisabled)
                     {
                         lightManager.Enabled = true;
                         lightManager.Visible = true;
-                        spriteManager.Enabled = true; 
+                        spriteManager.Enabled = true;
                         IsComponentsDisabled = false;
                     }
 
                     spriteManager.isPaused = false;
                     pauseScreen.Hide();
                     startScreen.Hide();
-                    
+
 
                     break;
 
@@ -347,20 +353,27 @@ namespace Shadows
                     winScreen.Hide();
                     looseScreen.Hide();
 
-                    break; 
+                    break;
 
                 case GameState.GameOver:
+                    startScreen.Hide();
+                    looseScreen.Show();
+                    lightManager.Enabled = false;
+                    lightManager.Visible = false;
+                    spriteManager.Enabled = false;
+                    spriteManager.isPaused = true;
+                    activeScreen = looseScreen;
                     break;
- 
+
                 case GameState.GameWin:
-                        startScreen.Hide();
-                        winScreen.Show();
-                        lightManager.Enabled = false;
-                        lightManager.Visible = false;
-                        spriteManager.Enabled = false;
-                        spriteManager.isPaused = true;
-                        activeScreen = winScreen;
-                    break; 
+                    startScreen.Hide();
+                    winScreen.Show();
+                    lightManager.Enabled = false;
+                    lightManager.Visible = false;
+                    spriteManager.Enabled = false;
+                    spriteManager.isPaused = true;
+                    activeScreen = winScreen;
+                    break;
             }
 
             base.Update(gameTime);
@@ -369,7 +382,7 @@ namespace Shadows
 
         protected override void Draw(GameTime gameTime)
         {
-            
+
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             //set render target to toApplyLight which will be used to blend together with the screenLight render target
@@ -378,11 +391,11 @@ namespace Shadows
             drawFloor();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearClamp, DepthStencilState.Default, RasterizerState.CullNone, null, camera.ViewMatrix);
             spriteBatch.Draw(blood, Vector2.Zero, Color.White);
-            spriteBatch.End(); 
-            GraphicsDevice.SetRenderTarget(null); 
+            spriteBatch.End();
+            GraphicsDevice.SetRenderTarget(null);
 
             // sends the rendertarget to the light manager; 
-            lightManager.setRendertarget(toApplyLight); 
+            lightManager.setRendertarget(toApplyLight);
 
             base.Draw(gameTime);
         }
@@ -391,7 +404,7 @@ namespace Shadows
         {
             Rectangle source = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.Default, RasterizerState.CullNone, null, camera.ViewMatrix);
-            spriteBatch.Draw(floorTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f); 
+            spriteBatch.Draw(floorTexture, Vector2.Zero, source, Color.White, 0, Vector2.Zero, 1.0f, SpriteEffects.None, 1.0f);
             spriteBatch.End();
         }
     }

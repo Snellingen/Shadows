@@ -21,16 +21,16 @@ namespace Shadows
         public float scale = 1;
         public float rotation = 0;
         public float rotationOffset = 0;
-        Color color = Color.White; 
+        Color color = Color.White;
 
         // The collision rectangle for the sprite. 
         public Rectangle collisionRect;
         public float collisionScale { get; set; }
 
         // Constructors
-       
+
         public DrawData(Texture2D textureImage, Vector2 position, float scale)
-            :this(textureImage, new Vector2(textureImage.Width/2, textureImage.Height/2) , position, scale) 
+            : this(textureImage, new Vector2(textureImage.Width / 2, textureImage.Height / 2), position, scale)
         {
         }
 
@@ -41,7 +41,7 @@ namespace Shadows
         }
 
         public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale)
-            :this(textureImage, origin, position, scale, 0, 0)
+            : this(textureImage, origin, position, scale, 0, 0)
         {
         }
 

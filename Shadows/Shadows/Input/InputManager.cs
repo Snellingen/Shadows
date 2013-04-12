@@ -18,7 +18,7 @@ namespace Shadows
     public class InputManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
         SpriteBatch spriteBatch;
-        
+
         //Mouse
         MouseState currentState, previousState;
         public Vector2 Position { get; protected set; }
@@ -27,12 +27,12 @@ namespace Shadows
 
         // Keyboard
         KeyboardState oldKeyboardState;
-        
-        public Matrix viewMatrix { get; set;}
+
+        public Matrix viewMatrix { get; set; }
 
         public InputManager(Game game)
             : base(game)
-        {      
+        {
         }
 
         public override void Initialize()
@@ -100,10 +100,10 @@ namespace Shadows
         {
             if (Keyboard.GetState().IsKeyUp(key) && oldKeyboardState.IsKeyDown(key))
             {
-                return true; 
+                return true;
             }
 
-            return false; 
+            return false;
         }
         #endregion
 
@@ -118,10 +118,10 @@ namespace Shadows
             Position = new Vector2(currentState.X, currentState.Y);
 
             // create rectangele for the mouse. 
-            Rectange = new Rectangle((int)Position.X, (int)Position.Y, pointerTexture.Width, pointerTexture.Height); 
+            Rectange = new Rectangle((int)Position.X, (int)Position.Y, pointerTexture.Width, pointerTexture.Height);
 
             base.Update(gameTime);
-            oldKeyboardState = Keyboard.GetState(); 
+            oldKeyboardState = Keyboard.GetState();
         }
 
         public override void Draw(GameTime gameTime)

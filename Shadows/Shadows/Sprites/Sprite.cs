@@ -24,22 +24,22 @@ namespace Shadows
         public int millisecondsPerFrame { get; set; }
         public Vector2 speed { get; set; }
         public bool active = true;
-        
-        public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
+
+        public Dictionary<string, Point[]> animationList = new Dictionary<string, Point[]>();
 
         // Constructors
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
             float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float rotationOffset)
             : this(textureImage, position, frameSize, collisionScale, currentFrame,
-            sheetSize, speed, new Vector2(textureImage.Width/2, textureImage.Height/2), 1, 0f)
+            sheetSize, speed, new Vector2(textureImage.Width / 2, textureImage.Height / 2), 1, 0f)
         {
         }
 
         public Sprite(Texture2D textureImage, Vector2 position, Point frameSize,
             float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed)
             : this(textureImage, position, frameSize, collisionScale, currentFrame,
-            sheetSize, speed, defaultMillisecondsPerFrame, new Vector2(textureImage.Width/2, textureImage.Height/2), 1, 0)
+            sheetSize, speed, defaultMillisecondsPerFrame, new Vector2(textureImage.Width / 2, textureImage.Height / 2), 1, 0)
         {
         }
 
@@ -69,7 +69,7 @@ namespace Shadows
 
         public virtual void Update(GameTime gameTime, Rectangle clientBounds)
         {
-            
+
         }
 
         // Simple out of bound check ( not collision based )
@@ -104,7 +104,7 @@ namespace Shadows
                 if (currentFrame.X >= sheetSize.X)
                 {
                     currentFrame.X = 0;
-                    if(currentFrame.Y != sheetSize.Y)
+                    if (currentFrame.Y != sheetSize.Y)
                         ++currentFrame.Y;
                 }
 
@@ -118,20 +118,20 @@ namespace Shadows
         public void addAnimation(string name, Point startFrame, Point frameSize, Point sheetSize)
         {
             Point[] animation = new Point[3] { startFrame, frameSize, sheetSize };
-            
-            animationList.Add(name, animation); 
+
+            animationList.Add(name, animation);
         }
 
         public void playAnimation(string name, bool play, GameTime gameTime)
         {
-            Point[] animation; 
+            Point[] animation;
             animationList.TryGetValue(name, out animation);
             this.startFrame = animation[0];
             this.frameSize = animation[1];
             this.sheetSize = animation[2];
 
             if (play)
-                Animate(gameTime); 
+                Animate(gameTime);
         }
 
         public abstract Vector2 Direction

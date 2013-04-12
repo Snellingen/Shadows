@@ -23,7 +23,7 @@ namespace Shadows
         public Matrix viewMatrix { get; set; }
 
         //LIGHT 
-        Texture2D shadowHouseTexture; 
+        Texture2D shadowHouseTexture;
         Vector2 lightPosition;
 
         List<LightSource> lights = new List<LightSource>();
@@ -42,13 +42,13 @@ namespace Shadows
         public LightManager(Game game, GraphicsDeviceManager graphics)
             : base(game)
         {
-            this.graphics = graphics; 
+            this.graphics = graphics;
         }
 
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            shadowHouseTexture = Game.Content.Load<Texture2D>(@"World\ShadowHouse"  + lightMapTexture);
+            shadowHouseTexture = Game.Content.Load<Texture2D>(@"World\ShadowHouse" + lightMapTexture);
             spriteManager = (SpriteManager)Game.Services.GetService(typeof(SpriteManager));
 
             // Lights: 
@@ -91,8 +91,9 @@ namespace Shadows
             base.Update(gameTime);
         }
 
-        public void setRendertarget(Texture2D rt){
-            toApplyLigth = rt; 
+        public void setRendertarget(Texture2D rt)
+        {
+            toApplyLigth = rt;
         }
 
         public override void Draw(GameTime gameTime)
@@ -103,7 +104,7 @@ namespace Shadows
                 shadowmapResolver.ResolveShadows(shadowMap, light, PostEffect.LinearAttenuation_BlurHigh, light.DrawPosition);
             }
             shadowmapResolver.ResolveShadows(shadowMap, playerLight, PostEffect.CurveAttenuation_BlurHigh, lightPosition);
-           
+
             //shadowmapResolver.ResolveShadows(shadowMap, light4, PostEffect.LinearAttenuation_BlurHigh, Vector2.Zero);
             // Draw lightmap to rendertarget screeLight
             GraphicsDevice.SetRenderTarget(screenLights);
@@ -124,7 +125,7 @@ namespace Shadows
             GraphicsDevice.SetRenderTarget(screenGround);
             GraphicsDevice.Clear(Color.Black);
             DrawGround();*/
-           
+
             // Combine light and ground render target and blend them.
             this.lightsFX.PrintLightsOverTexture(null, spriteBatch, graphics, screenLights, toApplyLigth, 0.90f);
 

@@ -16,7 +16,7 @@ namespace Shadows
     /// </summary>
     public class SpriteManager : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        
+
         // Stuff to draw
 
         List<DrawData> toDraw = new List<DrawData>();
@@ -29,8 +29,9 @@ namespace Shadows
         public Level currentLevel;
         public bool win { get; set; }
         public bool wrong { get; set; }
+        public bool fail { get; set; }
 
-        public int lvlNr {get; set;}
+        public int lvlNr { get; set; }
 
         Texture2D line;
         Texture2D debug;
@@ -40,12 +41,12 @@ namespace Shadows
         SoundManager sound;
         CollisionManager collisionManager;
         InputManager input;
-        
+
         // Camera related
         public Matrix viewMatrix { get; set; }
         public Vector2 inverseMatrixMosue { get; set; }
 
-        float time = 0f; 
+        float time = 0f;
         public bool isPaused = false;
 
         public SpriteManager(Game game)
@@ -58,13 +59,13 @@ namespace Shadows
             if (nr <= levels.Count)
             {
                 currentLevel = levels[nr - 1];
-                lvlNr = nr; 
+                lvlNr = nr;
             }
         }
 
         public Vector2 GetPlayerPosition(int playerIndex)
         {
-                return players[0].GetPostion;
+            return players[0].GetPostion;
         }
 
         // ADDING STUFF
@@ -72,19 +73,19 @@ namespace Shadows
         // lets you add elements to draw
         public void addToDraw(string textureName, Vector2 position, float scale)
         {
-            toDraw.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprite\" + textureName), position, scale)); 
+            toDraw.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprite\" + textureName), position, scale));
         }
 
         // lets you add a Matrix for drawing
         public void addToDrawNoMatrix(string textureName, Vector2 position, float scale)
         {
-            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"World\" + textureName), position, scale)); 
+            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"World\" + textureName), position, scale));
         }
 
         // Let's you add level
-        public void addLevels(string Map, string minMap, Vector2 playerSpawn, Rectangle winZone )
+        public void addLevels(string Map, string minMap, Vector2 playerSpawn, Rectangle winZone)
         {
-            levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map),Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn , winZone));
+            levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map), Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn, winZone));
         }
 
         // let's you add level with light
@@ -102,7 +103,7 @@ namespace Shadows
         // Let's you add players
         public void addPlayers(int playerIndex, Vector2 spawn)
         {
-            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f, Color.Yellow )); 
+            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f, Color.Yellow));
             players.Add(new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6), new Vector2(34, 57), 1, 89.5f));
         }
 
@@ -110,7 +111,7 @@ namespace Shadows
         public void addZombies(Vector2 spawn)
         {
             miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f, Color.Red));
-            zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57),  1, 89.5f));
+            zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57), 1, 89.5f));
         }
 
         // Let's you add zombies
@@ -118,19 +119,24 @@ namespace Shadows
         {
             foreach (Vector2 spawn in spawns)
             {
-                miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f ,Color.Red));
+                miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f, Color.Red));
                 zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57), 1, 89.5f));
             }
+        }
+
+        public void setXbox(bool on)
+        {
+            players[0].usingGamepad = on;
         }
 
         #endregion
 
         public override void Initialize()
         {
-            collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
+            collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager));
             sound = (SoundManager)Game.Services.GetService(typeof(SoundManager));
             input = (InputManager)Game.Services.GetService(typeof(InputManager));
-            players[0].SetPostion = currentLevel.playerSpawn; 
+            players[0].SetPostion = currentLevel.playerSpawn;
 
             base.Initialize();
         }
@@ -146,7 +152,7 @@ namespace Shadows
             {
                 // add player animation 
                 players[i].addAnimation("walk", new Point(0, 0), new Point(67, 90), new Point(8, 1));
-                players[i].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
+                players[i].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1));
             }
 
             for (int i = 0; i < zombies.Count; i++)
@@ -154,12 +160,11 @@ namespace Shadows
                 // add player animation 
                 zombies[i].addAnimation("walk", new Point(0, 0), new Point(67, 90), new Point(8, 1));
                 zombies[i].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1));
-                zombies[i].addAnimation("Death", new Point(0, 0), new Point(86, 132), new Point(5, 2)); 
+                zombies[i].addAnimation("Death", new Point(0, 0), new Point(86, 132), new Point(5, 2));
             }
 
-            Console.WriteLine(players.Count);
 
-            debug = Game.Content.Load<Texture2D>(@"Sprites\green"); 
+            debug = Game.Content.Load<Texture2D>(@"Sprites\green");
 
             base.LoadContent();
         }
@@ -203,7 +208,7 @@ namespace Shadows
                                         {
                                             zombies[j].isDead = true;
                                             sound.PlaySound("zombie-3");
-                                            
+
                                         }
                                     }
                                 }
@@ -247,13 +252,21 @@ namespace Shadows
                     }
                 }
 
+                foreach (AiControlledSprite zombie in zombies)
+                {
+                    if (collisionManager.rectrangleCollision(zombie.collisionRect, players[i].collisionRect))
+                    {
+                        //fail = true;
+                    }
+                }
+
                 // test collision
                 if (collisionManager.pixelPerfectCollision(players[i].collisionRect, currentLevel.map))
                 {
                     // Collision! 
                     players[i].Collision();
                 }
-                
+
                 miniMapDots[i].SetPostion = Vector2.Multiply(players[i].GetPostion, .2f);
 
                 // Update player
@@ -262,7 +275,7 @@ namespace Shadows
 
                 if (players[i].life <= 0)
                 {
-                    players[i].isDead = true; 
+                    players[i].isDead = true;
                 }
 
                 // Play sounds for player
@@ -276,7 +289,6 @@ namespace Shadows
 
                     time -= gameTime.ElapsedGameTime.Milliseconds;
                     if (time <= 0)
-
                     {
                         // Shoot! 
                         bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), players[i].GetPostion, new Vector2(1000, 1000), players[i].rotation));
@@ -319,7 +331,7 @@ namespace Shadows
                     zombies[i].Update(gameTime, Game.Window.ClientBounds);
                     zombies[i].enemyPos = players[0].GetPostion;
                 }
-                
+
                 // Play sounds for zombie
                 //PlayerSound();
             }
@@ -373,9 +385,8 @@ namespace Shadows
                 for (int i = 0; i < zombies.Count; i++)
                 {
                     zombies[i].Draw(spriteBatch);
-                    spriteBatch.Draw(debug, zombies[i].collisionRect, Color.White);
                 }
-                
+
 
                 spriteBatch.Draw(currentLevel.map, Vector2.Zero, Color.White);
 
@@ -395,7 +406,7 @@ namespace Shadows
                     dot.Draw(spriteBatch);
                 }
 
-                foreach ( DrawData dot in miniMapDotsZ )
+                foreach (DrawData dot in miniMapDotsZ)
                 {
                     dot.Draw(spriteBatch);
                 }
@@ -403,7 +414,7 @@ namespace Shadows
                 spriteBatch.End();
                 base.Draw(gameTime);
             }
-            
+
         }
 
         void DrawLine(Texture2D blank,
