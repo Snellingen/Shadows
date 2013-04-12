@@ -17,12 +17,14 @@ namespace Shadows
         // For animation
         public Point frameSize { get; set; }
         protected Point currentFrame;
-        public Point sheetSize { get; set; }
+        public Point sheetSize;
         public Point startFrame = new Point(0, 0);
         private int timeSinceLastFrame = 0;
         private const int defaultMillisecondsPerFrame = 90;
         public int millisecondsPerFrame { get; set; }
         public Vector2 speed { get; set; }
+        public bool loop = true;
+        public bool stopLoop = false; 
         
         public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
 
@@ -94,6 +96,7 @@ namespace Shadows
         // Handles the anmiation logic by going through the spritesheet
         public void Animate(GameTime gameTime)
         {
+
             timeSinceLastFrame += gameTime.ElapsedGameTime.Milliseconds;
             if (timeSinceLastFrame > millisecondsPerFrame)
             {
@@ -102,11 +105,17 @@ namespace Shadows
                 if (currentFrame.X >= sheetSize.X)
                 {
                     currentFrame.X = 0;
-                    ++currentFrame.Y;
+                    if(currentFrame.Y != sheetSize.Y)
+                        ++currentFrame.Y;
                 }
+
                 if (currentFrame.Y >= sheetSize.Y)
                 {
-                    currentFrame.Y = 0;
+                    if (!loop)
+                    {
+                        stopLoop = true; 
+                    }
+                        currentFrame.Y = 0;
                 }
             }
         }

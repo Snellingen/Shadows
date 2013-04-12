@@ -254,6 +254,8 @@ namespace Shadows
                         if (!zombies[i].deathLoaded)
                         {
                             zombies[i].textureImage = Game.Content.Load<Texture2D>(@"Sprites/guard_death");
+                            zombies[i].millisecondsPerFrame = 200;
+                            zombies[i].loop = false;
                             zombies[i].deathLoaded = true;
                         }
                     }
@@ -318,7 +320,7 @@ namespace Shadows
                 for (int i = 0; i < zombies.Count; i++)
                 {
                     zombies[i].Draw(spriteBatch);
-                    spriteBatch.Draw(debug, zombies[i].collisionRect, Color.White);
+                    //spriteBatch.Draw(debug, zombies[i].collisionRect, Color.White);
                 }
                 
 

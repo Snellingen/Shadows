@@ -85,36 +85,42 @@ namespace Shadows
         {
             // Update position
             position += Vector2.Multiply(Direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
-            
-            // if movement
-            if (Direction.X > 1 ||
-                Direction.X < -1 ||
-                Direction.Y > 1 ||
-                Direction.Y < -1)
-            {
-                playAnimation("walk", true, gameTime);
-                if (!isWalking)
-                {
-                    wasWalking = true;
-                }
-                isWalking = true;
-            }
 
-            // if standing still
-            if (Direction.X == 0 &&
-                Direction.Y == 0)
-            {
-                playAnimation("idle", true, gameTime);
-                if (isWalking)
+            if(!stopLoop){
+                if (isDead)
                 {
-                    wasWalking = false;
+                    playAnimation("Death", true, gameTime);
                 }
-                isWalking = false;
-            }
 
-            if (isDead)
-            {
-                playAnimation("Death", true, gameTime);
+                else
+                {
+
+                    // if movement
+                    if (Direction.X > 1 ||
+                        Direction.X < -1 ||
+                        Direction.Y > 1 ||
+                        Direction.Y < -1)
+                    {
+                        playAnimation("walk", true, gameTime);
+                        if (!isWalking)
+                        {
+                            wasWalking = true;
+                        }
+                        isWalking = true;
+                    }
+
+                    // if standing still
+                    if (Direction.X == 0 &&
+                        Direction.Y == 0)
+                    {
+                        playAnimation("idle", true, gameTime);
+                        if (isWalking)
+                        {
+                            wasWalking = false;
+                        }
+                        isWalking = false;
+                    }
+                }
             }
         }
 
