@@ -184,6 +184,7 @@ namespace Shadows
             base.Update(gameTime);
         }
 
+        // Upadets for players
         public void PlayerUpdate(GameTime gameTime)
         {
             // for all player in players
@@ -223,6 +224,7 @@ namespace Shadows
             }
         }
 
+        // Update for zombies
         public void ZombieUpdate(GameTime gameTime)
         {
             // for all player in players
@@ -239,7 +241,7 @@ namespace Shadows
 
                 // Update player
                 zombies[i].Update(gameTime, Game.Window.ClientBounds);
-                zombies[i].enemyPos = inverseMatrixMosue;
+                zombies[i].enemyPos = players[0].GetPostion;
                 // Play sounds for zombie
                 //PlayerSound();
             }
@@ -271,7 +273,7 @@ namespace Shadows
         {
             if (!isPaused)
             {
-                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
+                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
                 
 
                 spriteBatch.Draw(debug, currentLevel.winZone, Color.White);

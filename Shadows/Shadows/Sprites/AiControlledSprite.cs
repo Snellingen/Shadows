@@ -14,6 +14,7 @@ namespace Shadows
         public bool isWalking = false;
         public bool wasWalking = false;
         public Vector2 enemyPos { get; set; }
+        Vector2 oldDriection; 
 
         // Used for gamepad to store last roatation
 
@@ -34,12 +35,11 @@ namespace Shadows
                 if (collision)
                 {
                     collision = false;
-                    return inputDirection;
+                    return Vector2.Negate(oldDriection);
                 }
+                inputDirection = aimVector(Rotation());
 
-                inputDirection = aimVector(Rotation()); 
-
-                return Vector2.Multiply(inputDirection, speedFromLoopTime(2)); // reutrn direction + speed
+                return Vector2.Multiply(inputDirection, speedFromLoopTime(1)); // reutrn direction + speed
 
             }
         }
@@ -59,17 +59,14 @@ namespace Shadows
             collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
             collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
             collisionRect.Height = collisionRect.Width; 
-
-            // collision ahead
-
-            collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
-            collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
-
-            //rotation = GamepadRotation();
-
+           
             base.Update(gameTime, clientBounds);
             if ((Direction.X > 0) || Direction.X < 0 && !collision)
                 lastDirection = Direction;
+
+            oldDriection = Direction; 
+
+            rotation = Rotation(); 
         }
 
         public Vector2 aimVector(float angle)

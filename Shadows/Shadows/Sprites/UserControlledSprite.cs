@@ -76,12 +76,9 @@ namespace Shadows
             collisionRect.Height = collisionRect.Width; 
 
             // collision ahead
-
             collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
             collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
 
-
-            
             if(usingGamepad)
                 rotation = GamepadRotation();
             else
