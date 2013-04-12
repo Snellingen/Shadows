@@ -23,8 +23,7 @@ namespace Shadows
         private const int defaultMillisecondsPerFrame = 90;
         public int millisecondsPerFrame { get; set; }
         public Vector2 speed { get; set; }
-        public bool loop = true;
-        public bool stopLoop = false; 
+        public bool active = true;
         
         public Dictionary<string, Point[]> animationList = new Dictionary<string,Point[]>(); 
 
@@ -111,11 +110,7 @@ namespace Shadows
 
                 if (currentFrame.Y >= sheetSize.Y)
                 {
-                    if (!loop)
-                    {
-                        stopLoop = true; 
-                    }
-                        currentFrame.Y = 0;
+                    currentFrame.Y = 0;
                 }
             }
         }

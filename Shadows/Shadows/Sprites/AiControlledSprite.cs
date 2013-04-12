@@ -12,20 +12,20 @@ namespace Shadows
 
         public bool collision = false;
         public bool isWalking = false;
-        public bool isDead = false; 
+        public bool isDead = false;
         public bool wasWalking = false;
-        public bool deathLoaded = false; 
+        public bool deathLoaded = false;
 
         public Point deathAnimation { get; set; }
-        
+
         public Vector2 enemyPos { get; set; }
         Vector2 oldDriection;
-        public int life = 100; 
+        public int life = 100;
 
         // Used for gamepad to store last roatation
 
 
-        public AiControlledSprite (Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, Vector2 origin, float scale, float rotationOffset)
+        public AiControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, Vector2 origin, float scale, float rotationOffset)
             : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, origin, scale, rotationOffset)
         {
         }
@@ -61,18 +61,22 @@ namespace Shadows
         public override void Update(GameTime gameTime, Rectangle clientBounds)
         {
             // Moves the sprite based on direction
+            if (active)
+            {
+                
+                collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
+                collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
+                collisionRect.Height = collisionRect.Width;
+
+                if ((Direction.X > 0) || Direction.X < 0 && !collision)
+                    lastDirection = Direction;
+
+                oldDriection = Direction;
+
+                rotation = Rotation();
+            }
             MovementUpdate(gameTime);
-            collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
-            collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
-            collisionRect.Height = collisionRect.Width; 
-           
             base.Update(gameTime, clientBounds);
-            if ((Direction.X > 0) || Direction.X < 0 && !collision)
-                lastDirection = Direction;
-
-            oldDriection = Direction;
-
-            rotation = Rotation(); 
         }
 
         public Vector2 aimVector(float angle)
@@ -84,42 +88,42 @@ namespace Shadows
         public void MovementUpdate(GameTime gameTime)
         {
             // Update position
-            position += Vector2.Multiply(Direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
+            if(active)
+                position += Vector2.Multiply(Direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            if(!stopLoop){
-                if (isDead)
+
+            if (isDead)
+            {
+                playAnimation("Death", true, gameTime);
+            }
+
+            else
+            {
+
+                // if movement
+                if (Direction.X > 1 ||
+                    Direction.X < -1 ||
+                    Direction.Y > 1 ||
+                    Direction.Y < -1)
                 {
-                    playAnimation("Death", true, gameTime);
+                    playAnimation("walk", true, gameTime);
+                    if (!isWalking)
+                    {
+                        wasWalking = true;
+                    }
+                    isWalking = true;
                 }
 
-                else
+                // if standing still
+                if (Direction.X == 0 &&
+                    Direction.Y == 0)
                 {
-
-                    // if movement
-                    if (Direction.X > 1 ||
-                        Direction.X < -1 ||
-                        Direction.Y > 1 ||
-                        Direction.Y < -1)
+                    playAnimation("idle", true, gameTime);
+                    if (isWalking)
                     {
-                        playAnimation("walk", true, gameTime);
-                        if (!isWalking)
-                        {
-                            wasWalking = true;
-                        }
-                        isWalking = true;
+                        wasWalking = false;
                     }
-
-                    // if standing still
-                    if (Direction.X == 0 &&
-                        Direction.Y == 0)
-                    {
-                        playAnimation("idle", true, gameTime);
-                        if (isWalking)
-                        {
-                            wasWalking = false;
-                        }
-                        isWalking = false;
-                    }
+                    isWalking = false;
                 }
             }
         }

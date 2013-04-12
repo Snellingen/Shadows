@@ -186,15 +186,23 @@ namespace Shadows
 
                     else
                     {
-                        // check collision zombies
-                        
-                        foreach (AiControlledSprite zombie in zombies)
+                        // check collision zombiess
+                        for (int j = 0; j < zombies.Count; j++)
                         {
                             if (bullets.Count >= 1)
                             {
-                                if (collisionManager.rectrangleCollision(bullets[i].collisionRect, zombie.collisionRect))
+                                if (collisionManager.rectrangleCollision(bullets[i].collisionRect, zombies[j].collisionRect))
                                 {
                                     bullets.RemoveAt(i);
+                                    zombies[j].life -= 25;
+                                    if (zombies[j].life <= 0)
+                                    {
+                                        if (!zombies[j].isDead)
+                                        {
+                                            zombies[j].isDead = true;
+                                            sound.PlaySound("zombie-3");
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -256,7 +264,8 @@ namespace Shadows
             // for all player in players
             for (int i = 0; i < zombies.Count; i++)
             {
-                if (players[0].circlesColliding((int)zombies[i].GetPostion.X, (int)zombies[i].GetPostion.Y, 50, (int)players[0].GetPostion.X, (int)players[0].GetPostion.Y, 200))
+                if (players[0].circlesColliding((int)zombies[i].GetPostion.X, (int)zombies[i].GetPostion.Y, 50, (int)players[0].GetPostion.X, (int)players[0].GetPostion.Y, 200) ||
+                    !zombies[i].active)
                 {
                     // test collision
                     if (collisionManager.pixelPerfectCollision(zombies[i].collisionRect, currentLevel.map))
@@ -271,8 +280,8 @@ namespace Shadows
                         {
                             zombies[i].textureImage = Game.Content.Load<Texture2D>(@"Sprites/guard_death");
                             zombies[i].millisecondsPerFrame = 200;
-                            zombies[i].loop = false;
                             zombies[i].deathLoaded = true;
+                            zombies[i].active = false;
                         }
                     }
 
