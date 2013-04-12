@@ -55,7 +55,7 @@ namespace Shadows
             // Only update total frames when drawing
             _total_frames++;
             spriteBatch.Begin();
-            spriteBatch.DrawString(_spr_font, string.Format("FPS={0} Pos= X {1} Y {2}", _fps, mousepos.X, mousepos.Y), new Vector2(10.0f, 20.0f), Color.White);
+            spriteBatch.DrawString(_spr_font, string.Format("FPS={0} Pos= X {1} Y {2}", _fps, mousepos.X, mousepos.Y), new Vector2(Game.GraphicsDevice.Viewport.Width - 300, 20.0f), Color.White);
             spriteBatch.End();
             base.Draw(gameTime);
         }

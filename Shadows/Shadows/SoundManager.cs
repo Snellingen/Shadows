@@ -114,6 +114,12 @@ namespace Shadows
                 MediaPlayer.Pause();
         }
 
+        public void ResumeSong()
+        {
+            if (currentSong != -1)
+                MediaPlayer.Resume();
+        }
+
         public void NextSong()
         {
 

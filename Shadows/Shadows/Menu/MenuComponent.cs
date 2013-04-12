@@ -56,6 +56,10 @@ namespace Shadows
             MeasureMenu();
         }
 
+        public void replaceItem(int SelectIndex, string newName)
+        {
+            menuItems[selectedIndex] = newName;
+        }
 
         private void MeasureMenu()
         {

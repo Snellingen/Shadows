@@ -16,23 +16,25 @@ namespace Shadows
         MenuComponent menuComponent;
         Texture2D image;
         Rectangle imageRectangle;
-        InputManager input; 
+        InputManager input;
+        KeyboardState oldState;
+        SpriteFont spriteFont;
+        bool songPaused = false;
+
 
         public int SelectedIndex
         {
             get { return menuComponent.SelectedIndex; }
             set { menuComponent.SelectedIndex = value; }
         }
-        public PauseScreen(Game game,
-        SpriteBatch spriteBatch,
-        SpriteFont spriteFont,
-        Texture2D image)
+        public PauseScreen(Game game, SpriteBatch spriteBatch, SpriteFont spriteFont, Texture2D image)
             : base(game, spriteBatch)
         {
-            string[] menuItems = { "Continue", "End Game", "Next Song" };
+            string[] menuItems = { "Continue", "End Game", "Next Song", "Pause Song", "Stop Song" };
             menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
             Components.Add(menuComponent);
-            
+
+            this.spriteFont = spriteFont; 
 
             this.image = image;
             imageRectangle = new Rectangle(
@@ -44,7 +46,7 @@ namespace Shadows
         public override void Update(GameTime gameTime)
         {
             input = (InputManager)Game.Services.GetService(typeof(InputManager));
-            if (input.isKeyPressed(Keys.Enter))
+            if (Keyboard.GetState().IsKeyUp(Keys.Enter) && oldState.IsKeyDown(Keys.Enter))
             {
                 if (menuComponent.SelectedIndex == 0)
                 {
@@ -60,7 +62,29 @@ namespace Shadows
                     Events.FireMyEvent(Selected.NextSong);
                 }
 
+                else if (menuComponent.SelectedIndex == 3)
+                {
+                    if (!songPaused)
+                    {
+                        Events.FireMyEvent(Selected.PauseSong);
+                        menuComponent.replaceItem(3, "Resume Song");
+                        songPaused = true;
+                    }
+                    else
+                    {
+                        Events.FireMyEvent(Selected.PauseSong);
+                        menuComponent.replaceItem(3, "Resume Song");
+                    }
+
+                }
+
+                else if (menuComponent.SelectedIndex == 4)
+                {
+                    Events.FireMyEvent(Selected.StopSong);
+                }
+
             }
+            oldState = Keyboard.GetState(); 
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
