@@ -24,9 +24,9 @@ namespace Shadows
         List<Projectile> bullets = new List<Projectile>();
         List<DrawData> toDrawNoMatrix = new List<DrawData>();
         List<Level> levels = new List<Level>();
+        public Level currentLevel;
 
-        Level currentLevel;
-        int lvlNr;
+        public int lvlNr {get; set;}
 
         Texture2D line;
         DrawData dot;
@@ -38,18 +38,10 @@ namespace Shadows
         InputManager input;
         
         // Camera related
-        Matrix viewMatrix;
-        Vector2 inverseMatrixMosue;
+        public Matrix viewMatrix { get; set; }
+        public Vector2 inverseMatrixMosue { get; set; }
 
-        public void setViewMatrix(Matrix viewMatrix)
-        {
-            this.viewMatrix = viewMatrix;
-        }
-
-        public void setInverseMatrixMosue(Vector2 pos)
-        {
-            this.inverseMatrixMosue = pos;
-        }
+       
 
         Vector2 miniplayerposition;
 
@@ -70,29 +62,33 @@ namespace Shadows
             }
         }
 
-        public int getCurrentLevel()
-        {
-            return lvlNr;
-        }
-
         public Vector2 GetPlayerPosition(int playerIndex)
         {
                 return players[0].GetPostion;
         }
 
+        // lets you add elements to draw
         public void addToDraw(string textureName, Vector2 position, float scale)
         {
             toDraw.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprite\" + textureName), position, scale)); 
         }
 
+        // lets you add a Matrix for drawing
         public void addToDrawNoMatrix(string textureName, Vector2 position, float scale)
         {
             toDrawNoMatrix.Add(new DrawData(Game.Content.Load<Texture2D>(@"World\" + textureName), position, scale)); 
         }
 
+        // Let's you add level
         public void addLevels(string Map, string minMap, Vector2 playerSpawn, Rectangle winZone )
         {
             levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map),Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn , winZone));
+        }
+
+        // let's you add level with light
+        public void addLevels(string Map, string minMap, Vector2 playerSpawn, Rectangle winZone, LightSource[] lights)
+        {
+            levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map), Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn, winZone, lights));
         }
 
         public void addPlayers(int playerIndex, Vector2 spawn)

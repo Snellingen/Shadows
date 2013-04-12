@@ -20,7 +20,7 @@ namespace Shadows
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteManager spriteManager;
-        Matrix viewMatrix;
+        public Matrix viewMatrix { get; set; }
 
         //LIGHT 
         Texture2D shadowHouseTexture; 
@@ -79,17 +79,16 @@ namespace Shadows
             lights.Add(new LightSource(graphics, radius, quality, color, position));
         }
 
+        public void addLight(IEnumerable<LightSource> light)
+        {
+            lights.AddRange(light);
+        }
 
         public override void Update(GameTime gameTime)
         {
             lightPosition = spriteManager.GetPlayerPosition(1);
 
             base.Update(gameTime);
-        }
-
-        public void setViewMatrix(Matrix viewMatrix)
-        {
-            this.viewMatrix = viewMatrix;
         }
 
         public void setRendertarget(Texture2D rt){

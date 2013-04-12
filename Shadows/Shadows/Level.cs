@@ -11,14 +11,20 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
-    class Level
+    public class Level
     {
         public Texture2D map { get; protected set; }
         public Texture2D miniMap { get; protected set; }
         public Vector2 playerSpawn { get; protected set; }
         public List<Vector2> zombieSpawns = new List<Vector2>();
         public Rectangle winZone { get; protected set; }
+        public List<LightSource> Lights { get; protected set; }
 
+        public Level(Texture2D map, Texture2D miniMap, Vector2 playerSpawn, Rectangle winZone, LightSource[] aLights)
+            :this(map, miniMap, playerSpawn, winZone)
+        {
+            Lights = new List<LightSource>(aLights);
+        }
 
         public Level (Texture2D map, Texture2D miniMap, Vector2 playerSpawn, Rectangle winZone){
             this.map = map;

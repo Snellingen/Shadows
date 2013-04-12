@@ -112,18 +112,36 @@ namespace Shadows
             spriteManager.addToDrawNoMatrix("MiniMap", Vector2.Zero, 1);
 
             // Adding leves to spriteManager
-            spriteManager.addLevels("ShadowHouse1", "MiniHouse1", new Vector2(100, 100), new Rectangle(400, 0, 200, 100));
-            spriteManager.addLevels("ShadowHouse2", "Minihouse2", new Vector2(100, 100), new Rectangle(500, 0, 100, 300));
-            spriteManager.addLevels("ShadowHouse3", "Minihouse3", new Vector2(100, 100), new Rectangle(200, 0, 70, 20));
-            spriteManager.addLevels("ShadowHouse4", "Minihouse4", new Vector2(100, 100), new Rectangle(200, 0, 70, 20));
-            spriteManager.addLevels("ShadowHouse5", "Minihouse5", new Vector2(100, 100), new Rectangle(200, 0, 70, 20));
-            // sett currentLevel
-            spriteManager.setCurrentLevel(4);
-            lightManager.lightMapTexture = spriteManager.getCurrentLevel();
+            spriteManager.addLevels("ShadowHouse1", "MiniHouse1", new Vector2(100, 100), new Rectangle(400, 0, 200, 100), new LightSource[] {
+                new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))});
 
-            // Her Legger du til lys
-            lightManager.addLight(600, LightAreaQuality.Low, Color.Red, new Vector2(1000, 200));
-            lightManager.addLight(500, LightAreaQuality.Low, Color.Aqua, new Vector2(700, 783));
+            spriteManager.addLevels("ShadowHouse2", "Minihouse2", new Vector2(100, 100), new Rectangle(500, 0, 100, 300), new LightSource[] {
+                new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))});
+
+            spriteManager.addLevels("ShadowHouse3", "Minihouse3", new Vector2(100, 100), new Rectangle(200, 0, 70, 20), new LightSource[] {
+                new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))});
+
+            spriteManager.addLevels("ShadowHouse4", "Minihouse4", new Vector2(100, 100), new Rectangle(200, 0, 70, 20), new LightSource[] {
+                new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))});
+
+            spriteManager.addLevels("ShadowHouse5", "Minihouse5", new Vector2(100, 100), new Rectangle(200, 0, 70, 20), new LightSource[] {
+                new LightSource(graphics, 400, LightAreaQuality.Low, Color.Red, new Vector2(198, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
+                new LightSource(graphics, 200, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))});
+
+            // sett currentLevel
+            spriteManager.setCurrentLevel(5);
+            lightManager.lightMapTexture = spriteManager.lvlNr;
+            lightManager.addLight(spriteManager.currentLevel.Lights);
+
 
             // Disable Components
             spriteManager.Enabled = false;
@@ -243,12 +261,12 @@ namespace Shadows
             }
 
             camera.Update(spriteManager.GetPlayerPosition(0));
-            spriteManager.setViewMatrix(camera.ViewMatrix);
-            lightManager.setViewMatrix(camera.ViewMatrix);
-            inputManager.setViewMatrix(camera.ViewMatrix);
+            spriteManager.viewMatrix = camera.ViewMatrix;
+            lightManager.viewMatrix = camera.ViewMatrix;
+            inputManager.viewMatrix = camera.ViewMatrix;
 
             inverseMatrixPostion = Vector2.Transform(new Vector2(Mouse.GetState().X, Mouse.GetState().Y), Matrix.Invert(camera.ViewMatrix));
-            spriteManager.setInverseMatrixMosue(inverseMatrixPostion);
+            spriteManager.inverseMatrixMosue = inverseMatrixPostion;
 
             // GameState Logic
             switch (gameState)

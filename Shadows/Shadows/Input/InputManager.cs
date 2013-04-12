@@ -28,12 +28,11 @@ namespace Shadows
         // Keyboard
         KeyboardState oldKeyboardState;
         
-        Matrix viewMatrix; 
+        public Matrix viewMatrix { get; set;}
 
         public InputManager(Game game)
             : base(game)
-        {
-            
+        {      
         }
 
         public override void Initialize()
@@ -107,11 +106,6 @@ namespace Shadows
             return false; 
         }
         #endregion
-        // Camera matrice
-        public void setViewMatrix(Matrix viewMatrix)
-        {
-            this.viewMatrix = viewMatrix; 
-        }
 
         public override void Update(GameTime gameTime)
         {
