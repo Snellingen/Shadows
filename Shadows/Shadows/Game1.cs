@@ -52,7 +52,9 @@ namespace Shadows
         SoundManager soundManager;
         GameScreen activeScreen;
         StartScreen startScreen;
-        PauseScreen pauseScreen; 
+        PauseScreen pauseScreen;
+        WinScreen winScreen;
+        LooseScreen looseScreen;
 
 
         Vector2 inverseMatrixPostion;
@@ -210,6 +212,9 @@ namespace Shadows
             // SCREENS 
             startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
             pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
+            winScreen = new WinScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youwin"));
+            looseScreen = new LooseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youloose"));
+
 
             Components.Add(startScreen);
             Components.Add(pauseScreen);
