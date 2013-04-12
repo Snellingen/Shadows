@@ -57,6 +57,7 @@ namespace Shadows
         }
 
         public Vector2 GetPostion { get { return position; } }
+        public Vector2 SetPostion { set { position = value; } }
 
     }
 }

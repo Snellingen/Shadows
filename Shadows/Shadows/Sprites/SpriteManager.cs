@@ -21,15 +21,17 @@ namespace Shadows
 
         List<DrawData> toDraw = new List<DrawData>();
         List<UserControlledSprite> players = new List<UserControlledSprite>();
+        List<AiControlledSprite> zombies = new List<AiControlledSprite>();
         List<Projectile> bullets = new List<Projectile>();
-        List<DrawData> toDrawNoMatrix = new List<DrawData>();
+        List<DrawData> miniMapDots = new List<DrawData>();
+        List<DrawData> miniMapDotsZ = new List<DrawData>();
         List<Level> levels = new List<Level>();
         public Level currentLevel;
 
         public int lvlNr {get; set;}
 
         Texture2D line;
-        DrawData dot;
+
         Texture2D debug;
 
         // Components and such
@@ -41,10 +43,6 @@ namespace Shadows
         // Camera related
         public Matrix viewMatrix { get; set; }
         public Vector2 inverseMatrixMosue { get; set; }
-
-       
-
-        Vector2 miniplayerposition;
 
         float time = 0f; 
         public bool isPaused = false;
@@ -77,7 +75,7 @@ namespace Shadows
         // lets you add a Matrix for drawing
         public void addToDrawNoMatrix(string textureName, Vector2 position, float scale)
         {
-            toDrawNoMatrix.Add(new DrawData(Game.Content.Load<Texture2D>(@"World\" + textureName), position, scale)); 
+            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"World\" + textureName), position, scale)); 
         }
 
         // Let's you add level
@@ -94,8 +92,14 @@ namespace Shadows
 
         public void addPlayers(int playerIndex, Vector2 spawn)
         {
-            toDrawNoMatrix.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1 )); 
+            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f )); 
             players.Add(new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6), new Vector2(34, 57), 1, 89.5f));
+        }
+
+        public void addZombies(Vector2 spawn)
+        {
+            miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
+            zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(3, 3), 89.5f));
         }
 
         public override void Initialize()
@@ -117,21 +121,28 @@ namespace Shadows
             for (int i = 0; i < players.Count; i++)
             {
                 // add player animation 
-                players[0].addAnimation("walk", new Point(0, 0), new Point(67, 90), new Point(8, 1));
-                players[0].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
+                players[i].addAnimation("walk", new Point(0, 0), new Point(67, 90), new Point(8, 1));
+                players[i].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1)); 
             }
+
+            for (int i = 0; i < zombies.Count; i++)
+            {
+                // add player animation 
+                zombies[i].addAnimation("walk", new Point(0, 0), new Point(67, 90), new Point(8, 1));
+                zombies[i].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1));
+            }
+
             Console.WriteLine(players.Count);
 
-            dot = new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Zero, 1);
             debug = Game.Content.Load<Texture2D>(@"Sprites\green"); 
-            //dot.textureImage = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
 
             base.LoadContent();
         }
 
         public override void Update(GameTime gameTime)
         {
-            PlayerUpdate(gameTime); 
+            PlayerUpdate(gameTime);
+            ZombieUpdate(gameTime);
 
             // if game not paused
             if (!isPaused)
@@ -160,16 +171,17 @@ namespace Shadows
             for (int i = 0; i < players.Count; i++)
             {
                 // test collision
-                if (collisionManager.pixelPerfectCollision(players[0].collisionRect, currentLevel.map))
+                if (collisionManager.pixelPerfectCollision(players[i].collisionRect, currentLevel.map))
                 {
                     // Collision! 
                     players[i].Collision();
                 }
                 
+                miniMapDots[i].SetPostion = Vector2.Multiply(players[i].GetPostion, .2f);
+
                 // Update player
                 players[i].setInverseMatrixMouse(inverseMatrixMosue);
                 players[i].Update(gameTime, Game.Window.ClientBounds);
-                miniplayerposition = Vector2.Multiply(players[i].GetPostion, .2f);
 
                 // Play sounds for player
                 PlayerSound();
@@ -189,6 +201,28 @@ namespace Shadows
                         time = 100f;
                     }
                 }
+            }
+        }
+
+        public void ZombieUpdate(GameTime gameTime)
+        {
+            // for all player in players
+            for (int i = 0; i < zombies.Count; i++)
+            {
+                // test collision
+                if (collisionManager.pixelPerfectCollision(zombies[i].collisionRect, currentLevel.map))
+                {
+                    // Collision! 
+                    zombies[i].Collision();
+                }
+
+                miniMapDotsZ[i].SetPostion = Vector2.Multiply(zombies[i].GetPostion, .2f);
+
+                // Update player
+                zombies[i].Update(gameTime, Game.Window.ClientBounds);
+
+                // Play sounds for zombie
+                //PlayerSound();
             }
         }
 
@@ -219,17 +253,17 @@ namespace Shadows
             if (!isPaused)
             {
                 spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
-
-                // Draw player
-                // for all player in players
+                
 
                 spriteBatch.Draw(debug, currentLevel.winZone, Color.White);
 
+                // Draw player
+                // for all player in players
                 for (int i = 0; i < players.Count; i++)
                 {
+                    
                     players[i].Draw(spriteBatch);
                     DrawLine(line, 1, Color.Red, players[i].GetPostion, 1900f, i);
-                    //spriteBatch.Draw(block, players[i].collisionRect, Color.White * 0.5f);
                 }
 
                 // Draw projectiles
@@ -237,6 +271,13 @@ namespace Shadows
                 {
                     bullet.Draw(spriteBatch);
                 }
+
+                for (int i = 0; i < zombies.Count; i++)
+                {
+                    zombies[i].Draw(spriteBatch);
+                    spriteBatch.Draw(debug, zombies[i].collisionRect, Color.White);
+                }
+                
 
                 spriteBatch.Draw(currentLevel.map, Vector2.Zero, Color.White);
 
@@ -249,13 +290,16 @@ namespace Shadows
                 // NoMatrix
                 spriteBatch.Begin();
 
-                dot.Draw(spriteBatch);
-
                 spriteBatch.Draw(currentLevel.miniMap, Vector2.Zero, Color.White);
 
-                for (int i = 0; i < players.Count; i++)
+                foreach (DrawData dot in miniMapDots)
                 {
-                    
+                    dot.Draw(spriteBatch);
+                }
+
+                foreach ( DrawData dot in miniMapDotsZ )
+                {
+                    dot.Draw(spriteBatch);
                 }
 
                 spriteBatch.End();

@@ -13,12 +13,10 @@ namespace Shadows
         public bool collision = false;
         public bool isWalking = false;
         public bool wasWalking = false;
-        float enemyAngle; 
-
-        Vector2 inverseMatrixMouse; 
+        Vector2 enemyPos { get; set; }
 
         // Used for gamepad to store last roatation
-        float oldroation = 0;
+
 
         public AiControlledSprite (Texture2D textureImage, Vector2 position, Point frameSize,
             float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float rotationOffset)
@@ -41,11 +39,19 @@ namespace Shadows
                     return inputDirection;
                 }
 
-                inputDirection = aimVector(enemyAngle); 
+                inputDirection = aimVector(Rotation()); 
 
                 return Vector2.Multiply(inputDirection, speedFromLoopTime(5)); // reutrn direction + speed
 
             }
+        }
+
+        public float Rotation()
+        {
+            // substracts the position of the player so that the rotation will be correct according to the player position. 
+            enemyPos -= position;
+            // return the rotation value based on the mouse position. 
+            return (float)Math.Atan2(enemyPos.Y, enemyPos.X);
         }
 
         public override void Update(GameTime gameTime, Rectangle clientBounds)
@@ -61,27 +67,12 @@ namespace Shadows
             collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
             collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
 
-            rotation = enemyAngle; 
+            rotation = Rotation(); 
             //rotation = GamepadRotation();
 
             base.Update(gameTime, clientBounds);
             if ((Direction.X > 0) || Direction.X < 0 && !collision)
                 lastDirection = Direction;
-        }
-
-        public void getEnemyAngle(float angle)
-        {
-            enemyAngle = angle; 
-        }
-
-        public float MouseRotation()
-        {
-            Vector2 pos = inverseMatrixMouse;
-
-            // substracts the position of the player so that the rotation will be correct according to the player position. 
-            pos -= position;
-            // return the rotation value based on the mouse position. 
-            return (float)Math.Atan2(pos.Y, pos.X);
         }
 
         public Vector2 aimVector(float angle)
@@ -94,7 +85,7 @@ namespace Shadows
         {
             // Update position
             position += Vector2.Multiply(Direction, (float)gameTime.ElapsedGameTime.TotalSeconds);
-
+            
             // if movement
             if (Direction.X > 1 ||
                 Direction.X < -1 ||

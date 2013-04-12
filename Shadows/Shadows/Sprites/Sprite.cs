@@ -114,6 +114,7 @@ namespace Shadows
         public void addAnimation(string name, Point startFrame, Point frameSize, Point sheetSize)
         {
             Point[] animation = new Point[3] { startFrame, frameSize, sheetSize };
+            
             animationList.Add(name, animation); 
         }
 

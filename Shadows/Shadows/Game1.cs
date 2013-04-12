@@ -109,7 +109,7 @@ namespace Shadows
 
             // Adding draw data to spriteManager) 
             spriteManager.addPlayers(1, new Vector2(100, 100));
-            spriteManager.addToDrawNoMatrix("MiniMap", Vector2.Zero, 1);
+            spriteManager.addZombies(new Vector2(100, 100));
 
             // Adding leves to spriteManager
             spriteManager.addLevels("ShadowHouse1", "MiniHouse1", new Vector2(100, 100), new Rectangle(400, 0, 200, 100), new LightSource[] {
