@@ -27,6 +27,8 @@ namespace Shadows
         List<DrawData> miniMapDotsZ = new List<DrawData>();
         List<Level> levels = new List<Level>();
         public Level currentLevel;
+        bool win = false;
+        bool wrong = false;
 
         public int lvlNr {get; set;}
 
@@ -219,6 +221,30 @@ namespace Shadows
             // for all player in players
             for (int i = 0; i < players.Count; i++)
             {
+                if (collisionManager.rectrangleCollision(players[i].collisionRect, currentLevel.winZone))
+                {
+                    foreach (AiControlledSprite zombie in zombies)
+                    {
+                        if (!zombie.isDead)
+                        {
+                            if (!wrong)
+                            {
+                                sound.PlaySound("buzz");
+                                wrong = true;
+                            }
+                        }
+                        else
+                        {
+                            if (!win)
+                            {
+                                sound.PlaySound("win");
+                                win = true;
+                                wrong = false;
+                            }
+                        }
+                    }
+                }
+
                 // test collision
                 if (collisionManager.pixelPerfectCollision(players[i].collisionRect, currentLevel.map))
                 {

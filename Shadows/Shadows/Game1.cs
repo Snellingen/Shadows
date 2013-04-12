@@ -189,6 +189,8 @@ namespace Shadows
             soundManager.TryLoadSound("zombie-brains", false);
             soundManager.TryLoadSound("zombie-hit", false);
             soundManager.TryLoadSound("shot", false);
+            soundManager.TryLoadSound("buzz", false);
+            soundManager.TryLoadSound("win", false);
 
             soundManager.TryLoadSound("run-loop", true);
 
