@@ -53,8 +53,8 @@ namespace Shadows
         GameScreen activeScreen;
         StartScreen startScreen;
         PauseScreen pauseScreen;
-        WinScreen winScreen;
-        LooseScreen looseScreen;
+        //WinScreen winScreen;
+       // LooseScreen looseScreen;
 
 
         Vector2 inverseMatrixPostion;
@@ -121,10 +121,11 @@ namespace Shadows
                 new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))}, new Vector2[] {
-                new Vector2(100, 100), new Vector2( 100, 300),new Vector2( 100, 400),new Vector2( 100, 500),new Vector2( 500, 300),
-                new Vector2( 450, 300),new Vector2( 100, 700),new Vector2( 200, 300),new Vector2( 300, 300),new Vector2( 400, 300),
-                new Vector2( 140, 300),new Vector2( 105, 300),new Vector2( 100, 350),new Vector2( 100, 440),
-                new Vector2( 130, 300),new Vector2( 120, 320),new Vector2( 100, 370)});
+                new Vector2(100, 100), new Vector2( 100, 150),new Vector2( 100, 200),new Vector2( 100, 250),
+                new Vector2( 100, 300),new Vector2( 100, 350),new Vector2( 100, 400),new Vector2( 200, 450),
+                new Vector2( 100, 500),new Vector2( 100, 550),new Vector2( 100, 600),new Vector2( 105, 650),
+                new Vector2( 100, 750),new Vector2( 100, 700),new Vector2( 130, 800),new Vector2( 120, 850),
+                new Vector2( 100, 900)});
 
             spriteManager.addLevels("ShadowHouse2", "Minihouse2", new Vector2(522, 110), new Rectangle(680, 10, 220, 200), new LightSource[] {
                 new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
@@ -133,14 +134,14 @@ namespace Shadows
                 new Vector2(100, 100), new Vector2( 100, 300)});
 
             spriteManager.addLevels("ShadowHouse3", "Minihouse3", new Vector2(105, 800), new Rectangle(565, 10, 312, 85), new LightSource[] {
-                new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
+                new LightSource(graphics, 600, LightAreaQuality.Low, Color.Red, new Vector2(198, 274)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
-                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))}, new Vector2[] {
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 374))}, new Vector2[] {
                 new Vector2(100, 100), new Vector2( 100, 300)});
 
             spriteManager.addLevels("ShadowHouse4", "Minihouse4", new Vector2(150, 500), new Rectangle(1297, 379, 137, 245), new LightSource[] {
                 new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
-                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
+                new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(610, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))},new Vector2[] {
                 new Vector2(100, 100), new Vector2( 100, 300)});
 
@@ -151,7 +152,7 @@ namespace Shadows
                 new Vector2(100, 100), new Vector2( 100, 300)});
 
             // sett currentLevel
-            spriteManager.setCurrentLevel(1);
+            spriteManager.setCurrentLevel(5);
             lightManager.lightMapTexture = spriteManager.lvlNr;
             lightManager.addLight(spriteManager.currentLevel.Lights);
             spriteManager.addZombies(spriteManager.currentLevel.Zombies);
@@ -215,8 +216,8 @@ namespace Shadows
             // SCREENS 
             startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
             pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
-            winScreen = new WinScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youwin"));
-            looseScreen = new LooseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youloose"));
+           // winScreen = new WinScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youwin"));
+           // looseScreen = new LooseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youloose"));
 
 
             Components.Add(startScreen);
