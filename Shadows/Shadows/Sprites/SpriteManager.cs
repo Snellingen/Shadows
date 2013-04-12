@@ -27,8 +27,8 @@ namespace Shadows
         List<DrawData> miniMapDotsZ = new List<DrawData>();
         List<Level> levels = new List<Level>();
         public Level currentLevel;
-        bool win = false;
-        bool wrong = false;
+        public bool win { get; set; }
+        public bool wrong { get; set; }
 
         public int lvlNr {get; set;}
 
@@ -203,6 +203,7 @@ namespace Shadows
                                         {
                                             zombies[j].isDead = true;
                                             sound.PlaySound("zombie-3");
+                                            
                                         }
                                     }
                                 }
@@ -238,6 +239,7 @@ namespace Shadows
                             if (!win)
                             {
                                 sound.PlaySound("win");
+                                sound.StopSoundLoop("run-loop");
                                 win = true;
                                 wrong = false;
                             }
@@ -304,7 +306,7 @@ namespace Shadows
                     {
                         if (!zombies[i].deathLoaded)
                         {
-                            zombies[i].textureImage = Game.Content.Load<Texture2D>(@"Sprites/guard_death");
+                            zombies[i].textureImage = Game.Content.Load<Texture2D>(@"Sprites/zombie_death");
                             zombies[i].millisecondsPerFrame = 200;
                             zombies[i].deathLoaded = true;
                             zombies[i].active = false;
@@ -371,7 +373,7 @@ namespace Shadows
                 for (int i = 0; i < zombies.Count; i++)
                 {
                     zombies[i].Draw(spriteBatch);
-                    //spriteBatch.Draw(debug, zombies[i].collisionRect, Color.White);
+                    spriteBatch.Draw(debug, zombies[i].collisionRect, Color.White);
                 }
                 
 

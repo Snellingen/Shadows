@@ -53,8 +53,8 @@ namespace Shadows
         GameScreen activeScreen;
         StartScreen startScreen;
         PauseScreen pauseScreen;
-        //WinScreen winScreen;
-       // LooseScreen looseScreen;
+        WinScreen winScreen;
+        LooseScreen looseScreen;
 
 
         Vector2 inverseMatrixPostion;
@@ -218,18 +218,24 @@ namespace Shadows
             // SCREENS 
             startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
             pauseScreen = new PauseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/image"));
-           // winScreen = new WinScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youwin"));
-           // looseScreen = new LooseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youloose"));
+            winScreen = new WinScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youwin"));
+            looseScreen = new LooseScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>(@"Sprites/youloose"));
 
 
             Components.Add(startScreen);
             Components.Add(pauseScreen);
+            Components.Add(winScreen);
+            Components.Add(looseScreen);
 
-            pauseScreen.DrawOrder = 9;
+            pauseScreen.DrawOrder = 10;
             startScreen.DrawOrder = 9;
+            looseScreen.DrawOrder = 9;
+            winScreen.DrawOrder = 9;
 
             pauseScreen.Hide();
             startScreen.Hide();
+            winScreen.Hide();
+            looseScreen.Hide();
             gameState = GameState.Menu;
             activeScreen = startScreen;
         }
@@ -290,6 +296,11 @@ namespace Shadows
                 }
             }
 
+            if (spriteManager.win)
+            {
+                gameState = GameState.GameWin;
+            }
+
             camera.Update(spriteManager.GetPlayerPosition(0));
             spriteManager.viewMatrix = camera.ViewMatrix;
             lightManager.viewMatrix = camera.ViewMatrix;
@@ -307,7 +318,9 @@ namespace Shadows
                     spriteManager.Enabled = false;
                     spriteManager.Enabled = false;
                     pauseScreen.Hide();
-                    startScreen.Show(); 
+                    startScreen.Show();
+                    winScreen.Hide();
+                    looseScreen.Hide();
                     break; 
 
                 case GameState.Playing:
@@ -321,18 +334,18 @@ namespace Shadows
 
                     spriteManager.isPaused = false;
                     pauseScreen.Hide();
-                    startScreen.Hide(); 
+                    startScreen.Hide();
+                    
 
                     break;
 
                 case GameState.Pause:
-                        startScreen.Hide();
-                        pauseScreen.Show();
-                        lightManager.Enabled = false;
-                        lightManager.Visible = true;
-                        spriteManager.Enabled = true;
-                        spriteManager.isPaused = true; 
-                        activeScreen = pauseScreen;
+                    lightManager.Enabled = false;
+                    spriteManager.Enabled = false;
+                    spriteManager.Enabled = false;
+                    pauseScreen.Show();
+                    winScreen.Hide();
+                    looseScreen.Hide();
 
                     break; 
 
@@ -340,6 +353,13 @@ namespace Shadows
                     break;
  
                 case GameState.GameWin:
+                        startScreen.Hide();
+                        winScreen.Show();
+                        lightManager.Enabled = false;
+                        lightManager.Visible = false;
+                        spriteManager.Enabled = false;
+                        spriteManager.isPaused = true;
+                        activeScreen = winScreen;
                     break; 
             }
 
