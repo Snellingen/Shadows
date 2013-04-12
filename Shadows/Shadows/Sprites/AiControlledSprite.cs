@@ -13,15 +13,13 @@ namespace Shadows
         public bool collision = false;
         public bool isWalking = false;
         public bool wasWalking = false;
-        Vector2 enemyPos { get; set; }
+        public Vector2 enemyPos { get; set; }
 
         // Used for gamepad to store last roatation
 
 
-        public AiControlledSprite (Texture2D textureImage, Vector2 position, Point frameSize,
-            float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, float rotationOffset)
-            : base(textureImage, position, frameSize, collisionScale, currentFrame,
-            sheetSize, speed, new Vector2(textureImage.Width/2, textureImage.Height/2), 1, 0f)
+        public AiControlledSprite (Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, Vector2 origin, float scale, float rotationOffset)
+            : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, origin, scale, rotationOffset)
         {
         }
 
@@ -41,7 +39,7 @@ namespace Shadows
 
                 inputDirection = aimVector(Rotation()); 
 
-                return Vector2.Multiply(inputDirection, speedFromLoopTime(5)); // reutrn direction + speed
+                return Vector2.Multiply(inputDirection, speedFromLoopTime(2)); // reutrn direction + speed
 
             }
         }
@@ -60,14 +58,13 @@ namespace Shadows
             MovementUpdate(gameTime);
             collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
             collisionRect.Y = (int)(position.Y - (frameSize.Y * collisionScale) + (origin.Y * collisionScale));
-            collisionRect.Height = collisionRect.Width;
+            collisionRect.Height = collisionRect.Width; 
 
             // collision ahead
 
             collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
             collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
 
-            rotation = Rotation(); 
             //rotation = GamepadRotation();
 
             base.Update(gameTime, clientBounds);

@@ -99,7 +99,7 @@ namespace Shadows
         public void addZombies(Vector2 spawn)
         {
             miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
-            zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(3, 3), 89.5f));
+            zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57),  1, 89.5f));
         }
 
         public override void Initialize()
@@ -220,7 +220,7 @@ namespace Shadows
 
                 // Update player
                 zombies[i].Update(gameTime, Game.Window.ClientBounds);
-
+                zombies[i].enemyPos = inverseMatrixMosue;
                 // Play sounds for zombie
                 //PlayerSound();
             }
