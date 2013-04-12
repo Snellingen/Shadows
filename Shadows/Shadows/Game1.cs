@@ -121,7 +121,10 @@ namespace Shadows
                 new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Aqua, new Vector2(1310, 474)),
                 new LightSource(graphics, 500, LightAreaQuality.Low, Color.Gold, new Vector2(786, 474))}, new Vector2[] {
-                new Vector2(100, 100), new Vector2( 100, 300)});
+                new Vector2(100, 100), new Vector2( 100, 300),new Vector2( 100, 400),new Vector2( 100, 500),new Vector2( 500, 300),
+                new Vector2( 450, 300),new Vector2( 100, 700),new Vector2( 200, 300),new Vector2( 300, 300),new Vector2( 400, 300),
+                new Vector2( 140, 300),new Vector2( 105, 300),new Vector2( 100, 350),new Vector2( 100, 440),
+                new Vector2( 130, 300),new Vector2( 120, 320),new Vector2( 100, 370)});
 
             spriteManager.addLevels("ShadowHouse2", "Minihouse2", new Vector2(522, 110), new Rectangle(680, 10, 220, 200), new LightSource[] {
                 new LightSource(graphics, 600, LightAreaQuality.Low, Color.White, new Vector2(198, 474)),
@@ -148,7 +151,7 @@ namespace Shadows
                 new Vector2(100, 100), new Vector2( 100, 300)});
 
             // sett currentLevel
-            spriteManager.setCurrentLevel(5);
+            spriteManager.setCurrentLevel(1);
             lightManager.lightMapTexture = spriteManager.lvlNr;
             lightManager.addLight(spriteManager.currentLevel.Lights);
             spriteManager.addZombies(spriteManager.currentLevel.Zombies);
