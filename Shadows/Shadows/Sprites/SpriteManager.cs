@@ -63,7 +63,7 @@ namespace Shadows
 
         public Vector2 GetPlayerPosition(int playerIndex)
         {
-                return players[playerIndex].GetPostion;
+                return players[0].GetPostion;
         }
 
         // ADDING STUFF
@@ -126,7 +126,7 @@ namespace Shadows
             collisionManager = (CollisionManager)Game.Services.GetService(typeof(CollisionManager)); 
             sound = (SoundManager)Game.Services.GetService(typeof(SoundManager));
             input = (InputManager)Game.Services.GetService(typeof(InputManager));
-            players[1].SetPostion = currentLevel.playerSpawn; 
+            players[0].SetPostion = currentLevel.playerSpawn; 
 
             base.Initialize();
         }
