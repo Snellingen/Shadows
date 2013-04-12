@@ -20,7 +20,7 @@ namespace Shadows
         public bool collision = false;
         public bool isWalking = false;
         public bool wasWalking = false;
-        public bool usingGamepad = true;
+        public bool usingGamepad = false;
 
         public bool isDead = false; 
 

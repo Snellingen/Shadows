@@ -69,6 +69,15 @@ namespace Shadows
             return false;
         }
 
+        public bool rectrangleCollision(Rectangle rec1, Rectangle rec2)
+        {
+            if (rec1.Intersects(rec2))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public Texture2D CreateCollisionTexture(Rectangle o, Texture2D collisionMap)
         {
             collisionRender = new RenderTarget2D(Game.GraphicsDevice, o.Width, o.Height, false, SurfaceFormat.Color, DepthFormat.None);

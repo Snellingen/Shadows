@@ -100,14 +100,14 @@ namespace Shadows
         // Let's you add players
         public void addPlayers(int playerIndex, Vector2 spawn)
         {
-            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f )); 
+            miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f, Color.Yellow )); 
             players.Add(new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6), new Vector2(34, 57), 1, 89.5f));
         }
 
         // let's you add players
         public void addZombies(Vector2 spawn)
         {
-            miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
+            miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f, Color.Red));
             zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57),  1, 89.5f));
         }
 
@@ -116,7 +116,7 @@ namespace Shadows
         {
             foreach (Vector2 spawn in spawns)
             {
-                miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
+                miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f ,Color.Red));
                 zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57), 1, 89.5f));
             }
         }
@@ -176,12 +176,29 @@ namespace Shadows
                     // update collison rectangle
                     bullets[i].Update(gameTime, collisionManager.clientRectangle);
 
-                    // Check collision
-                if(collisionManager.IsOutOfBounds(bullets[i].GetPostion, players[0].frameSize) ||
-                    collisionManager.pixelPerfectCollision(bullets[i].collisionRect, currentLevel.map))
+                    // Check bullet collision wall
+                    if (collisionManager.IsOutOfBounds(bullets[i].GetPostion, players[0].frameSize) ||
+                        collisionManager.pixelPerfectCollision(bullets[i].collisionRect, currentLevel.map))
+                    {
+                        // collision! 
+                        bullets.RemoveAt(i);
+                    }
 
-                            // collision! 
-                            bullets.RemoveAt(i);
+                    else
+                    {
+                        // check collision zombies
+                        
+                        foreach (AiControlledSprite zombie in zombies)
+                        {
+                            if (bullets.Count >= 1)
+                            {
+                                if (collisionManager.rectrangleCollision(bullets[i].collisionRect, zombie.collisionRect))
+                                {
+                                    bullets.RemoveAt(i);
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
@@ -213,7 +230,7 @@ namespace Shadows
                 }
 
                 // Play sounds for player
-                PlayerSoundPlayer();
+                Sound();
 
                 // Shoot bullets
                 if (players[i].isShooting())
@@ -248,9 +265,8 @@ namespace Shadows
                         zombies[i].Collision();
                     }
 
-                    if (!zombies[i].isDead)
+                    if (zombies[i].isDead)
                     {
-                        zombies[i].isDead = true;
                         if (!zombies[i].deathLoaded)
                         {
                             zombies[i].textureImage = Game.Content.Load<Texture2D>(@"Sprites/guard_death");
@@ -272,7 +288,7 @@ namespace Shadows
             }
         }
 
-        public void PlayerSoundPlayer()
+        public void Sound()
         {
             // for all player in players
             for (int i = 0; i < players.Count; i++)

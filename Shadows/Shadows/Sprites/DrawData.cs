@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Shadows
 {
-    class DrawData
+    public class DrawData
     {
         // atributes 
         public Texture2D textureImage { get; set; }
@@ -21,6 +21,7 @@ namespace Shadows
         public float scale = 1;
         public float rotation = 0;
         public float rotationOffset = 0;
+        Color color = Color.White; 
 
         // The collision rectangle for the sprite. 
         public Rectangle collisionRect;
@@ -32,7 +33,13 @@ namespace Shadows
             :this(textureImage, new Vector2(textureImage.Width/2, textureImage.Height/2) , position, scale) 
         {
         }
-        
+
+        public DrawData(Texture2D textureImage, Vector2 position, float scale, Color color)
+            : this(textureImage, new Vector2(textureImage.Width / 2, textureImage.Height / 2), position, scale)
+        {
+            this.color = color;
+        }
+
         public DrawData(Texture2D textureImage, Vector2 origin, Vector2 position, float scale)
             :this(textureImage, origin, position, scale, 0, 0)
         {
@@ -53,7 +60,7 @@ namespace Shadows
         {
             //spriteBatch.Draw(textureImage, position, collisionRect, Color.White, rotation + rotationOffset, origin, scale, SpriteEffects.None, 0);
             spriteBatch.Draw(textureImage, position, new Rectangle(0, 0, textureImage.Width, textureImage.Height),
-            Color.White, rotation + rotationOffset, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
+            color, rotation + rotationOffset, new Vector2((origin.X), (origin.Y)), scale, SpriteEffects.None, 0);
         }
 
         public Vector2 GetPostion { get { return position; } }
