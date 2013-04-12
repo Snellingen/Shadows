@@ -20,8 +20,11 @@ namespace Shadows
         public bool collision = false;
         public bool isWalking = false;
         public bool wasWalking = false;
+        public bool usingGamepad = false; 
 
-        Vector2 inverseMatrixMouse; 
+        Vector2 inverseMatrixMouse;
+        GamePadState gamepadState;
+        PlayerIndex index = PlayerIndex.One;
 
         // Used for gamepad to store last roatation
         float oldroation = 0;
@@ -34,6 +37,11 @@ namespace Shadows
         public UserControlledSprite(Texture2D textureImage, Vector2 position, Point frameSize, float collisionScale, Point currentFrame, Point sheetSize, Vector2 speed, int millisecondsPerFrame, Vector2 origin, float scale, float rotationOffset)
             : base(textureImage, position, frameSize, collisionScale, currentFrame, sheetSize, speed, millisecondsPerFrame, origin, scale, rotationOffset)
         {
+        }
+
+        public void setPlayerIndex(PlayerIndex index)
+        {
+            this.index = index;
         }
 
         public void setInverseMatrixMouse(Vector2 pos)
@@ -59,6 +67,8 @@ namespace Shadows
 
         public override void Update(GameTime gameTime, Rectangle clientBounds)
         {
+            gamepadState = GamePad.GetState(PlayerIndex.One);
+
             // Moves the sprite based on direction
             MovementUpdate(gameTime);
             collisionRect.X = (int)(position.X - (frameSize.X * collisionScale) + (origin.X * collisionScale));
@@ -70,12 +80,29 @@ namespace Shadows
             collisionRect.X += (int)((Direction.X / (speed.X * 2)) * collisionScale);
             collisionRect.Y += (int)((Direction.Y / (speed.Y * 2)) * collisionScale);
 
-            rotation = MouseRotation();
-            //rotation = GamepadRotation();
+
+            
+            if(usingGamepad)
+                rotation = GamepadRotation();
+            else
+                rotation = MouseRotation();
 
             base.Update(gameTime, clientBounds);
             if ((Direction.X > 0) || Direction.X < 0 && !collision)
                 lastDirection = Direction;
+        }
+
+        public bool isShooting()
+        {
+            if (usingGamepad){
+                if (gamepadState.Buttons.RightShoulder == ButtonState.Pressed)
+                    return true;
+            }
+            else{
+                if (Mouse.GetState().LeftButton == ButtonState.Pressed)
+                    return true;
+                }
+            return false;
         }
 
         // Basic input logic
@@ -101,12 +128,11 @@ namespace Shadows
                 if (Keyboard.GetState().IsKeyDown(keyDown))
                     inputDirection.Y += 1;
 
-                GamePadState gamepadState = GamePad.GetState(PlayerIndex.One);
+                
                 if (gamepadState.ThumbSticks.Left.X != 0)
                     inputDirection.X += gamepadState.ThumbSticks.Left.X;
                 if (gamepadState.ThumbSticks.Left.Y != 0)
-                    inputDirection.Y -= gamepadState.ThumbSticks.Left.Y;
-
+                   inputDirection.Y -= gamepadState.ThumbSticks.Left.Y;
 
 
                 return Vector2.Multiply(inputDirection, speedFromLoopTime(5)); // reutrn direction + speed

@@ -30,6 +30,7 @@ namespace Shadows
 
         Texture2D line;
         DrawData dot;
+        Texture2D debug;
 
         // Components and such
         SpriteBatch spriteBatch;
@@ -122,6 +123,7 @@ namespace Shadows
             Console.WriteLine(players.Count);
 
             dot = new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Zero, 1);
+            debug = Game.Content.Load<Texture2D>(@"Sprites\green"); 
             //dot.textureImage = Game.Content.Load<Texture2D>(@"Sprites\MouseTexture");
 
             base.LoadContent();
@@ -143,7 +145,6 @@ namespace Shadows
                     // Check collision
                 if(collisionManager.IsOutOfBounds(bullets[i].GetPostion, players[0].frameSize) ||
                     collisionManager.pixelPerfectCollision(bullets[i].collisionRect, currentLevel.map))
-                    bullets.RemoveAt(i);
 
                             // collision! 
                             bullets.RemoveAt(i);
@@ -174,17 +175,17 @@ namespace Shadows
                 PlayerSound();
 
                 // Shoot bullets
-                if (input.leftClick)
+                if (players[i].isShooting())
                 {
                     // Pause inbetween shots
                     // get elapsed time
-                    time += gameTime.ElapsedGameTime.Milliseconds;
-                time -= gameTime.ElapsedGameTime.Milliseconds;
-                if (time < 0)
+
+                    time -= gameTime.ElapsedGameTime.Milliseconds;
+                    if (time <= 0)
 
                     {
                         // Shoot! 
-                        bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), players[i].GetPostion, new Vector2(400, 400), players[i].rotation));
+                        bullets.Add(new Projectile(Game.Content.Load<Texture2D>(@"Sprites\projectile"), players[i].GetPostion, new Vector2(1000, 1000), players[i].rotation));
                         time = 100f;
                     }
                 }
@@ -206,7 +207,7 @@ namespace Shadows
                     sound.PlaySoundLoop("run-loop");
                 }
 
-                if (input.leftClick)
+                if (players[i].isShooting())
                 {
                     sound.PlaySoundContinuously("shot", 100f);
                 }
@@ -221,6 +222,8 @@ namespace Shadows
 
                 // Draw player
                 // for all player in players
+
+                spriteBatch.Draw(debug, currentLevel.winZone, Color.White);
 
                 for (int i = 0; i < players.Count; i++)
                 {

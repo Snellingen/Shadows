@@ -22,9 +22,10 @@ namespace Shadows
         {
             position += aimVector(rotation) * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             origin = new Vector2(frameSize.X / 2, frameSize.Y);
-            collisionRect.X = (int)(position.X - frameSize.X / 6 );
-            collisionRect.Y = (int)(position.Y + frameSize.Y * 5); 
-            base.Update(gameTime, clientBounds);
+            collisionRect.X = (int)(position.X );
+            collisionRect.Y = (int)(position.Y ); 
+
+            base.Update(gameTime, clientBounds );
         }
 
         public void spawn(Vector2 startPosition, Vector2 destination, float angle)
