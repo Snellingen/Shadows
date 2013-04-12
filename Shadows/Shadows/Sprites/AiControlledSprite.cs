@@ -12,9 +12,15 @@ namespace Shadows
 
         public bool collision = false;
         public bool isWalking = false;
+        public bool isDead = false; 
         public bool wasWalking = false;
+        public bool deathLoaded = false; 
+
+        public Point deathAnimation { get; set; }
+        
         public Vector2 enemyPos { get; set; }
-        Vector2 oldDriection; 
+        Vector2 oldDriection;
+        public int life = 100; 
 
         // Used for gamepad to store last roatation
 
@@ -64,7 +70,7 @@ namespace Shadows
             if ((Direction.X > 0) || Direction.X < 0 && !collision)
                 lastDirection = Direction;
 
-            oldDriection = Direction; 
+            oldDriection = Direction;
 
             rotation = Rotation(); 
         }
@@ -104,6 +110,11 @@ namespace Shadows
                     wasWalking = false;
                 }
                 isWalking = false;
+            }
+
+            if (isDead)
+            {
+                playAnimation("Death", true, gameTime);
             }
         }
 

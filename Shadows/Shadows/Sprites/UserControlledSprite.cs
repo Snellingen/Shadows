@@ -20,7 +20,11 @@ namespace Shadows
         public bool collision = false;
         public bool isWalking = false;
         public bool wasWalking = false;
-        public bool usingGamepad = true; 
+        public bool usingGamepad = true;
+
+        public bool isDead = false; 
+
+        public int life = 100; 
 
         Vector2 inverseMatrixMouse;
         GamePadState gamepadState;
@@ -57,6 +61,7 @@ namespace Shadows
             int radii = radius1 + radius2;
             if ( ( dx * dx )  + ( dy * dy ) < radii * radii ) 
             {
+                // collision! 
                 return true;
             }
             else

@@ -31,7 +31,6 @@ namespace Shadows
         public int lvlNr {get; set;}
 
         Texture2D line;
-
         Texture2D debug;
 
         // Components and such
@@ -98,18 +97,21 @@ namespace Shadows
             levels.Add(new Level(Game.Content.Load<Texture2D>(@"World\" + Map), Game.Content.Load<Texture2D>(@"World\" + minMap), playerSpawn, winZone, lights, zombies));
         }
 
+        // Let's you add players
         public void addPlayers(int playerIndex, Vector2 spawn)
         {
             miniMapDots.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), .5f )); 
             players.Add(new UserControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\soldier_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(6, 6), new Vector2(34, 57), 1, 89.5f));
         }
 
+        // let's you add players
         public void addZombies(Vector2 spawn)
         {
             miniMapDotsZ.Add(new DrawData(Game.Content.Load<Texture2D>(@"Sprites\MouseTexture"), Vector2.Multiply(spawn, 0.2f), 1));
             zombies.Add(new AiControlledSprite(Game.Content.Load<Texture2D>(@"Sprites\zombie_spritesheet"), spawn, new Point(67, 90), 0.5f, new Point(0, 1), new Point(8, 1), new Vector2(2, 2), new Vector2(34, 57),  1, 89.5f));
         }
 
+        // Let's you add zombies
         public void addZombies(IEnumerable<Vector2> spawns)
         {
             foreach (Vector2 spawn in spawns)
@@ -150,6 +152,7 @@ namespace Shadows
                 // add player animation 
                 zombies[i].addAnimation("walk", new Point(0, 0), new Point(67, 90), new Point(8, 1));
                 zombies[i].addAnimation("idle", new Point(0, 0), new Point(67, 90), new Point(1, 1));
+                zombies[i].addAnimation("Death", new Point(0, 0), new Point(86, 132), new Point(5, 2)); 
             }
 
             Console.WriteLine(players.Count);
@@ -204,8 +207,13 @@ namespace Shadows
                 players[i].setInverseMatrixMouse(inverseMatrixMosue);
                 players[i].Update(gameTime, Game.Window.ClientBounds);
 
+                if (players[i].life <= 0)
+                {
+                    players[i].isDead = true; 
+                }
+
                 // Play sounds for player
-                PlayerSound();
+                PlayerSoundPlayer();
 
                 // Shoot bullets
                 if (players[i].isShooting())
@@ -231,24 +239,38 @@ namespace Shadows
             // for all player in players
             for (int i = 0; i < zombies.Count; i++)
             {
-                // test collision
-                if (collisionManager.pixelPerfectCollision(zombies[i].collisionRect, currentLevel.map))
+                if (players[0].circlesColliding((int)zombies[i].GetPostion.X, (int)zombies[i].GetPostion.Y, 50, (int)players[0].GetPostion.X, (int)players[0].GetPostion.Y, 200))
                 {
-                    // Collision! 
-                    zombies[i].Collision();
+                    // test collision
+                    if (collisionManager.pixelPerfectCollision(zombies[i].collisionRect, currentLevel.map))
+                    {
+                        // Collision! 
+                        zombies[i].Collision();
+                    }
+
+                    if (!zombies[i].isDead)
+                    {
+                        zombies[i].isDead = true;
+                        if (!zombies[i].deathLoaded)
+                        {
+                            zombies[i].textureImage = Game.Content.Load<Texture2D>(@"Sprites/guard_death");
+                            zombies[i].deathLoaded = true;
+                        }
+                    }
+
+                    miniMapDotsZ[i].SetPostion = Vector2.Multiply(zombies[i].GetPostion, .2f);
+
+                    // Update player
+                    zombies[i].Update(gameTime, Game.Window.ClientBounds);
+                    zombies[i].enemyPos = players[0].GetPostion;
                 }
-
-                miniMapDotsZ[i].SetPostion = Vector2.Multiply(zombies[i].GetPostion, .2f);
-
-                // Update player
-                zombies[i].Update(gameTime, Game.Window.ClientBounds);
-                zombies[i].enemyPos = players[0].GetPostion;
+                
                 // Play sounds for zombie
                 //PlayerSound();
             }
         }
 
-        public void PlayerSound()
+        public void PlayerSoundPlayer()
         {
             // for all player in players
             for (int i = 0; i < players.Count; i++)
@@ -274,10 +296,10 @@ namespace Shadows
         {
             if (!isPaused)
             {
-                spriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
-                
+                spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, viewMatrix);
 
-                spriteBatch.Draw(debug, currentLevel.winZone, Color.White);
+                // draw WineBox
+                spriteBatch.Draw(debug, currentLevel.winZone, Color.White * .2f);
 
                 // Draw player
                 // for all player in players

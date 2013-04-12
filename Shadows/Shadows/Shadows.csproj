@@ -81,11 +81,13 @@
     <Compile Include="Events.cs" />
     <Compile Include="Keybind.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="Menu\LooseScreen.cs" />
     <Compile Include="Menu\PauseScreen.cs" />
     <Compile Include="FpsViewer.cs" />
     <Compile Include="CollisionManager.cs" />
     <Compile Include="Menu\GameScreen.cs" />
     <Compile Include="Menu\MenuComponent.cs" />
+    <Compile Include="Menu\WinScreen.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Light\LightManager.cs" />
