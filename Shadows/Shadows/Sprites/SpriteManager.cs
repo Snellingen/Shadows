@@ -129,7 +129,7 @@ namespace Shadows
         {
             if (lvlNr >= levels.Count)
             {
-                lvlNr--; 
+                lvlNr = 1; 
             }
             if (lvlNr < levels.Count)
             {

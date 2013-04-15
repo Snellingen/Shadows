@@ -275,7 +275,6 @@ namespace Shadows
                     spriteManager.nextLevel();
                     lightManager.lightMapTexture = spriteManager.lvlNr;
                     lightManager.addLight(spriteManager.currentLevel.Lights);
-                    IsComponentsDisabled = true;
                     gameState = GameState.Playing;
                     break;
             }
