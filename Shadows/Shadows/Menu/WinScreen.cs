@@ -30,7 +30,7 @@ namespace Shadows
         Texture2D image)
             : base(game, spriteBatch)
         {
-            string[] menuItems = { "Play Again", "End Game" };
+            string[] menuItems = { "Next Level", "End Game" };
             menuComponent = new MenuComponent(game,
             spriteBatch,
             spriteFont,
@@ -49,7 +49,8 @@ namespace Shadows
             {
                 if (menuComponent.SelectedIndex == 0)
                 {
-                    Events.FireMyEvent(Selected.PlayGame);
+                    
+                    Events.FireMyEvent(Selected.NextLevel);
                 }
 
                 else if (menuComponent.SelectedIndex == 1)

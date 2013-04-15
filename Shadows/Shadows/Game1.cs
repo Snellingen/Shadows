@@ -30,7 +30,8 @@ namespace Shadows
         PauseSong,
         StopSong,
         PlaySong,
-        ResumeSong
+        ResumeSong,
+        NextLevel,
     }
 
     public delegate void MyEventHandler(Selected selected);
@@ -270,6 +271,13 @@ namespace Shadows
                 case Selected.ResumeSong:
                     soundManager.ResumeSong();
                     break;
+                case Selected.NextLevel:
+                    spriteManager.nextLevel();
+                    lightManager.lightMapTexture = spriteManager.lvlNr;
+                    lightManager.addLight(spriteManager.currentLevel.Lights);
+                    IsComponentsDisabled = true;
+                    gameState = GameState.Playing;
+                    break;
             }
         }
 
@@ -330,19 +338,16 @@ namespace Shadows
                     break;
 
                 case GameState.Playing:
-                    if (IsComponentsDisabled)
-                    {
-                        lightManager.Enabled = true;
-                        lightManager.Visible = true;
-                        spriteManager.Enabled = true;
-                        IsComponentsDisabled = false;
-                    }
 
-                    spriteManager.isPaused = false;
-                    pauseScreen.Hide();
+                    lightManager.Enabled = true;
+                    lightManager.Visible = true;
+                    spriteManager.Enabled = true;
+                    IsComponentsDisabled = false;
                     startScreen.Hide();
-
-
+                    winScreen.Hide();
+                    pauseScreen.Hide();
+                    spriteManager.isPaused = false;
+                    //activeScreen = scree;
                     break;
 
                 case GameState.Pause:

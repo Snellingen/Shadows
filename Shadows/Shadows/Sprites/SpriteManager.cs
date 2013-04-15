@@ -124,6 +124,21 @@ namespace Shadows
             }
         }
 
+        // Goto next level
+        public void nextLevel()
+        {
+            if (lvlNr >= levels.Count)
+            {
+                lvlNr--; 
+            }
+            if (lvlNr < levels.Count)
+            {
+                zombies.Clear();
+                setCurrentLevel(lvlNr); 
+                addZombies(currentLevel.Zombies);
+            }
+        }
+
         public void setXbox(bool on)
         {
             players[0].usingGamepad = on;
@@ -218,6 +233,8 @@ namespace Shadows
                 }
             }
 
+            
+
             base.Update(gameTime);
         }
 
@@ -301,9 +318,11 @@ namespace Shadows
         // Update for zombies
         public void ZombieUpdate(GameTime gameTime)
         {
+            
             // for all player in players
             for (int i = 0; i < zombies.Count; i++)
             {
+                zombies[i].isDead = true;
                 if (players[0].circlesColliding((int)zombies[i].GetPostion.X, (int)zombies[i].GetPostion.Y, 50, (int)players[0].GetPostion.X, (int)players[0].GetPostion.Y, 200) ||
                     !zombies[i].active)
                 {
