@@ -378,6 +378,8 @@ namespace Shadows
                     spriteManager.isPaused = true;
                     activeScreen = winScreen;
                     break;
+
+
             }
 
             base.Update(gameTime);
